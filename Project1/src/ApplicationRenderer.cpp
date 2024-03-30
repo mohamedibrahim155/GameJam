@@ -234,6 +234,8 @@ void ApplicationRenderer::Start()
     // GraphicsRender::GetInstance().AddModelAndShader(xBot, animationShader);
 
      CharacterAnimation* character = new CharacterAnimation();
+     ParticleSystem* particle = new ParticleSystem();
+     particle->InitializeParticles();
 
 }
 
@@ -401,6 +403,7 @@ void ApplicationRenderer::EngineGameLoop()
     if (isPlayMode)
     {
         EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
+        ParticleSystemManager::GetInstance().Update(Time::GetInstance().deltaTime);
     }
 
     PostRender();
@@ -480,6 +483,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
        ScrollShader->setMat4("ProjectionMatrix", _projection);*/
 
     GraphicsRender::GetInstance().Draw();
+    ParticleSystemManager::GetInstance().Render();
 
     framebuffer->Unbind();
 

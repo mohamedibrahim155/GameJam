@@ -150,7 +150,16 @@
     <ClCompile Include="src\Animation\AnimationSystem.cpp" />
     <ClCompile Include="src\Animation\Bone\Bone.cpp" />
     <ClCompile Include="src\CharacterAnimation\CharacterAnimation.cpp" />
+    <ClCompile Include="src\ImGui\ImGuiUtils.cpp" />
     <ClCompile Include="src\Math.cpp" />
+    <ClCompile Include="src\ParticleSystem\BaseEmitterShape.cpp" />
+    <ClCompile Include="src\ParticleSystem\BoxEmitter.cpp" />
+    <ClCompile Include="src\ParticleSystem\ConeEmitter.cpp" />
+    <ClCompile Include="src\ParticleSystem\EmitterShapeManager.cpp" />
+    <ClCompile Include="src\ParticleSystem\ParticleEmission.cpp" />
+    <ClCompile Include="src\ParticleSystem\ParticleSystem.cpp" />
+    <ClCompile Include="src\ParticleSystem\ParticleSystemManager.cpp" />
+    <ClCompile Include="src\ParticleSystem\SphereEmitter.cpp" />
     <ClCompile Include="src\PostProcessing\SinglePassEffect.cpp" />
     <ClCompile Include="src\PostProcessing\PixelizationEffect.cpp" />
     <ClCompile Include="src\Quad.cpp" />
@@ -168,7 +177,6 @@
     <ClCompile Include="src\ImGui\EditorLayout.cpp" />
     <ClCompile Include="src\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\EntityManager\Entity.cpp" />
-    <ClCompile Include="src\ImGui\ImGuiUtils.cpp" />
     <ClCompile Include="src\Object.cpp" />
     <ClCompile Include="src\ImGui\Heirachy.cpp" />
     <ClCompile Include="src\ImGui\BasePanel.cpp" />
@@ -201,6 +209,7 @@
     <ClCompile Include="src\SkyboxMaterial.cpp" />
     <ClCompile Include="src\Textures.cpp" />
     <ClCompile Include="src\Transform.cpp" />
+    <ClCompile Include="src\Utilities\LookAt.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
     <ClCompile Include="src\Time.cpp" />
@@ -221,7 +230,17 @@
     <ClInclude Include="src\Animation\Bone\Bone.h" />
     <ClInclude Include="src\Animation\Keyframe.h" />
     <ClInclude Include="src\CharacterAnimation\CharacterAnimation.h" />
+    <ClInclude Include="src\ImGui\ImGuiUtils.h" />
     <ClInclude Include="src\Math.h" />
+    <ClInclude Include="src\ParticleSystem\BaseEmitterShape.h" />
+    <ClInclude Include="src\ParticleSystem\BoxEmitter.h" />
+    <ClInclude Include="src\ParticleSystem\ConeEmitter.h" />
+    <ClInclude Include="src\ParticleSystem\EmitterProperty.h" />
+    <ClInclude Include="src\ParticleSystem\EmitterShapeManager.h" />
+    <ClInclude Include="src\ParticleSystem\ParticleEmission.h" />
+    <ClInclude Include="src\ParticleSystem\ParticleSystem.h" />
+    <ClInclude Include="src\ParticleSystem\ParticleSystemManager.h" />
+    <ClInclude Include="src\ParticleSystem\SphereEmitter.h" />
     <ClInclude Include="src\PostProcessing\SinglePassEffect.h" />
     <ClInclude Include="src\PostProcessing\PixelizationEffect.h" />
     <ClInclude Include="src\Quad.h" />
@@ -240,7 +259,6 @@
     <ClInclude Include="src\ImGui\EditorLayout.h" />
     <ClInclude Include="src\EntityManager\EntityManager.h" />
     <ClInclude Include="src\EntityManager\Entity.h" />
-    <ClInclude Include="src\ImGui\ImGuiUtils.h" />
     <ClInclude Include="src\Object.h" />
     <ClInclude Include="src\ImGui\Heirachy.h" />
     <ClInclude Include="src\ImGui\BasePanel.h" />
@@ -276,6 +294,8 @@
     <ClInclude Include="src\Textures.h" />
     <ClInclude Include="src\Transform.h" />
     <ClInclude Include="src\Triangle.h" />
+    <ClInclude Include="src\Utilities\Lerp.h" />
+    <ClInclude Include="src\Utilities\LookAt.h" />
     <ClInclude Include="src\Vertex.h" />
     <ClInclude Include="src\VertexArray.h" />
     <ClInclude Include="src\VertexBuffer.h" />

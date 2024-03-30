@@ -28,6 +28,9 @@
 #include "CameraManager.h"
 #include "SkinnedMeshRenderer.h"
 #include "CharacterAnimation/CharacterAnimation.h"
+#include "ParticleSystem/ParticleSystemManager.h"
+#include "ParticleSystem/ParticleSystem.h"
+
 class ApplicationRenderer
 {
 public:
