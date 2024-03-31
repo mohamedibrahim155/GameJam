@@ -14,6 +14,7 @@ ParticleSystem::ParticleSystem()
 	//GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().solidColorShader);
 	ParticleSystemManager::GetInstance().AddParticleSystem(this);
 	InitializeEntity(this);
+	InitializeParticles();
 	
 
 }
@@ -94,7 +95,11 @@ void ParticleSystem::ParticleSystemProperties()
 		return;
 	}
 
-	DrawIntImGui("MaxParticles", maxParticles);
+	if (DrawIntImGui("MaxParticles", maxParticles))
+	{
+		mListOfParticles.clear();
+		InitializeParticles();
+	}
 
 	DrawFloatImGui("CurrentTime", currentTime);
 	DrawFloatImGui("Duration", duration);

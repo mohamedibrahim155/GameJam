@@ -16,7 +16,7 @@ public:
 
 	virtual void Render(glm::vec3& pos) = 0;
 
-	float particleWidth;
+	float particleWidth = 150;
 	bool isRandomDir;
 
 };

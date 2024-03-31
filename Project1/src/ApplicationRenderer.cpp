@@ -235,7 +235,7 @@ void ApplicationRenderer::Start()
 
      CharacterAnimation* character = new CharacterAnimation();
      ParticleSystem* particle = new ParticleSystem();
-     particle->InitializeParticles();
+     
 
 }
 

@@ -6,9 +6,7 @@ class BoxEmitter : public BaseEmitterShape
 
 public:
 	BoxEmitter();
-	glm::vec3 boxScale = glm::vec3(1);
 	glm::vec3 particleDir = glm::vec3(0, 1, 0);
-	glm::vec3 emitterPos = glm::vec3(0, 0, 0);
 	float columnWidth = 150;
 
 

@@ -6,17 +6,17 @@
 
 BoxEmitter::BoxEmitter()
 {
-
+    scale = glm::vec3(1);
 
 }
 
 void BoxEmitter::DrawProperties()
 {
    
-	DrawTransformVector3ImGui("Emitter Position ", emitterPos, 0, columnWidth);
 	DrawTransformVector3ImGui("Emitter Direction ", particleDir, 0, columnWidth);
-	DrawTransformVector3ImGui("Emitter Scale ", boxScale, 1, columnWidth);
+	DrawTransformVector3ImGui("Emitter Scale ", scale, 1, columnWidth);
 
+    BaseEmitterShape::DrawProperties();
 }
 
 void BoxEmitter::SceneDraw()
@@ -25,7 +25,7 @@ void BoxEmitter::SceneDraw()
 
 void BoxEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
 {
-	pos = emitterPos + FindPointInsideBox(glm::vec3(0), boxScale);
+	pos = position + FindPointInsideBox(glm::vec3(0), scale);
 
 	glm::vec3 dirNom = glm::normalize(particleDir);
 
@@ -35,9 +35,9 @@ void BoxEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
 
 void BoxEmitter::Render(glm::vec3& pos)
 {
-	glm::vec3 centre = pos + emitterPos;
+	glm::vec3 centre = pos + position;
 
-	GraphicsRender::GetInstance().DrawBox(centre, boxScale, boxColor,true);
+	GraphicsRender::GetInstance().DrawBox(centre, scale, boxColor,true);
 }
 
 glm::vec3 BoxEmitter::FindPointInsideBox(glm::vec3 center, glm::vec3 scale)
