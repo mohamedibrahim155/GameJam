@@ -61,6 +61,10 @@ public:
 	FrameBufferSpecification specification;
 	FrameBuffer* sceneViewframeBuffer;
 	FrameBuffer* gameframeBuffer;
+
+	FrameBuffer* shadowDepthFBO;
+
+
 	Camera* sceneViewcamera;
 	Camera* gameScenecamera;
 	Camera* renderTextureCamera;
@@ -71,6 +75,9 @@ public:
 	glm::mat4 skyBoxView;
 	int windowWidth;
 	int  WindowHeight;
+
+	glm::vec2 shadowResolution = glm::vec2{ 2048,2048 };
+
 private:
 	GLFWwindow* window;
 	
@@ -83,6 +90,7 @@ private:
 	Shader* alphaBlendShader;
 	Shader* alphaCutoutShader;
 	Shader* animationShader;
+	Shader* shadowMapShader;
 
 	Shader* stencilShader;
 	Shader* skyboxShader;

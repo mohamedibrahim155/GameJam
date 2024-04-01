@@ -34,6 +34,8 @@ void Light::Initialize(const LightType& type)
 	LightManager::GetInstance().AddLight(this);
 	GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().solidColorShader);
 
+	projectionMatrix = glm::ortho(-xExtents, xExtents, -yExtents, yExtents, nearPlane, farPlane);
+
 
 }
 
@@ -55,6 +57,8 @@ void Light::Initialize(const LightType& type, const float& intensity)
 
 	LightManager::GetInstance().AddLight(this);
 	GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().solidColorShader);
+
+	projectionMatrix = glm::ortho(-xExtents, xExtents, -yExtents, yExtents, nearPlane, farPlane);
 
 }
 
@@ -152,6 +156,21 @@ glm::vec2& Light::GetInnerAndOuterAngle()
 {
 	glm::vec2 innerAndOuterAngle = glm::vec2(cutOffAngle, outerCutOffAngle);
 	return innerAndOuterAngle;
+}
+
+glm::mat4 Light::GetViewMatrix(Camera* cam)
+{
+	return glm::mat4();
+}
+
+glm::mat4 Light::GetProjectionMatrix()
+{
+	return glm::mat4();
+}
+
+glm::mat4 Light::GetLightMatrix(Camera* cam)
+{
+	return GetProjectionMatrix() * GetViewMatrix(cam);
 }
 
 void Light::DrawProperties()

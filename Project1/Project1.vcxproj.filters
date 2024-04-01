@@ -540,5 +540,7 @@
     <None Include="Shaders\PostProcessing\FinalOutputShader.frag" />
     <None Include="Shaders\AnimationShader.vert" />
     <None Include="Shaders\AnimationShader.frag" />
+    <None Include="Shaders\Shadow\ShadowMapShader.vert" />
+    <None Include="Shaders\Shadow\ShadowMapShader.frag" />
   </ItemGroup>
 </Project>

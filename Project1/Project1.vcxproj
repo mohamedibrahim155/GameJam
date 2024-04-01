@@ -327,6 +327,8 @@
     <None Include="Shaders\ScrollTexture.vert" />
     <None Include="Shaders\Shader.frag" />
     <None Include="Shaders\Shader.vert" />
+    <None Include="Shaders\Shadow\ShadowMapShader.frag" />
+    <None Include="Shaders\Shadow\ShadowMapShader.vert" />
     <None Include="Shaders\SkyboxShader.frag" />
     <None Include="Shaders\SkyboxShader.vert" />
     <None Include="Shaders\StencilOutline.frag" />

@@ -113,10 +113,7 @@ void LightManager::UpdateUniformValuesToShader(Shader* shader)
         shader->setFloat( "lights[" + index + "].quadratic", lightList[i]->GetAttenuation().y); // Quadratic
         shader->setFloat( "lights[" + index + "].constant", lightList[i]->GetAttenuation().z);  // Constant
         shader->setFloat( "lights[" + index + "].cutOff", glm::cos(glm::radians(lightList[i]->GetInnerAndOuterAngle().x)));
-        shader->setFloat( "lights[" + index + "].outerCutOff", glm::cos(glm::radians(lightList[i]->GetInnerAndOuterAngle().y)));
-
-       
-
+        shader->setFloat( "lights[" + index + "].outerCutOff", glm::cos(glm::radians(lightList[i]->GetInnerAndOuterAngle().y)));     
         shader->setVec4(  "lights[" + index + "].color", lightList[i]->GetLightColor().x * intensity, lightList[i]->GetLightColor().y * intensity,
             lightList[i]->GetLightColor().z * intensity, lightList[i]->GetLightColor().w);
 

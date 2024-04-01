@@ -99,7 +99,6 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
 
     FrameBufferSpecification specification;
-
     specification.width = windowWidth;
     specification.height = WindowHeight;
     specification.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
@@ -108,6 +107,18 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     sceneViewframeBuffer = new FrameBuffer(specification);
 
     gameframeBuffer = new FrameBuffer(specification);
+
+
+    FrameBufferSpecification shadowDepthSpecs;
+    shadowDepthSpecs.width = shadowResolution.x;
+    shadowDepthSpecs.height = shadowResolution.y;
+    shadowDepthSpecs.attachments = { FramebufferTextureFormat::DEPTH24STENCIL8 };
+    shadowDepthFBO = new FrameBuffer(shadowDepthSpecs);
+
+
+
+
+
 
     EditorLayout::GetInstance().applicationRenderer = this;
   
@@ -160,6 +171,9 @@ void ApplicationRenderer::InitializeShaders()
 
     animationShader = new Shader("Shaders/AnimationShader.vert", "Shaders/AnimationShader.frag");
     animationShader->blendMode = OPAQUE;
+
+    shadowMapShader = new Shader("Shaders/Shadow/ShadowMapShader.vert", "Shaders/Shadow/ShadowMapShader.frag");
+    shadowMapShader->blendMode = OPAQUE;
 
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;

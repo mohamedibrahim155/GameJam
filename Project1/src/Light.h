@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "Model.h"
 #include <vector>
+#include "Camera.h"
 
 class LightManager;
 class GraphicsRender;
@@ -31,6 +32,15 @@ public:
     void SetLightType(const LightType& type = LightType::POINT_LIGHT);
     void SetNameBaseOnType();
 
+    float xExtents = 10.0f;
+    float yExtents = 10.0f;
+    float nearPlane = 1.0f;
+    float farPlane = 7.5f;
+    float shadowCaptureDistance = 100.0f;
+    bool enableShadows = false;
+
+   
+
 
 
     glm::vec4& GetLightColor();
@@ -38,6 +48,10 @@ public:
     glm::vec3& GetAttenuation();
     float& GetIntensityValue();
     glm::vec2& GetInnerAndOuterAngle();
+
+    glm::mat4 GetViewMatrix(Camera* cam);
+    glm::mat4 GetProjectionMatrix();
+    glm::mat4 GetLightMatrix(Camera* cam);
 
 
     ~Light() { };
@@ -53,6 +67,10 @@ public:
     LightType lightType;
 private:
     Material material;
+
+
+    glm::mat4 projectionMatrix = glm::mat4(1.0f);
+
 
     glm::vec4 ambient;
 
