@@ -238,16 +238,6 @@ void ApplicationRenderer::Start()
      CharacterAnimation* character = new CharacterAnimation();
      ParticleSystem* particle = new ParticleSystem();
      
-     PhysXObject* box = new PhysXObject();
-     box->LoadModel("Models/DefaultCube/DefaultCube.fbx");
-     box->name = "Box";
-     GraphicsRender::GetInstance().AddModelAndShader(box, defaultShader);
-     box->transform.SetPosition(glm::vec3(0, 5, 0));
-     box->transform.SetScale(glm::vec3(0.5f,2,0.5f));
-     box->Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::BOX);
-
-
-
 
 }
 

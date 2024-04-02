@@ -68,12 +68,12 @@ void CharacterAnimation::OnKeyHold(const int& key)
 
 void CharacterAnimation::SceneDraw()
 {
-    SkinnedMeshRenderer::SceneDraw();
+    PhysicsSkinMeshRenderer::SceneDraw();
 }
 
 void CharacterAnimation::DrawProperties()
 {
-    SkinnedMeshRenderer::DrawProperties();
+    PhysicsSkinMeshRenderer::DrawProperties();
 }
 
 void CharacterAnimation::Start()
@@ -90,7 +90,7 @@ void CharacterAnimation::Update(float deltaTime)
 
     if (timeStep >= GetCurrentAnimation()->Duration)
     {
-        timeStep = 0;
+       // timeStep = 0;
     }
 
     UpdateSkeletonAnimation(deltaTime);

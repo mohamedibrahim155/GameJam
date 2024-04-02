@@ -1,7 +1,7 @@
 #pragma once
-#include "../SkinnedMeshRenderer.h"
+#include "../PhysX/PhysicsSkinMeshRenderer.h"
 #include "../InputManager/InputManager.h"
-class CharacterAnimation : public SkinnedMeshRenderer,public iInputObserver
+class CharacterAnimation : public PhysicsSkinMeshRenderer,public iInputObserver
 {
 public:
 	CharacterAnimation();
