@@ -139,6 +139,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
    // renderTextureCamera->IntializeRenderTexture(new RenderTexture());
   
     isImguiPanelsEnable = true;
+
+    PhysXEngine::GetInstance().InitializePhysX();
 }
 
 void ApplicationRenderer::InitializeShaders()
@@ -236,6 +238,16 @@ void ApplicationRenderer::Start()
      CharacterAnimation* character = new CharacterAnimation();
      ParticleSystem* particle = new ParticleSystem();
      
+     PhysXObject* box = new PhysXObject();
+     box->LoadModel("Models/DefaultCube/DefaultCube.fbx");
+     box->name = "Box";
+     GraphicsRender::GetInstance().AddModelAndShader(box, defaultShader);
+     box->transform.SetPosition(glm::vec3(0, 5, 0));
+     box->transform.SetScale(glm::vec3(0.5f,2,0.5f));
+     box->Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::BOX);
+
+
+
 
 }
 
@@ -331,6 +343,8 @@ void ApplicationRenderer::Render()
         glfwPollEvents();
     }
 
+    ShutDown();
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -404,6 +418,9 @@ void ApplicationRenderer::EngineGameLoop()
     {
         EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
         ParticleSystemManager::GetInstance().Update(Time::GetInstance().deltaTime);
+
+        PhysXEngine::GetInstance().InitializePhysXObjects();
+        PhysXEngine::GetInstance().Update(Time::GetInstance().deltaTime);
     }
 
     PostRender();
@@ -509,6 +526,11 @@ void ApplicationRenderer::Clear()
     GLCALL(glClearColor(0.1f, 0.1f, 0.1f, 0.1f));
     GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
    //glStencilMask(0x00);
+}
+
+void ApplicationRenderer::ShutDown()
+{
+    PhysXEngine::GetInstance().ShutDown();
 }
 
 void ApplicationRenderer::ProcessInput(GLFWwindow* window)

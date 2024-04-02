@@ -72,10 +72,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Project1\Extern\imGui</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Project1\Extern\imGui;$(SolutionDir)Dependencies\PhysX\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Project1\Extern\imGui</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Project1\Extern\imGui;$(SolutionDir)Dependencies\PhysX\include</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -116,8 +116,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2022</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;assimp-vc143-mtd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2022;$(SolutionDir)Dependencies\PhysX\bin\win.x86_64.vc143.mt\debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;assimp-vc143-mtd.lib;LowLevelAABB_static_64.lib;LowLevelDynamics_static_64.lib;LowLevel_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;PhysXTask_static_64.lib;PhysXVehicle2_static_64.lib;PhysXVehicle_static_64.lib;PhysX_64.lib;PVDRuntime_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;PhysXExtensions_static_64.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -135,7 +135,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2022</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\assimp\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2022;$(SolutionDir)Dependencies\PhysX\bin\win.x86_64.vc143.mt\release</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;assimp-vc143-mtd.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -161,6 +161,18 @@
     <ClCompile Include="src\ParticleSystem\ParticleSystem.cpp" />
     <ClCompile Include="src\ParticleSystem\ParticleSystemManager.cpp" />
     <ClCompile Include="src\ParticleSystem\SphereEmitter.cpp" />
+    <ClCompile Include="src\PhysX\Collider\BaseCollider.cpp" />
+    <ClCompile Include="src\PhysX\Collider\BoxCollider.cpp" />
+    <ClCompile Include="src\PhysX\Collider\CapsuleCollider.cpp" />
+    <ClCompile Include="src\PhysX\Collider\MeshCollider.cpp" />
+    <ClCompile Include="src\PhysX\Collider\SphereCollider.cpp" />
+    <ClCompile Include="src\PhysX\CollisionEventCallback.cpp" />
+    <ClCompile Include="src\PhysX\CollisionInfo.cpp" />
+    <ClCompile Include="src\PhysX\PhysicsMaterial\PhysicsMaterial.cpp" />
+    <ClCompile Include="src\PhysX\PhysXEngine.cpp" />
+    <ClCompile Include="src\PhysX\PhysXObject.cpp" />
+    <ClCompile Include="src\PhysX\PhysXUtils.cpp" />
+    <ClCompile Include="src\PhysX\RigidBody.cpp" />
     <ClCompile Include="src\PostProcessing\SinglePassEffect.cpp" />
     <ClCompile Include="src\PostProcessing\PixelizationEffect.cpp" />
     <ClCompile Include="src\Quad.cpp" />
@@ -233,6 +245,7 @@
     <ClInclude Include="src\Animation\Keyframe.h" />
     <ClInclude Include="src\CharacterAnimation\CharacterAnimation.h" />
     <ClInclude Include="src\ImGui\ImGuiUtils.h" />
+    <ClInclude Include="src\Layer.h" />
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\ParticleSystem\BaseEmitterShape.h" />
     <ClInclude Include="src\ParticleSystem\BoxEmitter.h" />
@@ -243,6 +256,18 @@
     <ClInclude Include="src\ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="src\ParticleSystem\ParticleSystemManager.h" />
     <ClInclude Include="src\ParticleSystem\SphereEmitter.h" />
+    <ClInclude Include="src\PhysX\Collider\BaseCollider.h" />
+    <ClInclude Include="src\PhysX\Collider\BoxCollider.h" />
+    <ClInclude Include="src\PhysX\Collider\CapsuleCollider.h" />
+    <ClInclude Include="src\PhysX\Collider\MeshCollider.h" />
+    <ClInclude Include="src\PhysX\Collider\SphereCollider.h" />
+    <ClInclude Include="src\PhysX\CollisionEventCallback.h" />
+    <ClInclude Include="src\PhysX\CollisionInfo.h" />
+    <ClInclude Include="src\PhysX\PhysicsMaterial\PhysicsMaterial.h" />
+    <ClInclude Include="src\PhysX\PhysXEngine.h" />
+    <ClInclude Include="src\PhysX\PhysXObject.h" />
+    <ClInclude Include="src\PhysX\PhysXUtils.h" />
+    <ClInclude Include="src\PhysX\RigidBody.h" />
     <ClInclude Include="src\PostProcessing\SinglePassEffect.h" />
     <ClInclude Include="src\PostProcessing\PixelizationEffect.h" />
     <ClInclude Include="src\Quad.h" />

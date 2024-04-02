@@ -30,6 +30,7 @@
 #include "CharacterAnimation/CharacterAnimation.h"
 #include "ParticleSystem/ParticleSystemManager.h"
 #include "ParticleSystem/ParticleSystem.h"
+#include "PhysX/PhysXEngine.h"
 
 class ApplicationRenderer
 {
@@ -51,6 +52,7 @@ public:
 	void Render();
 	void PostRender();
 	void Clear();
+	void ShutDown();
 
 	void ProcessInput(GLFWwindow* window);
 
