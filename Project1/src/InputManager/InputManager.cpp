@@ -1,7 +1,30 @@
 #include "InputManager.h"
 #include "../Renderer.h"
-InputManager::InputManager()
+#include <unordered_set>
+
+
+class InputManager::Pimpl
 {
+public:
+	std::unordered_set<int> keysHold;
+	void AddKeyHold(const int& key);
+	void RemoveHold(const int& key);
+
+};
+
+void InputManager::Pimpl::AddKeyHold(const int& key)
+{
+	keysHold.insert(key);
+}
+
+void InputManager::Pimpl::RemoveHold(const int& key)
+{
+	keysHold.erase(key);
+}
+
+InputManager::InputManager() : pimpl{ new Pimpl() }
+{
+
 }
 
 InputManager::~InputManager()
@@ -28,6 +51,9 @@ void InputManager::RemoveObserver(iInputObserver* observer)
 
 void InputManager::OnKeyPressed(const int& key)
 {
+	pimpl->AddKeyHold(key);
+
+
 	for (iInputObserver* observer :observersList)
 	{
 		observer->OnKeyPressed(key);
@@ -53,6 +79,8 @@ void InputManager::OnKeyPressed(const int& key)
 
 void InputManager::OnKeyReleased(const int& key)
 {
+	pimpl->RemoveHold(key);
+
 	for (iInputObserver* observer : observersList)
 	{
 		observer->OnKeyReleased(key);
@@ -76,12 +104,61 @@ void InputManager::OnKeyReleased(const int& key)
 	}
 }
 
-void InputManager::OnkeyHold(const int& key)
+void InputManager::OnkeyHold()
 {
 	for (iInputObserver* observer : observersList)
 	{
-		observer->OnKeyHold(key);
+		for (auto& key : pimpl->keysHold)
+		{
+			observer->OnKeyHold(key);
+		}
+		
 	}
+}
+
+void InputManager::OnMouseButtonPressed(const int& button)
+{
+	for (iInputObserver* observer : observersList)
+	{
+		observer->OnMouseButtonPressed(button);
+	}
+}
+
+void InputManager::OnMouseButtonReleased(const int& button)
+{
+	for (iInputObserver* observer : observersList)
+	{
+		observer->OnMouseButtonReleased(button);
+	}
+}
+
+void InputManager::Update(float deltaTime)
+{
+	InputAxis();
+	OnkeyHold();
+}
+
+void InputManager::OnMouseMove(float x, float y)
+{
+	mouseX = x;
+	mouseY = y;
+}
+
+void InputManager::SetMouseDelta(glm::vec2 delta)
+{
+	mouseDelta = delta;
+}
+
+void InputManager::InputAxis()
+{
+	horizontal = 0;
+	vertical = 0;
+
+	horizontal += isRightPressed ? 1 : 0;
+	horizontal -= isLeftPressed ? 1 : 0;
+
+	vertical += isUpPressed ? 1 : 0;
+	vertical -= isDownPressed ? 1 : 0;
 }
 
 float InputManager::GetMouseX()
@@ -94,12 +171,24 @@ float InputManager::GetMouseY()
 	return mouseY;
 }
 
-float InputManager::GetAxisX()
+float InputManager::GetHorizontalAxis()
 {
-	return axisX;
+	//X - axis
+	return horizontal;
 }
 
-float InputManager::GetAxisY()
+float InputManager::GetVerticalAxis()
 {
-	return axisY;
+	//Y - axis
+	return vertical;
 }
+
+float InputManager::GetInputAxis(const std::string& axis)
+{
+	if (axis == "Horizontal") return GetHorizontalAxis();
+	if (axis == "Vertical") return GetVerticalAxis();
+
+	return 0.0f;
+}
+
+

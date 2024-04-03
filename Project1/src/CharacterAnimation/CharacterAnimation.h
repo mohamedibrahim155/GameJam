@@ -25,5 +25,11 @@ public:
 
 	 bool isAnimationPlay = false;
 
+
+	 // Inherited via iInputObserver
+	 void OnMouseButtonPressed(const int& mouseButton) override;
+
+	 void OnMouseButtonReleased(const int& mouseButton) override;
+
 };
 

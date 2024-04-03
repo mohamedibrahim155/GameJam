@@ -103,3 +103,11 @@ void CharacterAnimation::Render()
 void CharacterAnimation::OnDestroy()
 {
 }
+
+void CharacterAnimation::OnMouseButtonPressed(const int& mouseButton)
+{
+}
+
+void CharacterAnimation::OnMouseButtonReleased(const int& mouseButton)
+{
+}

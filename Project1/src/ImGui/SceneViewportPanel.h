@@ -20,5 +20,9 @@ public:
 	void OnKeyPressed(const int& key) override;
 	void OnKeyReleased(const int& key) override;
 	void OnKeyHold(const int& key) override;
+
+	// Inherited via iInputObserver
+	void OnMouseButtonPressed(const int& mouseButton) override;
+	void OnMouseButtonReleased(const int& mouseButton) override;
 };
 

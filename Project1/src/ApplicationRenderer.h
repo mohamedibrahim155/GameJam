@@ -41,6 +41,7 @@ public:
 	static void SetViewPort(GLFWwindow* window, int width, int height);
 	void KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods);
 	void MouseCallBack(GLFWwindow* window, double xposIn, double yposIn);
+	void MouseHeldCallBack(GLFWwindow* window, int& button, int& action, int& mods);
 	void MouseScroll(GLFWwindow* window, double xoffset, double yoffset);
 	
 	void WindowInitialize(int width, int height,  std::string windowName ="Window");
@@ -94,6 +95,8 @@ private:
 
 	Model* skyBoxModel;
 
+	glm::vec2 currentMousePos{ 0 };
+	glm::vec2 mouseDeltaPos{ 0 };
 
 	 int selectedModelCount = 0;
 
@@ -105,7 +108,7 @@ private:
 
 	 float scrollTime;
 
-	 bool firstMouse;
+	 bool firstMouse = true;
 	 bool isImguiPanelsEnable = false;
 
 };

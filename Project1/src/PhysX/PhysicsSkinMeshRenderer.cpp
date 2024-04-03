@@ -52,6 +52,7 @@ void PhysicsSkinMeshRenderer::Update(float deltaTime)
 
 void PhysicsSkinMeshRenderer::Render()
 {
+    PhysXObject::Render();
 }
 
 void PhysicsSkinMeshRenderer::OnDestroy()

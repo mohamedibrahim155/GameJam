@@ -121,3 +121,11 @@ void SceneViewportPanel::OnKeyReleased(const int& key)
 void SceneViewportPanel::OnKeyHold(const int& key)
 {
 }
+
+void SceneViewportPanel::OnMouseButtonPressed(const int& mouseButton)
+{
+}
+
+void SceneViewportPanel::OnMouseButtonReleased(const int& mouseButton)
+{
+}

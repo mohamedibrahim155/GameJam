@@ -145,6 +145,7 @@
     <ClCompile Include="Extern\imGui\ImGradient.cpp" />
     <ClCompile Include="Extern\imGui\ImGuizmo.cpp" />
     <ClCompile Include="Extern\imGui\ImSequencer.cpp" />
+    <ClCompile Include="src\Player\PlayerController.cpp" />
     <ClCompile Include="src\PhysX\PhysicsSkinMeshRenderer.cpp" />
     <ClCompile Include="ShadowFBO.cpp" />
     <ClCompile Include="src\Animation\Animation.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="Extern\imGui\ImGuizmo.h" />
     <ClInclude Include="Extern\imGui\ImSequencer.h" />
     <ClInclude Include="Extern\imGui\ImZoomSlider.h" />
+    <ClInclude Include="src\Player\PlayerController.h" />
     <ClInclude Include="src\PhysX\PhysicsSkinMeshRenderer.h" />
     <ClInclude Include="ShadowFBO.h" />
     <ClInclude Include="src\Animation\Animation.h" />

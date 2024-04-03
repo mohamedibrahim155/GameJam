@@ -1,5 +1,5 @@
 #include"ApplicationRenderer.h"
-
+#include "Player/PlayerController.h"
 
 ApplicationRenderer::ApplicationRenderer()
 {
@@ -57,6 +57,10 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xposIn, double yposIn)
         {
             static_cast<ApplicationRenderer*>(glfwGetWindowUserPointer(window))->MouseCallBack(window, xposIn, yposIn);
+        });
+    glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods)
+        {
+            static_cast<ApplicationRenderer*>(glfwGetWindowUserPointer(window))->MouseHeldCallBack(window, button, action, mods);
         });
 
     glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset)
@@ -235,9 +239,19 @@ void ApplicationRenderer::Start()
     //
     // GraphicsRender::GetInstance().AddModelAndShader(xBot, animationShader);
 
-     CharacterAnimation* character = new CharacterAnimation();
-     ParticleSystem* particle = new ParticleSystem();
+    // CharacterAnimation* character = new CharacterAnimation();
+    // ParticleSystem* particle = new ParticleSystem();
+
+     PlayerController* player = new PlayerController();
      
+     PhysXObject* terrain = new PhysXObject();
+     terrain->LoadModel("Models/Terrain/Terrain.fbx");
+     GraphicsRender::GetInstance().AddModelAndShader(terrain, defaultShader);
+     terrain->name = "Terrain";
+     terrain->transform.SetPosition(glm::vec3(0, -2, 0));
+     terrain->transform.SetRotation(glm::vec3(-90, 0, 0));
+     terrain->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
 
 }
 
@@ -407,10 +421,8 @@ void ApplicationRenderer::EngineGameLoop()
     if (isPlayMode)
     {
         EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
+        InputManager::GetInstance().Update(Time::GetInstance().deltaTime);
         ParticleSystemManager::GetInstance().Update(Time::GetInstance().deltaTime);
-
-        PhysXEngine::GetInstance().InitializePhysXObjects();
-        PhysXEngine::GetInstance().Update(Time::GetInstance().deltaTime);
     }
 
     PostRender();
@@ -507,8 +519,11 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 }
 void ApplicationRenderer::PostRender()
 {
-   // glDisable(GL_BLEND);
-
+    if (isPlayMode)
+    {
+        PhysXEngine::GetInstance().InitializePhysXObjects();
+        PhysXEngine::GetInstance().Update(Time::GetInstance().deltaTime);
+    }
 }
 
 void ApplicationRenderer::Clear()
@@ -596,7 +611,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          }
          else if (action == GLFW_REPEAT)
          {
-             InputManager::GetInstance().OnkeyHold(key);
+            // InputManager::GetInstance().OnkeyHold(key);
          }
      
  }
@@ -607,28 +622,45 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
     float xpos = static_cast<float>(xposIn);
         float ypos = static_cast<float>(yposIn);
      
-        if (firstMouse)
-        {
+        InputManager::GetInstance().OnMouseMove(xpos, ypos);
 
-        }
+        currentMousePos.x = xpos;
+        currentMousePos.y = ypos;
+
+        mouseDeltaPos = currentMousePos - glm::vec2(lastX,lastY);
+        mouseDeltaPos.y = -mouseDeltaPos.y;
+
+        InputManager::GetInstance().SetMouseDelta(mouseDeltaPos);
 
          if (firstMouse)
          {
              lastX = xpos;
              lastY = ypos;
              firstMouse = false;
+             return;
          }
-     
-         float xoffset = xpos - lastX;
-         float yoffset = lastY - ypos;
      
          lastX = xpos;
          lastY = ypos;
      
          if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && EditorLayout::GetInstance().IsViewportHovered())
          {
-             sceneViewcamera->ProcessMouseMovement(xoffset, yoffset);
+            sceneViewcamera->ProcessMouseMovement(mouseDeltaPos.x, mouseDeltaPos.y);
          }
+ }
+
+ void ApplicationRenderer::MouseHeldCallBack(GLFWwindow* window, int& button, int& action, int& mods)
+ {
+     if (action == GLFW_PRESS)
+     {
+         InputManager::GetInstance().OnMouseButtonPressed(button);
+     }
+     else if (action == GLFW_RELEASE)
+     {
+         InputManager::GetInstance().OnMouseButtonReleased(button);
+     }
+
+
  }
 
  void ApplicationRenderer::MouseScroll(GLFWwindow* window, double xoffset, double yoffset)
