@@ -48,6 +48,17 @@ void PhysicsSkinMeshRenderer::Start()
 
 void PhysicsSkinMeshRenderer::Update(float deltaTime)
 {
+
+    if (deltaTime > 1.0f / 60.0f) { deltaTime = 1.0f / 60.0f; }
+
+    timeStep += deltaTime * frameSpeed;
+
+    if ( isAnimationLoop && timeStep >= GetCurrentAnimation()->Duration)
+    {
+         timeStep = 0;
+    }
+
+    UpdateSkeletonAnimation(timeStep);
 }
 
 void PhysicsSkinMeshRenderer::Render()
@@ -306,7 +317,7 @@ void PhysicsSkinMeshRenderer::LoadAnimation(const std::string& animationPath, co
 
 }
 
-void PhysicsSkinMeshRenderer::UpdateSkeletonAnimation(float deltaTime)
+void PhysicsSkinMeshRenderer::UpdateSkeletonAnimation(float timeFrame)
 {
 
     std::string name = currentAnimation->Name;
@@ -326,7 +337,7 @@ void PhysicsSkinMeshRenderer::UpdateSkeletonAnimation(float deltaTime)
         {
             glm::mat4& transformedMatrix = boneNode->second->transformation;
 
-            UpdateAnimationFrame(nodeAnimation, transformedMatrix, timeStep);
+            UpdateAnimationFrame(nodeAnimation, transformedMatrix, timeFrame);
         }
     }
 
@@ -348,7 +359,6 @@ void PhysicsSkinMeshRenderer::UpdateAnimationFrame(NodeAnim* anim, glm::mat4& no
 void PhysicsSkinMeshRenderer::PlayAnimation(const std::string& animationName)
 {
     timeStep = 0;
-
     currentAnimation = listOfAnimation[animationName];
 }
 

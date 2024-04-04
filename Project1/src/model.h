@@ -41,7 +41,7 @@ public:
     std::string id; //if needed 
 
     Texture* alphaMask;
-
+    Shader* modelShader = nullptr;
 
 
     int offset;

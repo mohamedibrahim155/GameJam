@@ -40,7 +40,7 @@ public:
      const SkeletonAnim* GetAnimation(const std::string& AnimationName);
 
      float timeStep;
-
+     bool isAnimationLoop = true;
    private:
 
        void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);

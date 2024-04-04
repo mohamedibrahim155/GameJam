@@ -31,7 +31,7 @@ public:
     void Draw(Shader* shader) override;
 
     void LoadAnimation(const std::string& animationPath, const std::string& animationName);
-    void UpdateSkeletonAnimation(float deltaTime);
+    void UpdateSkeletonAnimation(float timeFrame);
     void UpdateAnimationFrame(NodeAnim* anim, glm::mat4& nodeTransform, double time);
     void PlayAnimation(const std::string& animationName);
 
@@ -48,8 +48,11 @@ public:
     const SkeletonAnim* GetCurrentAnimation();
     const SkeletonAnim* GetAnimation(const std::string& AnimationName);
 
-    float timeStep;
 
+
+    float timeStep;
+    bool isAnimationLoop = true;
+    float frameSpeed = 40.0f;
 private:
 
     void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);

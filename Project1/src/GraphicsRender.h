@@ -12,6 +12,7 @@ struct ModelAndShader
 	{
 		this->model = _model;
 		this->shader = _shader;
+		this->model->modelShader = _shader;
 	}
 	Model* model;
 	Shader* shader;
@@ -62,6 +63,7 @@ public:
 	void DrawLine(glm::vec3 start, glm::vec3 endpoint, glm::vec4 color);
 
 	Model* selectedModel;
+	Shader* selectedShader;
 	Model* SkyBoxModel;
 	Shader* defaultShader;
 	Shader* solidColorShader;

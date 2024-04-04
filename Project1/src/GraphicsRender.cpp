@@ -131,7 +131,7 @@ void GraphicsRender::Draw()
 		// First pass: Render the model normally and write to the stencil buffer
 		GLCALL(glStencilFunc(GL_ALWAYS, 1, 0xFF));
 		GLCALL(glStencilMask(0xFF));
-		selectedModel->Draw(defaultShader);
+		selectedModel->Draw(selectedModel->modelShader);
 
 		// Second pass: Render the model with a slightly larger scale to create an outline
 		GLCALL(glStencilFunc(GL_NOTEQUAL, 1, 0xFF));

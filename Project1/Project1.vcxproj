@@ -141,6 +141,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\Player\States\RunState.cpp" />
+    <ClCompile Include="src\Player\States\IdleState.cpp" />
+    <ClCompile Include="src\Player\States\BaseState.cpp" />
     <ClCompile Include="Extern\imGui\ImCurveEdit.cpp" />
     <ClCompile Include="Extern\imGui\ImGradient.cpp" />
     <ClCompile Include="Extern\imGui\ImGuizmo.cpp" />
@@ -234,6 +237,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\Player\States\RunState.h" />
+    <ClInclude Include="src\Player\States\IdleState.h" />
+    <ClInclude Include="src\Player\States\BaseState.h" />
     <ClInclude Include="Extern\imGui\ImCurveEdit.h" />
     <ClInclude Include="Extern\imGui\ImGradient.h" />
     <ClInclude Include="Extern\imGui\ImGuizmo.h" />
@@ -272,6 +278,7 @@
     <ClInclude Include="src\PhysX\PhysXObject.h" />
     <ClInclude Include="src\PhysX\PhysXUtils.h" />
     <ClInclude Include="src\PhysX\RigidBody.h" />
+    <ClInclude Include="src\Player\States\ePlayerState.h" />
     <ClInclude Include="src\PostProcessing\SinglePassEffect.h" />
     <ClInclude Include="src\PostProcessing\PixelizationEffect.h" />
     <ClInclude Include="src\Quad.h" />

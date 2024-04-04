@@ -1,17 +1,15 @@
 #include "PlayerController.h"
 #include "../GraphicsRender.h"
-
+#include "States/IdleState.h"
+#include "States/RunState.h"
 
 PlayerController::PlayerController()
 {
     LoadModel("Models/Character/X Bot.fbx");
     transform.SetScale(glm::vec3(0.01f));
 
-    LoadAnimation("Models/Character/Rumba Dancing.fbx", "Dance1");
-    LoadAnimation("Models/Character/Punching Bag.fbx", "Punching");
-    LoadAnimation("Models/Character/Mma Kick.fbx", "Kick");
-    LoadAnimation("Models/Character/Snake Hip Hop Dance.fbx", "Dance2");
-    LoadAnimation("Models/Character/Waving.fbx", "Wave");
+    LoadAnimation("Models/Character/Idle.fbx", "Idle");
+    LoadAnimation("Models/Character/Running.fbx", "Run");
 
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
 
@@ -27,6 +25,11 @@ PlayerController::PlayerController()
     PhysicsMaterial playermaterial;
     playermaterial.dynamicFriction = 1;
     collider->SetPhysicsMaterial(playermaterial);
+
+    AddState(ePlayerState::IDLE, new IdleState());
+    AddState(ePlayerState::RUN, new RunState());
+
+    frameSpeed = 30;
 }
 
 PlayerController::~PlayerController()
@@ -37,10 +40,14 @@ PlayerController::~PlayerController()
 
 void PlayerController::Start()
 {
+    OnStateChange(ePlayerState::IDLE);
 }
 
 void PlayerController::Update(float deltaTime)
 {
+    PhysicsSkinMeshRenderer::Update(deltaTime);
+
+    GetCurrentState()->UpdateState(deltaTime);
 }
 
 void PlayerController::Render()
@@ -55,6 +62,12 @@ void PlayerController::OnDestroy()
 void PlayerController::DrawProperties()
 {
 	PhysicsSkinMeshRenderer::DrawProperties();
+
+    DrawPlayerControllerProperties();
+
+    GetCurrentState()->DrawStateProperties();
+
+
 }
 
 void PlayerController::SceneDraw()
@@ -86,25 +99,62 @@ void PlayerController::OnCollisionExit(PhysXObject* otherObject)
 {
 }
 
+void PlayerController::OnStateChange(ePlayerState state)
+{
+    currentState->EndState();
+    SetPlayerState(state);
+    currentState->Start();
+}
+
+void PlayerController::AddState(ePlayerState playerState, BaseState* baseState)
+{
+    listOfPlayerStates[playerState] = baseState;
+    baseState->playerController = this;
+
+    currentState = baseState;
+}
+
+void PlayerController::RmoveState(ePlayerState playerstate)
+{
+    listOfPlayerStates.erase(playerstate);
+}
+
+void PlayerController::SetPlayerState(ePlayerState state)
+{
+    playerState = state;
+    currentStateIndex = (int)playerState;
+    currentState = listOfPlayerStates[state];
+}
+
+BaseState* PlayerController::GetCurrentState() const
+{
+    return currentState;
+}
+
+BaseState* PlayerController::GetState(ePlayerState state)
+{
+    return listOfPlayerStates[state];
+}
+
 void PlayerController::OnKeyPressed(const int& key)
 {
-  
+    if (key == GLFW_KEY_W || key == GLFW_KEY_S || key == GLFW_KEY_A || key == GLFW_KEY_D)
+    {
+        OnStateChange(ePlayerState::RUN);
+    }
 }
 
 void PlayerController::OnKeyReleased(const int& key)
 {
-    if (key == GLFW_KEY_W)
+    if (key == GLFW_KEY_W || key == GLFW_KEY_S || key == GLFW_KEY_A || key == GLFW_KEY_D)
     {
-        SetVelocity(glm::vec3(0, 0, 0));
+        OnStateChange(ePlayerState::IDLE);
     }
 }
 
 void PlayerController::OnKeyHold(const int& key)
 {
-    if (key == GLFW_KEY_W)
-    {
-        SetVelocity(glm::vec3(0, 0, 1));
-    }
+
 }
 
 void PlayerController::OnMouseButtonPressed(const int& mouseButton)
@@ -113,4 +163,17 @@ void PlayerController::OnMouseButtonPressed(const int& mouseButton)
 
 void PlayerController::OnMouseButtonReleased(const int& mouseButton)
 {
+}
+
+void PlayerController::DrawPlayerControllerProperties()
+{
+    if (!ImGui::TreeNodeEx("PlayerController Properties", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        return;
+    }
+
+    DrawDragFloatImGui("MoveSpeed", playerMoveSpeed, 0.1f, 1.0f);
+
+    ImGui::TreePop();
+
 }
