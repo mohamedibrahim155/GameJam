@@ -578,28 +578,6 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
  void ApplicationRenderer::KeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods)
  {  
-         if (key == GLFW_KEY_V && action == GLFW_PRESS)
-         {
-
-            
-             std::cout << "V pressed" << std::endl;
-
-             std::vector<Model*> listOfModels = GraphicsRender::GetInstance().GetModelList();
-            
-          
-
-             selectedModelCount++;
-
-             if (selectedModelCount > listOfModels.size()-1)
-             {
-                 selectedModelCount = 0;
-             }
-
-            
-             GraphicsRender::GetInstance().selectedModel = listOfModels[selectedModelCount];
-
-
-         }
      
          if (action == GLFW_PRESS)
          {
@@ -627,25 +605,23 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
         currentMousePos.x = xpos;
         currentMousePos.y = ypos;
 
-        mouseDeltaPos = currentMousePos - glm::vec2(lastX,lastY);
+        mouseDeltaPos = currentMousePos - lastMousePos;
         mouseDeltaPos.y = -mouseDeltaPos.y;
 
         InputManager::GetInstance().SetMouseDelta(mouseDeltaPos);
 
-         if (firstMouse)
-         {
-             lastX = xpos;
-             lastY = ypos;
-             firstMouse = false;
-             return;
-         }
      
-         lastX = xpos;
-         lastY = ypos;
+         lastMousePos.x = xpos;
+         lastMousePos.y = ypos;
      
          if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && EditorLayout::GetInstance().IsViewportHovered())
          {
             sceneViewcamera->ProcessMouseMovement(mouseDeltaPos.x, mouseDeltaPos.y);
+         }
+         
+         if (isPlayMode  && EditorLayout::GetInstance().IsGameViewportHovered())
+         {
+             InputManager::GetInstance().OnMouseMoveObservers(xpos, ypos);
          }
  }
 

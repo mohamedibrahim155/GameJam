@@ -44,10 +44,11 @@ void RunState::HandleTranslation()
 
 	glm::vec3 getCurrentPosition = playerController->GetVelocity();
 
-	float horizontal = InputManager::GetInstance().GetHorizontalAxis();
+	float horizontal = InputManager::GetInstance().GetHorizontalAxis() ;
 	float vertical = InputManager::GetInstance().GetVerticalAxis();
 
-	glm::vec3 moveDirection = (glm::vec3(horizontal, 0, vertical));
+	glm::vec3 moveDirection = vertical * -forward + horizontal * -right;
+
 
 	if (moveDirection != glm::vec3(0));
 	{
@@ -59,6 +60,10 @@ void RunState::HandleTranslation()
 	 velocity =  glm::vec3(moveVelocity.x, getCurrentPosition.y, moveVelocity.z);
 
 	playerController->SetVelocity(velocity);
+}
+
+void RunState::OnMouseMouseMove(float& moveX, float& moveY)
+{
 }
 
 void RunState::DrawStateProperties()

@@ -2,6 +2,7 @@
 #include "../GraphicsRender.h"
 #include "States/IdleState.h"
 #include "States/RunState.h"
+#include "CameraController.h"
 
 PlayerController::PlayerController()
 {
@@ -10,6 +11,8 @@ PlayerController::PlayerController()
 
     LoadAnimation("Models/Character/Idle.fbx", "Idle");
     LoadAnimation("Models/Character/Running.fbx", "Run");
+
+    transform.SetRotation(glm::vec3(0, 180, 0));
 
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
 
@@ -30,6 +33,8 @@ PlayerController::PlayerController()
     AddState(ePlayerState::RUN, new RunState());
 
     frameSpeed = 30;
+
+    cameraController = new CameraController(this);
 }
 
 PlayerController::~PlayerController()
@@ -176,4 +181,8 @@ void PlayerController::DrawPlayerControllerProperties()
 
     ImGui::TreePop();
 
+}
+
+void PlayerController::OnMouseMouseMove(float& moveX, float& moveY)
+{
 }

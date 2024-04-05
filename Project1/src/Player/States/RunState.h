@@ -34,5 +34,9 @@ private:
 
 
 
+
+	// Inherited via iInputObserver
+	void OnMouseMouseMove(float& moveX, float& moveY) override;
+
 };
 

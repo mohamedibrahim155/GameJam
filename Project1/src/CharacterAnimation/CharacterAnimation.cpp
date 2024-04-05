@@ -111,3 +111,7 @@ void CharacterAnimation::OnMouseButtonPressed(const int& mouseButton)
 void CharacterAnimation::OnMouseButtonReleased(const int& mouseButton)
 {
 }
+
+void CharacterAnimation::OnMouseMouseMove(float& moveX, float& moveY)
+{
+}

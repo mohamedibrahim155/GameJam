@@ -29,6 +29,19 @@ void CameraManager::RemoveCamera(Camera* camera)
 	listOfCameras.erase(it, listOfCameras.end());
 }
 
+Camera* CameraManager::GetMainCamera()
+{
+	for (Camera* camera : listOfCameras)
+	{
+		if (camera->renderTexture == nullptr)
+		{
+			mainCamera = camera;
+		}
+	}
+
+	return mainCamera;
+}
+
 std::vector<Camera*> CameraManager::GetCameras()
 {
 	return listOfCameras;

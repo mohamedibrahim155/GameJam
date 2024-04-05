@@ -142,6 +142,16 @@ void InputManager::OnMouseMove(float x, float y)
 {
 	mouseX = x;
 	mouseY = y;
+
+	
+}
+
+void InputManager::OnMouseMoveObservers(float x, float y)
+{
+	for (iInputObserver* observer : observersList)
+	{
+		observer->OnMouseMouseMove(x, y);
+	}
 }
 
 void InputManager::SetMouseDelta(glm::vec2 delta)
@@ -159,6 +169,7 @@ void InputManager::InputAxis()
 
 	vertical += isUpPressed ? 1 : 0;
 	vertical -= isDownPressed ? 1 : 0;
+
 }
 
 float InputManager::GetMouseX()
@@ -169,6 +180,16 @@ float InputManager::GetMouseX()
 float InputManager::GetMouseY()
 {
 	return mouseY;
+}
+
+float InputManager::GetMouseDeltaX()
+{
+	return mouseDelta.x;
+}
+
+float InputManager::GetMouseDeltaY()
+{
+	return mouseDelta.y;
 }
 
 float InputManager::GetHorizontalAxis()

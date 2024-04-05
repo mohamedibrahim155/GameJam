@@ -74,3 +74,135 @@ bool Math::DecomposeTransform(const glm::mat4& transform, glm::vec3& position,  
 
 	return true;
 }
+
+int MathUtils::Math::GetRandomIntNumber(int min, int max)
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	// Define the distribution for the specified range
+	std::uniform_int_distribution<int> distribution(min, max);
+
+	// Generate and return a random number
+	return distribution(gen);
+}
+
+
+float MathUtils::Math::GetRandomFloatNumber(float min, float max) {
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	// Use std::uniform_real_distribution for floating-point numbers
+	std::uniform_real_distribution<float> distribution(min, max);
+
+	return distribution(gen);
+}
+
+glm::vec2 MathUtils::Math::randomInsideUnitCircle(float radius)
+{
+	glm::vec2 randomPoint = glm::diskRand(radius);
+
+	return randomPoint;
+}
+
+glm::vec2 MathUtils::Math::randomInsideUnitCircle()
+{
+	glm::vec2 randomPoint = glm::diskRand(1.0f);
+	return randomPoint;
+}
+
+glm::vec3 MathUtils::Math::randomInsideUnitSphereVec3()
+{
+	glm::vec3 randomPoint = glm::ballRand(1.0f);
+	return randomPoint;
+}
+
+float MathUtils::Math::squareMagnitude(glm::vec2 value)
+{
+	return value.x * value.x + value.y * value.y;
+}
+
+float MathUtils::Math::squareMagnitudeVec3(glm::vec3 value)
+{
+	return value.x * value.x + value.y * value.y + value.z * value.z;
+
+}
+
+glm::vec4 MathUtils::Math::LerpVec4(const glm::vec4& start, const glm::vec4& end, float t)
+{
+	return start + t * (end - start);
+}
+
+glm::vec3 MathUtils::Math::LerpVec3(const glm::vec3& start, const glm::vec3& end, float t)
+{
+	return start + t * (end - start);
+}
+
+glm::vec2 MathUtils::Math::LerpVec2(const glm::vec2& start, const glm::vec2& end, float t)
+{
+	return start + t * (end - start);
+}
+
+float MathUtils::Math::Lerp(float start, float end, float t)
+{
+	return  start + t * (end - start);
+}
+
+float MathUtils::Math::SmoothDamp(float current, float target, float& currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
+{
+	maxSpeed = std::abs(maxSpeed);
+	smoothTime = std::max(0.0001f, smoothTime);
+
+	float omega = 2.0f / smoothTime;
+
+	float x = omega * deltaTime;
+	float exp = 1.0f / (1.0f + x + 0.48f * x * x + 0.235f * x * x * x);
+
+
+	float change = current - target;
+	float originalTo = target;
+
+	float maxChange = maxSpeed * smoothTime;
+	change = glm::clamp(change, -maxChange, maxChange);
+	target = current - change;
+
+
+	float temp = (currentVelocity + omega * change) * deltaTime;
+	currentVelocity = (currentVelocity - omega * temp) * exp;
+
+	float output = target + (change + temp) * exp;
+	if (originalTo - current > 0.0f == output > originalTo) {
+		currentVelocity = 0.0f;
+		output = originalTo;
+	}
+
+	return output;
+}
+
+glm::vec2 MathUtils::Math::SmoothDampVec2(glm::vec2 current, glm::vec2 target, glm::vec2& currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
+{
+	return glm::vec2(
+		SmoothDamp(current.x, target.x, currentVelocity.x, smoothTime, maxSpeed, deltaTime),
+		SmoothDamp(current.y, target.y, currentVelocity.y, smoothTime, maxSpeed, deltaTime)
+	);
+}
+
+glm::vec3 MathUtils::Math::SmoothDampVec3(glm::vec3 current, glm::vec3 target, glm::vec3& currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
+{
+	return glm::vec3(
+		SmoothDamp(current.x, target.x, currentVelocity.x, smoothTime, maxSpeed, deltaTime),
+		SmoothDamp(current.y, target.y, currentVelocity.y, smoothTime, maxSpeed, deltaTime),
+		SmoothDamp(current.z, target.z, currentVelocity.z, smoothTime, maxSpeed, deltaTime)
+	);
+}
+
+glm::vec4 MathUtils::Math::SmoothDampVec4(glm::vec4 current, glm::vec4 target, glm::vec4& currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
+{
+	return glm::vec4(
+		SmoothDamp(current.x, target.x, currentVelocity.x, smoothTime, maxSpeed, deltaTime),
+		SmoothDamp(current.y, target.y, currentVelocity.y, smoothTime, maxSpeed, deltaTime),
+		SmoothDamp(current.z, target.z, currentVelocity.z, smoothTime, maxSpeed, deltaTime),
+		SmoothDamp(current.w, target.w, currentVelocity.w, smoothTime, maxSpeed, deltaTime)
+	);
+}
+

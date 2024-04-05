@@ -97,6 +97,7 @@ private:
 
 	glm::vec2 currentMousePos{ 0 };
 	glm::vec2 mouseDeltaPos{ 0 };
+	glm::vec2 lastMousePos{ 0 };
 
 	 int selectedModelCount = 0;
 

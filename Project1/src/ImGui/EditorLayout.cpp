@@ -61,6 +61,11 @@ bool EditorLayout::IsViewportHovered()
     return sceneViewportPanel->isHovered;
 }
 
+bool EditorLayout::IsGameViewportHovered()
+{
+    return gameviewportPanel->isHovered;
+}
+
 std::vector<Object*> EditorLayout::GetSelectedObjects()
 {
     return selectedObjectsList;

@@ -22,11 +22,14 @@ public:
 	void OnMouseButtonReleased(const int& button);
 	void Update(float deltaTime);
 	void OnMouseMove(float x, float y);
+	void OnMouseMoveObservers(float x, float y);
 	void SetMouseDelta(glm::vec2 delta);
 	void InputAxis();
 
 	float GetMouseX();
 	float GetMouseY();
+	float GetMouseDeltaX();
+	float GetMouseDeltaY();
 
 	float GetHorizontalAxis();
 	float GetVerticalAxis();

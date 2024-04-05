@@ -129,3 +129,7 @@ void SceneViewportPanel::OnMouseButtonPressed(const int& mouseButton)
 void SceneViewportPanel::OnMouseButtonReleased(const int& mouseButton)
 {
 }
+
+void SceneViewportPanel::OnMouseMouseMove(float& moveX, float& moveY)
+{
+}

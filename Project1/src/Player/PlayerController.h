@@ -3,6 +3,10 @@
 #include "../InputManager/InputManager.h"
 #include "States/BaseState.h"
 #include <unordered_map>
+
+
+class CameraController;
+
 class PlayerController : public PhysicsSkinMeshRenderer, public iInputObserver
 {
 public:
@@ -52,6 +56,12 @@ private:
 	ePlayerState playerState = ePlayerState::IDLE;
 	BaseState* currentState;
 	std::unordered_map<ePlayerState, BaseState*> listOfPlayerStates;
+
+	CameraController* cameraController = nullptr;
+
+
+	// Inherited via iInputObserver
+	void OnMouseMouseMove(float& moveX, float& moveY) override;
 
 };
 

@@ -19,6 +19,7 @@ public :
 	void SetSelectedObjectsEnable(bool isEnable);
 
 	bool IsViewportHovered();
+	bool IsGameViewportHovered();
 
 	Object* GetCurrentSelectedObject();
 	std::vector<Object*> GetSelectedObjects();

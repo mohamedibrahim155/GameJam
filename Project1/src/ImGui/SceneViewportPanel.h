@@ -24,5 +24,8 @@ public:
 	// Inherited via iInputObserver
 	void OnMouseButtonPressed(const int& mouseButton) override;
 	void OnMouseButtonReleased(const int& mouseButton) override;
+
+	// Inherited via iInputObserver
+	void OnMouseMouseMove(float& moveX, float& moveY) override;
 };
 
