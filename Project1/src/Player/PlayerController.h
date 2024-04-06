@@ -40,6 +40,8 @@ public:
 	 BaseState* GetState(ePlayerState state);
 
 	 float playerMoveSpeed = 2.5f;
+	 CameraController* cameraController = nullptr;
+
 private:
 
 
@@ -57,7 +59,6 @@ private:
 	BaseState* currentState;
 	std::unordered_map<ePlayerState, BaseState*> listOfPlayerStates;
 
-	CameraController* cameraController = nullptr;
 
 
 	// Inherited via iInputObserver

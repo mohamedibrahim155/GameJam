@@ -3,6 +3,7 @@
 #include "../InputManager/InputManager.h"
 #include "../Math.h"
 #include "../Time.h"
+#include "../GraphicsRender.h"
 using namespace MathUtils;
 
 CameraController::CameraController(PlayerController* playerController)
@@ -18,7 +19,7 @@ CameraController::CameraController(PlayerController* playerController)
 
 	InputManager::GetInstance().AddObserver(this);
 
-	cameraOffset.y = 1.5f;
+	cameraOffset.y = 1.1f;
 }
 
 void CameraController::Start()
@@ -63,17 +64,19 @@ void CameraController::Update(float deltaTime)
 #pragma endregion
 
 
-	 mouseX = InputManager::GetInstance().GetMouseDeltaX() * mouseSensitivity;
-	 mouseY = InputManager::GetInstance().GetMouseDeltaY() * mouseSensitivity;
+	float mouseX = InputManager::GetInstance().GetMouseX() * mouseSensitivity;
+	float mouseY = InputManager::GetInstance().GetMouseY() * mouseSensitivity;
 
 	yaw += mouseX ;
 	yaw = glm::clamp(yaw, -360.0f, 360.0f);
 	pitch -= mouseY;
 	//pitch = glm::clamp(pitch, -minVerticalAngle, minVerticalAngle);
 
-	glm::vec3 playerPosition = playerController->transform.position +  cameraOffset;
+	 playerPosition = playerController->transform.position;
+	playerPosition.y += cameraOffset.y;
 
-	glm::vec3 targetPosition = playerPosition + (playerController->transform.GetForward() /*+ cameraOffset*/ * distance);
+	glm::vec3 targetPosition = playerPosition + (playerController->transform.GetForward() * distance);
+	//glm::vec3 targetPosition = playerPosition * (playerController->transform.GetUp() * cameraOffset.y);
 
 	//targetPosition.y += cameraOffset.y;
 
@@ -94,12 +97,8 @@ void CameraController::Update(float deltaTime)
 	glm::vec3 lookAtDirection = glm::normalize(playerPosition - newPosition);
 	glm::quat lookAtRotation = glm::quatLookAt(lookAtDirection, glm::vec3(0, 1, 0));
 
-	GetCamera()->transform.SetQuatRotation(glm::slerp(GetCamera()->transform.quaternionRotation, lookAtRotation, deltaTime * moveSpeed));
+	GetCamera()->transform.SetQuatRotation(glm::slerp(GetCamera()->transform.quaternionRotation, lookAtRotation, deltaTime * rotationSpeed));
 
-	mouseX = 0;
-	mouseY = 0;
-	//yaw = 0;
-	//pitch = 0;
 }
 
 void CameraController::OnDestroy()
@@ -108,6 +107,7 @@ void CameraController::OnDestroy()
 
 void CameraController::Render()
 {
+	GraphicsRender::GetInstance().DrawSphere(playerPosition, 0.2f, glm::vec4(1, 0, 0, 1), true);
 }
 
 void CameraController::DrawProperties()

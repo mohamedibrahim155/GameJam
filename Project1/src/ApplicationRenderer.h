@@ -106,11 +106,13 @@ private:
 	 float deltaTime;
 	 double lastTime;
 	 float lastFrame;
+	 float mouseSmoothingFactor = 0.75f;
 
 	 float scrollTime;
 
 	 bool firstMouse = true;
 	 bool isImguiPanelsEnable = false;
+	 void MouseInputUpdate();
 
 };
 

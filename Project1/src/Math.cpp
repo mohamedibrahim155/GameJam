@@ -206,3 +206,31 @@ glm::vec4 MathUtils::Math::SmoothDampVec4(glm::vec4 current, glm::vec4 target, g
 	);
 }
 
+float MathUtils::Math::DeltaAngle(float current, float target)
+{
+	float delta = target - current;
+	if (delta > 180.0f)
+	{
+		delta -= 360.0f;
+	}
+	else if (delta< -180.0f)
+	{
+		delta += 360.0f;
+	}
+	return delta;
+}
+
+float MathUtils::Math::SmoothDampAngle(float current, float target, float& currentVelocity, float smoothTime, float maxSpeed, float deltaTime)
+{
+	float deltaAngle = DeltaAngle(current, target);
+
+	// Clamp the delta angle to ensure smooth movement
+	deltaAngle =glm::clamp(deltaAngle, -maxSpeed * deltaTime, maxSpeed * deltaTime);
+
+	// Calculate the target angle based on the clamped delta angle
+	target = current - deltaAngle;
+
+	// Smoothly interpolate towards the target angle
+	return SmoothDamp(current, target, currentVelocity, smoothTime, maxSpeed, deltaTime);
+}
+

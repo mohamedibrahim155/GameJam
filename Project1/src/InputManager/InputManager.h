@@ -23,7 +23,7 @@ public:
 	void Update(float deltaTime);
 	void OnMouseMove(float x, float y);
 	void OnMouseMoveObservers(float x, float y);
-	void SetMouseDelta(glm::vec2 delta);
+	void SetMouseSmoothDelta(const glm::vec2& delta);
 	void InputAxis();
 
 	float GetMouseX();
@@ -36,13 +36,17 @@ public:
 
 	float GetInputAxis(const std::string& axis);
 
+	glm::vec2 mouseCurrentPosition{ 0 };
+	glm::vec2 mouseLastPosition{ 0 };
+	glm::vec2 mouseDelta{ 0 };
+	glm::vec2 smoothedMouseDelta{ 0 };
 private:
 
 	class Pimpl;
 	Pimpl* pimpl;
 
 	std::vector<iInputObserver*> observersList;
-	glm::vec2 mouseDelta = glm::vec2(0);
+	
 
 	float mouseX = 0;
 	float mouseY = 0;

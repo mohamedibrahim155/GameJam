@@ -25,6 +25,8 @@ private:
 	float vertical;*/
 	float moveSpeed = 2;
     float columnWidth = 150.0f;
+    float turnSmoothVelocity;
+    float turnSmoothTime = 1;
 	glm::vec3 velocity;
 
 

@@ -416,6 +416,7 @@ void ApplicationRenderer::EngineGraphicsRender()
 
 void ApplicationRenderer::EngineGameLoop()
 {
+    MouseInputUpdate();
     ProcessInput(window);
 
     if (isPlayMode)
@@ -517,6 +518,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 
 
 }
+
 void ApplicationRenderer::PostRender()
 {
     if (isPlayMode)
@@ -597,10 +599,16 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
  void ApplicationRenderer::MouseCallBack(GLFWwindow* window, double xposIn, double yposIn)
  {
 
-    float xpos = static_cast<float>(xposIn);
+        float xpos = static_cast<float>(xposIn);
         float ypos = static_cast<float>(yposIn);
      
-        InputManager::GetInstance().OnMouseMove(xpos, ypos);
+        /*if (firstMouse)
+        {
+            firstMouse = false;
+            return;
+        }*/
+        
+
 
         currentMousePos.x = xpos;
         currentMousePos.y = ypos;
@@ -608,20 +616,23 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
         mouseDeltaPos = currentMousePos - lastMousePos;
         mouseDeltaPos.y = -mouseDeltaPos.y;
 
-        InputManager::GetInstance().SetMouseDelta(mouseDeltaPos);
+        InputManager::GetInstance().mouseCurrentPosition = currentMousePos;
+     
+     
+        lastMousePos.x = xpos;
+        lastMousePos.y = ypos;
 
-     
-         lastMousePos.x = xpos;
-         lastMousePos.y = ypos;
-     
+        //glm::vec2 mouseDeltaPos = InputManager::GetInstance().mouseDelta;
+
          if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && EditorLayout::GetInstance().IsViewportHovered())
          {
+
             sceneViewcamera->ProcessMouseMovement(mouseDeltaPos.x, mouseDeltaPos.y);
          }
          
          if (isPlayMode  && EditorLayout::GetInstance().IsGameViewportHovered())
          {
-             InputManager::GetInstance().OnMouseMoveObservers(xpos, ypos);
+            // InputManager::GetInstance().OnMouseMoveObservers(xpos, ypos);
          }
  }
 
@@ -642,4 +653,36 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
  void ApplicationRenderer::MouseScroll(GLFWwindow* window, double xoffset, double yoffset)
  {
      sceneViewcamera->ProcessMouseScroll(static_cast<float>(yoffset));
+ }
+
+ void ApplicationRenderer::MouseInputUpdate()
+ {
+     ////if (firstMouse) return;
+     //InputManager::GetInstance().mouseDelta = InputManager::GetInstance().mouseCurrentPosition - InputManager::GetInstance().mouseLastPosition;
+
+     //// Invert Y-axis 
+     //InputManager::GetInstance().mouseDelta.y = -InputManager::GetInstance().mouseDelta.y;
+
+     //smoothedMouseDelta = smoothedMouseDelta * mouseSmoothingFactor + InputManager::GetInstance().mouseDelta * (1.0f - mouseSmoothingFactor);
+     //InputManager::GetInstance().mouseLastPosition = InputManager::GetInstance().mouseCurrentPosition;
+
+
+     //InputManager::GetInstance().SetMouseSmoothDelta(smoothedMouseDelta);
+
+
+      // Calculate the raw mouse delta
+     glm::vec2 rawMouseDelta = InputManager::GetInstance().mouseCurrentPosition - InputManager::GetInstance().mouseLastPosition;
+
+     // Invert Y-axis
+     rawMouseDelta.y = -rawMouseDelta.y;
+
+     // Apply smoothing (exponential smoothing)
+  
+     glm::vec2 smoothedMouseDelta = InputManager::GetInstance().smoothedMouseDelta * (1.0f - mouseSmoothingFactor) + rawMouseDelta * mouseSmoothingFactor;
+     InputManager::GetInstance().smoothedMouseDelta = smoothedMouseDelta;
+
+     InputManager::GetInstance().SetMouseSmoothDelta(smoothedMouseDelta);
+
+     // Update the last mouse position for the next frame
+     InputManager::GetInstance().mouseLastPosition = InputManager::GetInstance().mouseCurrentPosition;
  }

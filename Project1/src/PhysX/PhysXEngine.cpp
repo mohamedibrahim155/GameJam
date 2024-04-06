@@ -220,6 +220,22 @@ void PhysXEngine::UpdatePhysicsRenders()
 			position /= nbShapes;
 			rotation /= nbShapes;
 
+
+
+			if (physObject->rigidBody->freezeRotation.x)
+			{
+				rotation.x = physObject->transform.rotation.x;
+			}
+			if (physObject->rigidBody->freezeRotation.y)
+			{
+				rotation.y = physObject->transform.rotation.y;
+			}
+			if (physObject->rigidBody->freezeRotation.z)
+			{
+				rotation.z = physObject->transform.rotation.z;
+			}
+
+
 			physObject->transform.SetPosition(position - physObject->collider->GetOffsetPosition());
 			physObject->transform.SetRotation(rotation);
 

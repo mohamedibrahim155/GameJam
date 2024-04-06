@@ -154,9 +154,10 @@ void InputManager::OnMouseMoveObservers(float x, float y)
 	}
 }
 
-void InputManager::SetMouseDelta(glm::vec2 delta)
+void InputManager::SetMouseSmoothDelta(const glm::vec2& delta)
 {
-	mouseDelta = delta;
+	mouseX = delta.x;
+	mouseY = delta.y;
 }
 
 void InputManager::InputAxis()

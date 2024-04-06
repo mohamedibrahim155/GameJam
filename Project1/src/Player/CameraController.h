@@ -26,13 +26,13 @@ private:
 	Camera* gameCamera = nullptr;
 
 	float distance = 3;
-	float minVerticalAngle = -60;
-	float maxVerticalAngle = 60;
+	float minVerticalAngle = -89;
+	float maxVerticalAngle = 89;
 	float minYAngle = -360;
 	float maxYAngle = 360;
 
 	float pitch{ 0 };
-	float yaw{ -90 };
+	float yaw{ 90 };
 	float columnWidth = 150;
 
 	glm::vec3 intialCameraPosition{0};
@@ -40,9 +40,11 @@ private:
 	glm::vec3 cameraOffset{0};
 	glm::vec3 offesetPos{0};
 	glm::vec3 offesetNormalized{0};
+	glm::vec3 playerPosition;
 
 	float mouseSensitivity = 0.1f;
 	float moveSpeed = 5;
+	float rotationSpeed = 10;
 
 	float mouseX;
 	float mouseY;
