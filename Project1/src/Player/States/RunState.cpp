@@ -81,28 +81,30 @@ void RunState::HandleTranslation()
 
 	glm::vec3 forward = playerController->transform.GetForward();
 	glm::vec3 right = playerController->transform.GetRight();
+	glm::vec3 camForward = playerController->cameraController->GetCamera()->transform.GetForward();
+	glm::vec3 camRight = playerController->cameraController->GetCamera()->transform.GetRight();
 
-	// Calculate the movement direction based on input
-	glm::vec3 direction = glm::vec3(horizontal, 0, -vertical);
 
-	glm::vec3 moveDirection = vertical * -forward + horizontal * -right;
-	// Calculate the magnitude of the direction vector
-	float magnitude = glm::length(direction);
+
+	glm::vec3 moveDirection = vertical * camForward + horizontal * camRight;
+
+	float magnitude = glm::length(moveDirection);
 
 	if (magnitude >= 0.1f)
 	{
 	
-		float cameraYRot = playerController->cameraController->GetCamera()->transform.rotation.y;
 
-		glm::vec3 currentPlayerRot = glm::vec3(playerController->transform.rotation.x, cameraYRot - 180.0f , playerController->transform.rotation.z);
+		float angle = glm::degrees(atan2(moveDirection.x, moveDirection.z));
+
+		glm::vec3 desiredRotation = glm::vec3(playerController->transform.rotation.x, angle, playerController->transform.rotation.z);
 
 		
-		playerController->transform.SetRotation(currentPlayerRot);
+		playerController->transform.SetRotation(desiredRotation);
 
 		glm::vec3  moveVelocity = moveDirection * playerController->playerMoveSpeed;
 
 		velocity = glm::vec3(moveVelocity.x, playerController->GetVelocity().y, moveVelocity.z);
-		playerController->SetVelocity(moveVelocity);
+		playerController->SetVelocity(velocity);
 	}
 
 

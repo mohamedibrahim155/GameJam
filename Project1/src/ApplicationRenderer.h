@@ -31,7 +31,7 @@
 #include "ParticleSystem/ParticleSystemManager.h"
 #include "ParticleSystem/ParticleSystem.h"
 #include "PhysX/PhysXEngine.h"
-
+#include "Cursor.h"
 class ApplicationRenderer
 {
 public:
@@ -60,6 +60,7 @@ public:
 	void EngineGraphicsRender();
 	void EngineGameLoop();
 	void RenderForCamera(Camera* camera, FrameBuffer* framebuffer);
+	void ChangeCursorState(eCursorState state);
 	
 	FrameBufferSpecification specification;
 	FrameBuffer* sceneViewframeBuffer;
@@ -67,11 +68,14 @@ public:
 	Camera* sceneViewcamera;
 	Camera* gameScenecamera;
 	Camera* renderTextureCamera;
-	bool isPlayMode = false;
 
 	glm::mat4 projection;
 	glm::mat4 view;
 	glm::mat4 skyBoxView;
+
+	eCursorState currentCursorState = eCursorState::VISIBLE;
+
+	bool isPlayMode = false;
 	int windowWidth;
 	int  WindowHeight;
 private:

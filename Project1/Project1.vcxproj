@@ -238,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\Cursor.h" />
     <ClInclude Include="src\Player\CameraController.h" />
     <ClInclude Include="src\Player\States\RunState.h" />
     <ClInclude Include="src\Player\States\IdleState.h" />

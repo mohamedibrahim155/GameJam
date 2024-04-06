@@ -519,6 +519,23 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 
 }
 
+void ApplicationRenderer::ChangeCursorState(eCursorState state)
+{
+    currentCursorState = state;
+    switch (currentCursorState)
+    {
+    case eCursorState::VISIBLE:
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        break;
+    case eCursorState::HIDDEN:
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        break;
+    case eCursorState::LOCKED:
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        break;
+    }
+}
+
 void ApplicationRenderer::PostRender()
 {
     if (isPlayMode)
@@ -542,8 +559,8 @@ void ApplicationRenderer::ShutDown()
 
 void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
+   // if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        //glfwSetWindowShouldClose(window, true);
 
     float cameraSpeed=25;
 
@@ -583,6 +600,15 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
      
          if (action == GLFW_PRESS)
          {
+             if (key == GLFW_KEY_ESCAPE)
+             {
+                 ChangeCursorState(eCursorState::VISIBLE);
+             }
+             if (key == GLFW_KEY_K)
+             {
+                 ChangeCursorState(eCursorState::LOCKED);
+
+             }
              InputManager::GetInstance().OnKeyPressed(key);
          }
          else if(action == GLFW_RELEASE)
