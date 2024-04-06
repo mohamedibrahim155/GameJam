@@ -57,7 +57,7 @@ struct SkeletonAnim
 	std::string Name;
 	double TicksPerSecond;
 	double Duration;
-	//BoneNode* RootNode;
+	bool isLoop;
 	std::vector<NodeAnim*> Channels;
 };
 

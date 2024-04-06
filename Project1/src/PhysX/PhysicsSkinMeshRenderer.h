@@ -30,11 +30,11 @@ public:
 
     void Draw(Shader* shader) override;
 
-    void LoadAnimation(const std::string& animationPath, const std::string& animationName);
+    void LoadAnimation(const std::string& animationPath, const std::string& animationName, bool isAnimationLoop = true);
     void UpdateSkeletonAnimation(float timeFrame);
     void UpdateAnimationFrame(NodeAnim* anim, glm::mat4& nodeTransform, double time);
     void PlayAnimation(const std::string& animationName);
-
+    void PlayBlendAnimation(const std::string& animationName, float blendTime);
     int& GetBoneCount() { return boneCount; }
     std::map<std::string, BoneInfo>& GetBoneMap() { return boneInfoMap; }
 
@@ -50,8 +50,13 @@ public:
 
 
 
-    float timeStep;
-    bool isAnimationLoop = true;
+    float currentTimeStep;
+    float previousTimeStep;
+    float currentBlendTime;
+    float blendDuration;
+
+    bool isPlayAnimation = true;
+    bool isBlending = false;
     float frameSpeed = 40.0f;
 private:
 
@@ -74,6 +79,6 @@ private:
     glm::mat4 globalInverseTransformedMatrix;
     BoneNode* rootBoneNode;
     SkeletonAnim* currentAnimation;
-
+    SkeletonAnim* previousAnimation;
 };
 

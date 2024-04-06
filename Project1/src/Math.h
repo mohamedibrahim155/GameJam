@@ -26,6 +26,7 @@ namespace MathUtils
 		static glm::vec4 SmoothDampVec4(glm::vec4 current, glm::vec4 target, glm::vec4& currentVelocity, float smoothTime, float maxSpeed, float deltaTime);
 		static float DeltaAngle(float current, float target);
 		static float SmoothDampAngle(float current, float target, float& currentVelocity, float smoothTime, float maxSpeed, float deltaTime);
+		static float Remap(float value, float inputMin, float inputMax, float outputMin, float outputMax);
 
 	};
 

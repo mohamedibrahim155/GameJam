@@ -3,7 +3,8 @@
 #include "../../InputManager/InputManager.h"
 void IdleState::Start()
 {
-	playerController->PlayAnimation("Idle");
+	playerController->PlayBlendAnimation("Idle",0.2f);
+	playerController->SetVelocity(glm::vec3(0, playerController->GetVelocity().y, 0));
 }
 
 void IdleState::UpdateState(float deltaTime)

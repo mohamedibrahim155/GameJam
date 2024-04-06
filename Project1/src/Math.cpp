@@ -234,3 +234,14 @@ float MathUtils::Math::SmoothDampAngle(float current, float target, float& curre
 	return SmoothDamp(current, target, currentVelocity, smoothTime, maxSpeed, deltaTime);
 }
 
+float MathUtils::Math::Remap(float value, float inputMin, float inputMax, float outputMin, float outputMax)
+{
+	// Ensure that the value is within the input range
+	value = glm::clamp(value, inputMin, inputMax);
+
+	// Map the value from the input range to the output range
+	float inputRange = inputMax - inputMin;
+	float outputRange = outputMax - outputMin;
+	return ((value - inputMin) / inputRange) * outputRange + outputMin;
+}
+

@@ -14,7 +14,6 @@ CharacterAnimation::CharacterAnimation()
     LoadAnimation("Models/Character/Punching Bag.fbx","Punching");
     LoadAnimation("Models/Character/Mma Kick.fbx","Kick");
     LoadAnimation("Models/Character/Snake Hip Hop Dance.fbx", "Dance2");
-    LoadAnimation("Models/Character/Waving.fbx","Wave");
 
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
 
@@ -33,7 +32,7 @@ void CharacterAnimation::OnKeyPressed(const int& key)
     }
     if (key == GLFW_KEY_1)
     {
-        PlayAnimation("Dance1");
+        PlayBlendAnimation("Dance1",0.5f);
     }
     if (key == GLFW_KEY_2)
     {
@@ -49,11 +48,6 @@ void CharacterAnimation::OnKeyPressed(const int& key)
     if (key == GLFW_KEY_4)
     {
         PlayAnimation("Dance2");
-
-    }
-    if (key == GLFW_KEY_5)
-    {
-        PlayAnimation("Wave");
 
     }
 }
@@ -86,11 +80,11 @@ void CharacterAnimation::Update(float deltaTime)
 
     if (deltaTime > 1.0f / 60.0f) { deltaTime = 1.0f / 60.0f; }
 
-    timeStep += deltaTime * 40;
+    currentTimeStep += deltaTime * 40;
 
-    if (timeStep >= GetCurrentAnimation()->Duration)
+    if (currentTimeStep >= GetCurrentAnimation()->Duration)
     {
-       // timeStep = 0;
+       // currentTimeStep = 0;
     }
 
     UpdateSkeletonAnimation(deltaTime);

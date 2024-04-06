@@ -21,10 +21,11 @@ public:
 
      void Draw(Shader* shader) override;
 
-     void LoadAnimation(const std::string& animationPath, const std::string& animationName);
+     void LoadAnimation(const std::string& animationPath, const std::string& animationName, bool isLoop = true);
      void UpdateSkeletonAnimation(float deltaTime);
      void UpdateAnimationFrame(NodeAnim* anim , glm::mat4& nodeTransform, double time);
      void PlayAnimation(const std::string& animationName);
+     void PlayBlendAnimation(const std::string& animationName, float blendTime);
 
      int& GetBoneCount() { return boneCount; }
      std::map<std::string, BoneInfo>& GetBoneMap() { return boneInfoMap; }
@@ -39,8 +40,14 @@ public:
      const SkeletonAnim* GetCurrentAnimation();
      const SkeletonAnim* GetAnimation(const std::string& AnimationName);
 
-     float timeStep;
-     bool isAnimationLoop = true;
+     float currentTimeStep;
+     float previousTimeStep;
+     float currentBlendTime;
+     float blendDuration;
+
+     bool isPlayAnimation = false;
+     bool isBlending = false;
+
    private:
 
        void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
@@ -48,6 +55,8 @@ public:
        void UpdateMeshRendererBones();
        void CalculateMatrices(BoneNode* boneNode, const glm::mat4& parentTransformationMatrix);
        void SetDefaultVertexBoneData(Vertex& vertex);
+
+
 
        int boneCount = 0;
        int currentAnimationIndex = 0;
@@ -61,6 +70,8 @@ public:
        glm::mat4 GlobalInverseTransformation;
        glm::mat4 globalInverseTransformedMatrix;
        BoneNode* rootBoneNode;
+
        SkeletonAnim* currentAnimation;
+       SkeletonAnim* previousAnimation;
 };
 

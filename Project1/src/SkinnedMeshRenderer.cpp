@@ -1,6 +1,6 @@
 #include "SkinnedMeshRenderer.h"
 #include "GraphicsRender.h"
-
+#include "Math.h"
 
 SkinnedMeshRenderer::SkinnedMeshRenderer(std::string const& path, bool isLoadTexture, bool isDebugModel)
 {
@@ -339,6 +339,43 @@ void SkinnedMeshRenderer::Start()
 
 void SkinnedMeshRenderer::Update(float deltaTime)
 {
+    if (!isPlayAnimation) return;
+
+    if (deltaTime > 1.0f / 60.0f) { deltaTime = 1.0f / 60.0f; }
+
+
+
+    currentTimeStep += deltaTime * 40;
+
+    if (GetCurrentAnimation()->isLoop && currentTimeStep >= GetCurrentAnimation()->Duration)
+    {
+        currentTimeStep = 0;
+    }
+
+    if (isBlending)
+    {
+        previousTimeStep += deltaTime * 40;
+
+        currentBlendTime += deltaTime;
+
+
+        if (previousAnimation->isLoop && previousTimeStep >= previousAnimation->Duration)
+        {
+            previousTimeStep = 0;
+            
+        }
+
+        if (currentBlendTime > blendDuration)
+        {
+            currentBlendTime = 0;
+            isBlending = false;
+        }
+
+
+    }
+
+    UpdateSkeletonAnimation(deltaTime);
+
 }
 
 void SkinnedMeshRenderer::Render()
@@ -386,7 +423,7 @@ void SkinnedMeshRenderer::Draw(Shader* shader)
 }
 
 
-void SkinnedMeshRenderer::LoadAnimation(const std::string& animationPath, const std::string& animationName)
+void SkinnedMeshRenderer::LoadAnimation(const std::string& animationPath, const std::string& animationName, bool isLoop)
 {
     Assimp::Importer importer;
 
@@ -400,6 +437,7 @@ void SkinnedMeshRenderer::LoadAnimation(const std::string& animationPath, const 
         SkeletonAnim* skeletalanimation = new SkeletonAnim();
         skeletalanimation->Name = animation->mName.C_Str();
         skeletalanimation->Duration = animation->mDuration;
+        skeletalanimation->isLoop = isLoop;
 
         for (int i = 0; i < animation->mNumChannels; i++)
         {
@@ -418,10 +456,12 @@ void SkinnedMeshRenderer::LoadAnimation(const std::string& animationPath, const 
 
 }
 
-void SkinnedMeshRenderer::UpdateSkeletonAnimation(float deltaTime)
+void SkinnedMeshRenderer::UpdateSkeletonAnimation(float deltatime)
 {
 
     std::string name = currentAnimation->Name;
+   
+    int i = 0;
     for (NodeAnim* nodeAnimation : currentAnimation->Channels)
     {
         std::string nodeName = nodeAnimation->Name;
@@ -438,22 +478,39 @@ void SkinnedMeshRenderer::UpdateSkeletonAnimation(float deltaTime)
         {
             glm::mat4& transformedMatrix = boneNode->second->transformation;
 
-            UpdateAnimationFrame(nodeAnimation, transformedMatrix, timeStep);
+            glm::vec3 translation = UpdateTranslation(nodeAnimation->listOfPositionKeyFrames, currentTimeStep);
+            glm::quat rotation = UpdateRotation(nodeAnimation->listOfRotationKeyframes, currentTimeStep);
+            glm::vec3 scale = UpdateScale(nodeAnimation->listOfScaleKeyFrames, currentTimeStep);
+
+
+            if (isBlending)
+            {
+                NodeAnim* previousAnim = previousAnimation->Channels[i];
+
+                glm::vec3 previoustranslation = UpdateTranslation(previousAnim->listOfPositionKeyFrames, previousTimeStep);
+                glm::quat previousrotation = UpdateRotation(previousAnim->listOfRotationKeyframes, previousTimeStep);
+                glm::vec3 previousscale = UpdateScale(previousAnim->listOfScaleKeyFrames, previousTimeStep);
+
+                float lerpValue = MathUtils::Math::Remap(currentBlendTime, 0, blendDuration, 0, 1);
+                translation = MathUtils::Math::LerpVec3(previoustranslation, translation, lerpValue);
+                rotation = glm::slerp(previousrotation, rotation, lerpValue);
+                scale = MathUtils::Math::LerpVec3(previousscale, scale, lerpValue);
+
+            }
+
+            transformedMatrix = glm::translate(glm::mat4(1), translation)
+                * glm::toMat4(rotation)
+                * glm::scale(glm::mat4(1.0f), scale);
+
         }
+
+        i++;
     }
-  
-    
 }
 
 void SkinnedMeshRenderer::UpdateAnimationFrame(NodeAnim* anim, glm::mat4& nodeTransform, double time)
 {
-    glm::vec3 translation = UpdateTranslation(anim->listOfPositionKeyFrames, time);
-    glm::quat rotation = UpdateRotation(anim->listOfRotationKeyframes, time);
-        glm::vec3 scale = UpdateScale(anim->listOfScaleKeyFrames, time);
-
-        nodeTransform = glm::translate(glm::mat4(1),translation)
-            * glm::toMat4(rotation)
-            * glm::scale(glm::mat4(1.0f), scale);
+   
 
 }
 
@@ -686,7 +743,22 @@ const SkeletonAnim* SkinnedMeshRenderer::GetAnimation(const std::string& Animati
 
 void SkinnedMeshRenderer::PlayAnimation(const std::string& animationName)
 {
-    timeStep = 0;
+    currentTimeStep = 0;
 
     currentAnimation = listOfAnimation[animationName];
+}
+
+void SkinnedMeshRenderer::PlayBlendAnimation(const std::string& animationName, float blendTime)
+{
+    isBlending = true;
+
+    previousAnimation = currentAnimation;
+    previousTimeStep = currentTimeStep;
+
+    currentAnimation = listOfAnimation[animationName];
+    currentTimeStep = 0;
+
+    blendDuration = blendTime;
+    currentBlendTime = 0;
+
 }

@@ -8,7 +8,7 @@ using namespace MathUtils;
 
 void RunState::Start()
 {
-	playerController->PlayAnimation("Run");
+	playerController->PlayBlendAnimation("Run",0.2f);
 
 }
 

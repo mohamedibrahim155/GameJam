@@ -1,5 +1,5 @@
 #include "PhysicsSkinMeshRenderer.h"
-
+#include "../Math.h"
 void PhysicsSkinMeshRenderer::LoadModel(std::string const& path, bool isLoadTexture, bool isDebugModel)
 {
 	this->isLoadTexture = isLoadTexture;
@@ -49,16 +49,42 @@ void PhysicsSkinMeshRenderer::Start()
 void PhysicsSkinMeshRenderer::Update(float deltaTime)
 {
 
+    if (!isPlayAnimation) return;
+
     if (deltaTime > 1.0f / 60.0f) { deltaTime = 1.0f / 60.0f; }
 
-    timeStep += deltaTime * frameSpeed;
 
-    if ( isAnimationLoop && timeStep >= GetCurrentAnimation()->Duration)
+
+    currentTimeStep += deltaTime * frameSpeed;
+
+    if (GetCurrentAnimation()->isLoop && currentTimeStep >= GetCurrentAnimation()->Duration)
     {
-         timeStep = 0;
+        currentTimeStep = 0;
     }
 
-    UpdateSkeletonAnimation(timeStep);
+    if (isBlending)
+    {
+        previousTimeStep += deltaTime * frameSpeed;
+
+        currentBlendTime += deltaTime;
+
+
+        if (previousAnimation->isLoop && previousTimeStep >= previousAnimation->Duration)
+        {
+            previousTimeStep = 0;
+
+        }
+
+        if (currentBlendTime > blendDuration)
+        {
+            currentBlendTime = 0;
+            isBlending = false;
+        }
+
+
+    }
+
+    UpdateSkeletonAnimation(deltaTime);
 }
 
 void PhysicsSkinMeshRenderer::Render()
@@ -285,7 +311,7 @@ void PhysicsSkinMeshRenderer::Draw(Shader* shader)
     }
 }
 
-void PhysicsSkinMeshRenderer::LoadAnimation(const std::string& animationPath, const std::string& animationName)
+void PhysicsSkinMeshRenderer::LoadAnimation(const std::string& animationPath, const std::string& animationName, bool isAnimationLoop)
 {
     Assimp::Importer importer;
 
@@ -299,6 +325,7 @@ void PhysicsSkinMeshRenderer::LoadAnimation(const std::string& animationPath, co
         SkeletonAnim* skeletalanimation = new SkeletonAnim();
         skeletalanimation->Name = animation->mName.C_Str();
         skeletalanimation->Duration = animation->mDuration;
+        skeletalanimation->isLoop = isAnimationLoop;
 
         for (int i = 0; i < animation->mNumChannels; i++)
         {
@@ -321,6 +348,8 @@ void PhysicsSkinMeshRenderer::UpdateSkeletonAnimation(float timeFrame)
 {
 
     std::string name = currentAnimation->Name;
+
+    int i = 0;
     for (NodeAnim* nodeAnimation : currentAnimation->Channels)
     {
         std::string nodeName = nodeAnimation->Name;
@@ -337,15 +366,45 @@ void PhysicsSkinMeshRenderer::UpdateSkeletonAnimation(float timeFrame)
         {
             glm::mat4& transformedMatrix = boneNode->second->transformation;
 
-            UpdateAnimationFrame(nodeAnimation, transformedMatrix, timeFrame);
+            glm::vec3 translation = UpdateTranslation(nodeAnimation->listOfPositionKeyFrames, currentTimeStep);
+            glm::quat rotation = UpdateRotation(nodeAnimation->listOfRotationKeyframes, currentTimeStep);
+            glm::vec3 scale = UpdateScale(nodeAnimation->listOfScaleKeyFrames, currentTimeStep);
+
+#pragma region Blending
+
+            if (isBlending)
+            {
+                if (currentAnimation->Channels.size() != previousAnimation->Channels.size())
+                {
+                    printf(" Error : Animation Channel Size differs %s:%d\n", __FILE__, __LINE__);
+                }
+                NodeAnim* previousAnim = previousAnimation->Channels[i];
+
+                glm::vec3 previoustranslation = UpdateTranslation(previousAnim->listOfPositionKeyFrames, previousTimeStep);
+                glm::quat previousrotation = UpdateRotation(previousAnim->listOfRotationKeyframes, previousTimeStep);
+                glm::vec3 previousscale = UpdateScale(previousAnim->listOfScaleKeyFrames, previousTimeStep);
+
+                float lerpValue = MathUtils::Math::Remap(currentBlendTime, 0, blendDuration, 0, 1);
+                translation = MathUtils::Math::LerpVec3(previoustranslation, translation, lerpValue);
+                rotation = glm::slerp(previousrotation, rotation, lerpValue);
+                scale = MathUtils::Math::LerpVec3(previousscale, scale, lerpValue);
+
+            }
+
+#pragma endregion
+            transformedMatrix = glm::translate(glm::mat4(1), translation)
+                * glm::toMat4(rotation)
+                * glm::scale(glm::mat4(1.0f), scale);
+
         }
+
+        i++;
     }
-
-
 }
 
 void PhysicsSkinMeshRenderer::UpdateAnimationFrame(NodeAnim* anim, glm::mat4& nodeTransform, double time)
 {
+    // Not used
     glm::vec3 translation = UpdateTranslation(anim->listOfPositionKeyFrames, time);
     glm::quat rotation = UpdateRotation(anim->listOfRotationKeyframes, time);
     glm::vec3 scale = UpdateScale(anim->listOfScaleKeyFrames, time);
@@ -358,8 +417,22 @@ void PhysicsSkinMeshRenderer::UpdateAnimationFrame(NodeAnim* anim, glm::mat4& no
 
 void PhysicsSkinMeshRenderer::PlayAnimation(const std::string& animationName)
 {
-    timeStep = 0;
+    currentTimeStep = 0;
     currentAnimation = listOfAnimation[animationName];
+}
+
+void PhysicsSkinMeshRenderer::PlayBlendAnimation(const std::string& animationName, float blendTime)
+{
+    isBlending = true;
+
+    previousAnimation = currentAnimation;
+    previousTimeStep = currentTimeStep;
+
+    currentAnimation = listOfAnimation[animationName];
+    currentTimeStep = 0;
+
+    blendDuration = blendTime;
+    currentBlendTime = 0;
 }
 
 BoneNode* PhysicsSkinMeshRenderer::GenerateBoneHierarchy(aiNode* ainode, const int depth)
