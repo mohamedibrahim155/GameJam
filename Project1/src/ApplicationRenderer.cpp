@@ -503,9 +503,10 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
        ScrollShader->setMat4("ProjectionMatrix", _projection);*/
 
     GraphicsRender::GetInstance().Draw();
+
     ParticleSystemManager::GetInstance().Render();
 
-    framebuffer->Unbind();
+   
 
     if (camera->isPostprocessing)
     {
@@ -514,9 +515,9 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
             camera->postprocessing->ApplyPostprocessing(framebuffer);
         }
     }
+    EntityManager::GetInstance().Render();
 
-
-
+     framebuffer->Unbind();
 }
 
 void ApplicationRenderer::ChangeCursorState(eCursorState state)
