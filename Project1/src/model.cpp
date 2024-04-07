@@ -1,6 +1,7 @@
 #include "model.h"
 #include "ImGui/EditorLayout.h"
 #include "GraphicsRender.h"
+#include "LightManager.h"
 
 aiMesh* ai_Mesh;
 
@@ -61,6 +62,10 @@ void Model::Draw(Shader& shader)
     {
         return;
     }
+    if (shader.useShadowMap)
+    {
+        SetLightSpaceMatrix(&shader);
+    }
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
        
@@ -76,11 +81,18 @@ void Model::Draw(Shader* shader)
         return;
     }
     shader->Bind();
+    if (shader->useShadowMap)
+    {
+        SetLightSpaceMatrix(shader);
+       
+    }
+
     if (shader->modelUniform)
     {
         shader->setMat4("model", transform.GetModelMatrix());
     }
 
+   
     for (unsigned int i = 0; i < meshes.size(); i++)
     {
         meshes[i]->Draw(shader);
@@ -438,6 +450,25 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
          {
              meshes[i]->name = "mesh " + std::to_string(i + 1);
          }
+     }
+ }
+
+ void Model::SetLightSpaceMatrix(Shader* shader)
+ {
+
+     Light* light = LightManager::GetInstance().GetShadowLight();
+
+     if (light != nullptr)
+     {
+         shader->setMat4("lightSpaceMatrix", light->LightSpaceMatrix());
+         glm::vec3 lightDir = light->transform.GetForward();
+         shader->setVec3("lightDir", lightDir.x, lightDir.y, lightDir.z);
+         shader->setFloat("biasValue", biasValue);
+
+         GLCALL(glActiveTexture(GL_TEXTURE10));
+         shader->setInt("shadowMap", 10);
+         GLCALL(glBindTexture(GL_TEXTURE_2D, GraphicsRender::GetInstance().GetDepthMap()));
+         
      }
  }
 

@@ -53,6 +53,8 @@ public:
     unsigned int rendererID;
     bool modelUniform = true;
     BlendMode blendMode = BlendMode::OPAQUE;
+
+    bool useShadowMap = false;
    
 private:
   

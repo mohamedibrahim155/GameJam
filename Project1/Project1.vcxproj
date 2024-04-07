@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\MeshInstancing.cpp" />
+    <ClCompile Include="src\ImGui\DepthTestPanel.cpp" />
     <ClCompile Include="Extern\imGui\ImCurveEdit.cpp" />
     <ClCompile Include="Extern\imGui\ImGradient.cpp" />
     <ClCompile Include="Extern\imGui\ImGuizmo.cpp" />
@@ -220,6 +222,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\MeshInstancing.h" />
+    <ClInclude Include="src\ImGui\DepthTestPanel.h" />
     <ClInclude Include="Extern\imGui\ImCurveEdit.h" />
     <ClInclude Include="Extern\imGui\ImGradient.h" />
     <ClInclude Include="Extern\imGui\ImGuizmo.h" />
@@ -327,6 +331,8 @@
     <None Include="Shaders\ScrollTexture.vert" />
     <None Include="Shaders\Shader.frag" />
     <None Include="Shaders\Shader.vert" />
+    <None Include="Shaders\Shadow\ShadowDepth.frag" />
+    <None Include="Shaders\Shadow\ShadowDepth.vert" />
     <None Include="Shaders\Shadow\ShadowMapShader.frag" />
     <None Include="Shaders\Shadow\ShadowMapShader.vert" />
     <None Include="Shaders\SkyboxShader.frag" />

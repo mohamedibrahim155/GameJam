@@ -249,6 +249,12 @@
     <ClCompile Include="ShadowFBO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ImGui\DepthTestPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshInstancing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -512,6 +518,12 @@
     <ClInclude Include="ShadowFBO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ImGui\DepthTestPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshInstancing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.frag" />
@@ -542,5 +554,7 @@
     <None Include="Shaders\AnimationShader.frag" />
     <None Include="Shaders\Shadow\ShadowMapShader.vert" />
     <None Include="Shaders\Shadow\ShadowMapShader.frag" />
+    <None Include="Shaders\Shadow\ShadowDepth.vert" />
+    <None Include="Shaders\Shadow\ShadowDepth.frag" />
   </ItemGroup>
 </Project>

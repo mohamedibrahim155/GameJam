@@ -1,5 +1,5 @@
 #include"LightManager.h"
-
+#include "GraphicsRender.h"
 
 
 
@@ -124,4 +124,31 @@ void LightManager::UpdateUniformValuesToShader(Shader* shader)
 const std::vector<Light*>& LightManager::GetLightList()
 {
     return lightList;
+}
+
+Light* LightManager::GetShadowLight()
+{
+    return shadowLight;
+}
+
+void LightManager::BindDepthForShadowLight(Shader* shader)
+{
+    if (GetShadowLight() == nullptr)
+    {
+        std::cout << "No Light Can emit Shadows" << std::endl;
+        return;
+    }
+    else
+    {
+        shader->Bind();
+        shader->setMat4("lightSpaceMatrix", GetShadowLight()->LightSpaceMatrix());
+    }
+
+
+}
+
+
+void LightManager::SetLightForShadow(Light* light)
+{
+     shadowLight = light;
 }

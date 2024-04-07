@@ -34,10 +34,9 @@ public:
 
     float xExtents = 10.0f;
     float yExtents = 10.0f;
-    float nearPlane = 1.0f;
-    float farPlane = 7.5f;
-    float shadowCaptureDistance = 100.0f;
-    bool enableShadows = false;
+    float nearPlane = 0.1f;
+    float farPlane = 10.0f;
+    float shadowCaptureDistance = 10.0f;
 
    
 
@@ -49,9 +48,9 @@ public:
     float& GetIntensityValue();
     glm::vec2& GetInnerAndOuterAngle();
 
-    glm::mat4 GetViewMatrix(Camera* cam);
-    glm::mat4 GetProjectionMatrix();
-    glm::mat4 GetLightMatrix(Camera* cam);
+    glm::mat4 ViewMatrix();
+    glm::mat4 ProjectionMatrix();
+    glm::mat4 LightSpaceMatrix();
 
 
     ~Light() { };

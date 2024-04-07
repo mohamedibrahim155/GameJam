@@ -65,7 +65,7 @@ uniform float alphaCutOffThreshold;
 
 float temp;
 
-vec4 CalculateLight(vec3 norm, vec3 viewDir, float shadowCalc );
+vec4 CalculateLight(vec3 norm, vec3 viewDir, float shadowCalc);
 
 float near = 0.1; 
 float far  = 100.0; 
@@ -179,7 +179,7 @@ float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal)
   
 
 
-vec4 CalculateLight(vec3 norm, vec3 viewDir )
+vec4 CalculateLight(vec3 norm, vec3 viewDir, float shadowCalc )
 {
 
     vec4 result = vec4(0,0,0,0);
@@ -204,7 +204,7 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir )
 
 
           vec4 diffuse = diff * lights[index].color;
-	       diffuse *= textureColor;
+	       diffuse *= textureColor * shadowCalc;
 
            vec4 specularColor = texture(specular_Texture, TextureCoordinates);
            vec3 reflectDir = reflect(-lightDir, norm);

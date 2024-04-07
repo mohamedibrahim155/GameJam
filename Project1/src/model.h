@@ -83,6 +83,8 @@ protected:
 
     void ProcessNode(aiNode* node, const aiScene* scene);
     void SetModelName();
+    void SetLightSpaceMatrix(Shader* shader);
+    float biasValue = 0.005f;
 
     const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
 };

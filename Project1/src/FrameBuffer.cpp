@@ -161,7 +161,7 @@ void FrameBuffer::Invalidate()
 
 
 	bool multiSample = specification.samples > 1;
-	if (colorAttachmentSpecifications.size())
+	if (colorAttachmentSpecifications .size())
 	{
 		colorAttachmentsID.resize(colorAttachmentSpecifications.size());
 
@@ -182,18 +182,22 @@ void FrameBuffer::Invalidate()
 			
 		}
 
-		if (depthAttachmentSpec.textureFormat != FramebufferTextureFormat::NONE)
-		{
-			CreateTextures(multiSample, &depthAttachmentID, 1);
-			BindTexture(multiSample, depthAttachmentID);
+		
+	}
 
-			switch (depthAttachmentSpec.textureFormat)
-			{
-			case FramebufferTextureFormat::DEPTH24STENCIL8:
-				AttachDepthTexture(depthAttachmentID, specification.samples,
-					GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, specification.width, specification.height);
-				break;
-			}
+	if (depthAttachmentSpec.textureFormat != FramebufferTextureFormat::NONE)
+	{
+		CreateTextures(multiSample, &depthAttachmentID, 1);
+		BindTexture(multiSample, depthAttachmentID);
+
+		switch (depthAttachmentSpec.textureFormat)
+		{
+		case FramebufferTextureFormat::DEPTH24STENCIL8:
+			AttachDepthTexture(depthAttachmentID, specification.samples,
+				GL_DEPTH24_STENCIL8, GL_DEPTH_STENCIL_ATTACHMENT, specification.width, specification.height);
+
+
+			break;
 		}
 	}
 
@@ -210,11 +214,13 @@ void FrameBuffer::Invalidate()
 			GLCALL(glDrawBuffers(colorAttachmentsID.size(), buffers));
 
 		}
-		else if(colorAttachmentsID.empty())
-		{
-			//Only Depth-pass
-			GLCALL(glDrawBuffer(GL_NONE));
-		}
+		
+	}
+	else if (colorAttachmentsID.empty())
+	{
+		//Only Depth-pass
+		GLCALL(glDrawBuffer(GL_NONE));
+		GLCALL(glReadBuffer(GL_NONE));
 	}
 
 

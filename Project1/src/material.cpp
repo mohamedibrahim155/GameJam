@@ -1,5 +1,7 @@
 #include "material.h"
 
+#include "GraphicsRender.h"
+
 
 
 Material::Material()
@@ -144,5 +146,7 @@ void Material::UpdateMaterial(Shader* shader)
         shader->setInt("opacity_Texture", 2);
         this->alphaTexture->Bind();
     }
+
+ 
 
 }

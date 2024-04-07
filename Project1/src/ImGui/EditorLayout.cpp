@@ -23,6 +23,7 @@ void EditorLayout::InitializeEditors()
     sceneViewportPanel = new SceneViewportPanel();
     gameviewportPanel = new GameViewportPanel();
     toolPanel = new ToolPanel();
+    testPanel = new DepthTestPanel();
 
     sceneViewportPanel->frameBuffer = applicationRenderer->sceneViewframeBuffer;
     sceneViewportPanel->sceneViewportCamera = applicationRenderer->sceneViewcamera;
@@ -31,6 +32,9 @@ void EditorLayout::InitializeEditors()
 
     gameviewportPanel->frameBuffer = applicationRenderer->gameframeBuffer;
     gameviewportPanel->gameViewportResolution = ImVec2(1920, 1080);
+
+    testPanel->sceneBuffer = applicationRenderer->testPanelFBO;
+    testPanel->mResolution = ImVec2(1920, 1080);
 }
 
 void EditorLayout::SetSelectedObjects(std::vector<Object*> objects)

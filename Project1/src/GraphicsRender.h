@@ -66,8 +66,16 @@ public:
 	Shader* solidColorShader;
 	Shader* stencilShader;
 	Shader* animationShader;
+	Shader* shadowDepthShader;
 	void SetSelectedModel(Model* model);
 	Model* GetSelectedModel();
+
+	FrameBuffer* shadowFBO;
+	uint32_t& GetDepthMap();
+	Camera* camera;
+
+	void RenderShadowModels(Shader* shader);
+
 
 private:
 	
@@ -79,7 +87,6 @@ private:
 	std::vector<ModelAndShader*> modelAndShaderList;
 	std::vector<ModelAndShader*> transparentmodelAndShaderList;
 
-	Camera* camera;
 
 };
 

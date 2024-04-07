@@ -158,19 +158,29 @@ glm::vec2& Light::GetInnerAndOuterAngle()
 	return innerAndOuterAngle;
 }
 
-glm::mat4 Light::GetViewMatrix(Camera* cam)
+glm::mat4 Light::ViewMatrix()
 {
-	return glm::mat4();
+	glm::mat4 view = glm::mat4(1.0f);
+
+
+	Camera* scenecamera = GraphicsRender::GetInstance().camera;
+
+
+	glm::vec3 pos = transform.position;
+
+	//view = glm::lookAt(pos, glm::vec3(0.0f), glm::vec3(0, 1, 0));
+	view = glm::lookAt(pos, scenecamera->transform.GetForward(), glm::vec3(0, 1, 0));
+	return view;
 }
 
-glm::mat4 Light::GetProjectionMatrix()
+glm::mat4 Light::ProjectionMatrix()
 {
-	return glm::mat4();
+	return projectionMatrix;
 }
 
-glm::mat4 Light::GetLightMatrix(Camera* cam)
+glm::mat4 Light::LightSpaceMatrix()
 {
-	return GetProjectionMatrix() * GetViewMatrix(cam);
+	return ProjectionMatrix() * ViewMatrix();
 }
 
 void Light::DrawProperties()

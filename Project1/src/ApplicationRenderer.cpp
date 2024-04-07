@@ -101,20 +101,23 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     FrameBufferSpecification specification;
     specification.width = windowWidth;
     specification.height = WindowHeight;
-    specification.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
+    specification.attachments = {  FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
     
 
     sceneViewframeBuffer = new FrameBuffer(specification);
 
     gameframeBuffer = new FrameBuffer(specification);
 
+    testPanelFBO = new FrameBuffer(specification);
+
 
     FrameBufferSpecification shadowDepthSpecs;
     shadowDepthSpecs.width = shadowResolution.x;
     shadowDepthSpecs.height = shadowResolution.y;
-    shadowDepthSpecs.attachments = { FramebufferTextureFormat::DEPTH24STENCIL8 };
+    //shadowDepthSpecs.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
+    shadowDepthSpecs.attachments = { FramebufferTextureFormat::DEPTH };
     shadowDepthFBO = new FrameBuffer(shadowDepthSpecs);
-
+    GraphicsRender::GetInstance().shadowFBO = shadowDepthFBO;
 
 
 
@@ -135,15 +138,15 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     GraphicsRender::GetInstance().SetCamera(sceneViewcamera);
 
-    sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
+    sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     sceneViewcamera->transform.position = glm::vec3(0, 1.00, 5);
     sceneViewcamera->transform.SetRotation(glm::vec3(0));
 
-    gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
-    gameScenecamera->transform.position = glm::vec3(0, 1.00, 5);
+    gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
+    gameScenecamera->transform.position = glm::vec3(0, 1.00, -5);
     gameScenecamera->transform.SetRotation(glm::vec3(0));
 
-    renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
+    renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     renderTextureCamera->transform.position = glm::vec3(0, 0, -1.0f);
 
     renderTextureCamera->IntializeRenderTexture(specification);
@@ -155,6 +158,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 void ApplicationRenderer::InitializeShaders()
 {
     defaultShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag");
+    defaultShader->blendMode = OPAQUE;
+    defaultShader->useShadowMap = true;
    
     solidColorShader = new Shader("Shaders/SolidColor_Vertex.vert", "Shaders/SolidColor_Fragment.frag", SOLID);
     stencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", OPAQUE);
@@ -175,10 +180,13 @@ void ApplicationRenderer::InitializeShaders()
     shadowMapShader = new Shader("Shaders/Shadow/ShadowMapShader.vert", "Shaders/Shadow/ShadowMapShader.frag");
     shadowMapShader->blendMode = OPAQUE;
 
+    shadowDepthShader = new Shader("Shaders/Shadow/ShadowDepth.vert", "Shaders/Shadow/ShadowDepth.frag");
+
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
     GraphicsRender::GetInstance().stencilShader = stencilShader; 
     GraphicsRender::GetInstance().animationShader = animationShader;
+    GraphicsRender::GetInstance().shadowDepthShader = shadowDepthShader;
 
    
 
@@ -226,8 +234,10 @@ void ApplicationRenderer::Start()
      directionLight->SetAttenuation(1, 1, 0.01f);
      directionLight->SetInnerAndOuterCutoffAngle(11, 12);
 
-     directionLight->transform.SetRotation(glm::vec3(0, 0, 5));
+     directionLight->transform.SetRotation(glm::vec3(175, 45, 0));
      directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
+
+     LightManager::GetInstance().SetLightForShadow(directionLight);
     
 
 
@@ -247,19 +257,35 @@ void ApplicationRenderer::Start()
     //
     // GraphicsRender::GetInstance().AddModelAndShader(xBot, animationShader);
 
-     CharacterAnimation* character = new CharacterAnimation();
-     ParticleSystem* particle = new ParticleSystem();
+    // CharacterAnimation* character = new CharacterAnimation();
+
+     Model* sphere = new Model("Models/DefaultSphere/DefaultSphere.fbx");
+     sphere->transform.SetPosition(glm::vec3(5, -5, 0));
+     GraphicsRender::GetInstance().AddModelAndShader(sphere, defaultShader);
+
+     Model* box = new Model("Models/DefaultCube/DefaultCube.fbx");
+     box->transform.SetPosition(glm::vec3(0, -5, 0));
+     GraphicsRender::GetInstance().AddModelAndShader(box,defaultShader);
+
+
+     Model* plane = new Model("Models/DefaultQuad/DefaultQuad.fbx");
+     plane->transform.SetPosition(glm::vec3(0, -5, 0));
+     plane->transform.SetRotation(glm::vec3(90,0,0));
+     plane->transform.SetScale(glm::vec3(100));
+     GraphicsRender::GetInstance().AddModelAndShader(plane, defaultShader);
+
+   
      
 
 }
 
 void ApplicationRenderer::PreRender()
 {
-    projection = sceneViewcamera->GetProjectionMatrix();
+    projection = sceneViewcamera->ProjectionMatrix();
 
-    view = sceneViewcamera->GetViewMatrix();
+    view = sceneViewcamera->ViewMatrix();
 
-    skyBoxView = glm::mat4(glm::mat3(sceneViewcamera->GetViewMatrix()));
+    skyBoxView = glm::mat4(glm::mat3(sceneViewcamera->ViewMatrix()));
   
 
     defaultShader->Bind();
@@ -369,20 +395,11 @@ void ApplicationRenderer::EngineGraphicsRender()
    
 
 
-    /*sceneViewframeBuffer->Bind();
-
-    GraphicsRender::GetInstance().Clear();
-    PreRender();
-    GraphicsRender::GetInstance().Draw();
-
-    sceneViewframeBuffer->Unbind();*/
-    RenderForCamera(sceneViewcamera, sceneViewframeBuffer);
+  
+     RenderForCamera(sceneViewcamera, sceneViewframeBuffer);
 
 
-  /*  RenderForCamera(gameScenecamera, gameframeBuffer);
-
-    RenderForCamera(renderTextureCamera, renderTextureCamera->renderTexture->framebuffer);*/
-
+ 
 
     for (Camera* camera :  CameraManager::GetInstance().GetCameras())
     {
@@ -399,12 +416,9 @@ void ApplicationRenderer::EngineGraphicsRender()
        
     }
 
-    //gameframeBuffer->Bind();
-    //GraphicsRender::GetInstance().Clear();
-    //PreRender();
-    //GraphicsRender::GetInstance().Draw();
+   
+    RenderTestScene(sceneViewcamera);
 
-    //gameframeBuffer->Unbind();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -425,22 +439,17 @@ void ApplicationRenderer::EngineGameLoop()
 void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuffer)
 {
 
-  /*  sceneViewframeBuffer->Bind();
 
-    GraphicsRender::GetInstance().Clear();
-    PreRender();
-    GraphicsRender::GetInstance().Draw();*/
-
+    ShadowRender();
 
     framebuffer->Bind();
-
     GraphicsRender::GetInstance().Clear();
 
-    projection = camera->GetProjectionMatrix();
+    projection = camera->ProjectionMatrix();
 
-    view = camera->GetViewMatrix();
+    view = camera->ViewMatrix();
 
-    skyBoxView = glm::mat4(glm::mat3(camera->GetViewMatrix()));
+    skyBoxView = glm::mat4(glm::mat3(camera->ViewMatrix()));
 
 
     defaultShader->Bind();
@@ -492,12 +501,8 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
     glDepthFunc(GL_LESS);
 
-    
-    /* ScrollShader->Bind();
-       ScrollShader->setMat4("ProjectionMatrix", _projection);*/
 
-    GraphicsRender::GetInstance().Draw();
-    ParticleSystemManager::GetInstance().Render();
+     GraphicsRender::GetInstance().Draw();
 
     framebuffer->Unbind();
 
@@ -512,6 +517,41 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 
 
 }
+void ApplicationRenderer::ShadowRender()
+{
+
+    shadowDepthFBO->Bind();
+    glCullFace(GL_FRONT);
+
+    GraphicsRender::GetInstance().Clear();
+
+    LightManager::GetInstance().BindDepthForShadowLight(shadowDepthShader);
+    GraphicsRender::GetInstance().RenderShadowModels(shadowDepthShader);
+
+    glCullFace(GL_BACK);
+
+    shadowDepthFBO->Unbind();
+
+}
+
+void ApplicationRenderer::RenderTestScene(Camera* camera)
+{
+
+    testPanelFBO->Bind();
+
+    GraphicsRender::GetInstance().Clear();
+
+
+    shadowMapShader->Bind();
+    GLCALL(glActiveTexture(GL_TEXTURE0));
+    shadowMapShader->setInt("depthMap", 0);
+    GLCALL(glBindTexture(GL_TEXTURE_2D, shadowDepthFBO->GetDepthAttachementID()));
+    Quad::GetInstance().RenderQuad();
+
+    shadowMapShader->Unbind();
+    testPanelFBO->Unbind();
+}
+
 void ApplicationRenderer::PostRender()
 {
    // glDisable(GL_BLEND);

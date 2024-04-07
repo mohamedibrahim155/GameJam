@@ -66,7 +66,7 @@ public:
 
 
         // returns the view matrix calculated using Euler Angles and the LookAt Matrix
-        glm::mat4 GetViewMatrix();
+        glm::mat4 ViewMatrix();
 
        // void InitializeCamera(const CameraType& cameraType = CameraType::PERSPECTIVE);
         void InitializeCamera(CameraType cameraType = CameraType::PERSPECTIVE, float fov = ZOOM, float nearPlane = DEFAULT_NEARPLANE, float farPlane = DEFAULT_FARPLANE);
@@ -96,7 +96,7 @@ public:
         void SetCameraWidthAndHeight(float width, float height);
 
         Transform* GetTransform();
-        glm::mat4 GetProjectionMatrix();
+        glm::mat4 ProjectionMatrix();
 
         // Inherited via Entity
         void Start() override;

@@ -360,6 +360,11 @@ void SkinnedMeshRenderer::Draw(Shader* shader)
         return;
     }
     shader->Bind();
+    if (shader->useShadowMap)
+    {
+        SetLightSpaceMatrix(shader);
+    }
+
     if (shader->modelUniform)
     {
         shader->setMat4("model", transform.GetModelMatrix());
@@ -377,6 +382,7 @@ void SkinnedMeshRenderer::Draw(Shader* shader)
 
     }
 
+  
 
 
     for (unsigned int i = 0; i < meshes.size(); i++)

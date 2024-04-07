@@ -1,6 +1,7 @@
 #include "GraphicsRender.h"
 #include "DebugModels.h"
 #include "EntityManager/EntityManager.h"
+#include "LightManager.h"
 GraphicsRender::GraphicsRender()
 {
 }
@@ -110,7 +111,7 @@ void GraphicsRender::Draw()
 
 	for (ModelAndShader* modelAndShader : modelAndShaderList)
 	{
-		if (modelAndShader->model == selectedModel)  continue;
+		if (modelAndShader->model == selectedModel  )  continue;
 
 		modelAndShader->model->Draw(modelAndShader->shader);
 	}
@@ -121,7 +122,7 @@ void GraphicsRender::Draw()
 
 	for (ModelAndShader* modelAndShader :  transparentmodelAndShaderList)
 	{
-		if (modelAndShader->model == selectedModel)  continue;
+		if (modelAndShader->model == selectedModel )  continue;
 		modelAndShader->model->Draw(modelAndShader->shader);
 	}
 
@@ -225,6 +226,38 @@ Model* GraphicsRender::GetSelectedModel()
 {
 	return selectedModel;
 }
+
+uint32_t& GraphicsRender::GetDepthMap()
+{
+	return shadowFBO->GetDepthAttachementID();
+}
+
+void GraphicsRender::RenderShadowModels(Shader* shader)
+{
+	for (ModelAndShader* modelAndShader : modelAndShaderList)
+	{
+		if ( !modelAndShader->shader->useShadowMap)  continue;
+
+		modelAndShader->model->Draw(shader);
+	}
+
+
+	SortObject();
+
+	for (ModelAndShader* modelAndShader : transparentmodelAndShaderList)
+	{
+		if (!modelAndShader->shader->useShadowMap)  continue;
+
+		modelAndShader->model->Draw(shader);
+	}
+
+
+	
+	EntityManager::GetInstance().Render();
+
+}
+
+
 
 void GraphicsRender::ClearData()
 {

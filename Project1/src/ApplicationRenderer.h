@@ -57,10 +57,14 @@ public:
 	void EngineGraphicsRender();
 	void EngineGameLoop();
 	void RenderForCamera(Camera* camera, FrameBuffer* framebuffer);
+
+	void ShadowRender();
+	void RenderTestScene(Camera* camera);
 	
 	FrameBufferSpecification specification;
 	FrameBuffer* sceneViewframeBuffer;
 	FrameBuffer* gameframeBuffer;
+	FrameBuffer* testPanelFBO;
 
 	FrameBuffer* shadowDepthFBO;
 
@@ -91,6 +95,7 @@ private:
 	Shader* alphaCutoutShader;
 	Shader* animationShader;
 	Shader* shadowMapShader;
+	Shader* shadowDepthShader;
 
 	Shader* stencilShader;
 	Shader* skyboxShader;

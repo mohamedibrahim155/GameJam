@@ -19,8 +19,16 @@ public:
     static const unsigned int MAX_LIGHT = 11;
     
     const std::vector<Light*>& GetLightList();
+
+    Light* GetShadowLight();
+    void BindDepthForShadowLight(Shader* shader);
+    void SetLightForShadow(Light* light);
+
+
 private:
     std::vector<Light*> lightList;
+
+    Light* shadowLight = nullptr;
 
 };
 

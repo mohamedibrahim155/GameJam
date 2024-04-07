@@ -8,6 +8,8 @@
 #include "SceneViewportPanel.h"
 #include "ToolPanel.h"
 #include "GameViewportPanel.h"
+#include "DepthTestPanel.h"
+
 class ApplicationRenderer;
 class EditorLayout
 {
@@ -32,6 +34,7 @@ private:
 	SceneViewportPanel* sceneViewportPanel;
 	ToolPanel* toolPanel;
 	GameViewportPanel* gameviewportPanel;
+	DepthTestPanel* testPanel;
 
 	Object* currentSelectedObject = nullptr;
 

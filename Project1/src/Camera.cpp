@@ -61,7 +61,7 @@ Camera::~Camera()
 
 
 // returns the view matrix calculated using Euler Angles and the LookAt Matrix
-glm::mat4 Camera::GetViewMatrix()
+glm::mat4 Camera::ViewMatrix()
 {
     glm::mat4 viewMat = glm::mat4(1.0f);
     viewMat = glm::lookAt(transform.position, transform.position + transform.GetForward(), transform.GetUp());
@@ -249,7 +249,7 @@ Transform* Camera::GetTransform()
     return &transform;
 }
 
-glm::mat4 Camera::GetProjectionMatrix()
+glm::mat4 Camera::ProjectionMatrix()
 {
     return projectionMatrix;
 }

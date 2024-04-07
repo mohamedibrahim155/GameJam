@@ -13,8 +13,8 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
         return;
     }
 
-    glm::mat4 cameraView = sceneViewportCamera->GetViewMatrix();
-    glm::mat4 cameraProjection = sceneViewportCamera->GetProjectionMatrix();
+    glm::mat4 cameraView = sceneViewportCamera->ViewMatrix();
+    glm::mat4 cameraProjection = sceneViewportCamera->ProjectionMatrix();
 
   
 

@@ -17,7 +17,7 @@ CharacterAnimation::CharacterAnimation()
     LoadAnimation("Models/Character/Waving.fbx","Wave");
 
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
-
+    GraphicsRender::GetInstance().animationShader->useShadowMap = true;
     InputManager::GetInstance().AddObserver(this);
 }
 

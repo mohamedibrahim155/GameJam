@@ -47,6 +47,7 @@ in vec3 FragPosition;
 in vec3 Normal;  
 in vec2 TextureCoordinates;
 in vec4 meshColour;
+in vec4 FragPosLightSpace;
 
 uniform vec3 viewPos;
 uniform Material material;
@@ -65,7 +66,7 @@ uniform float alphaCutOffThreshold;
 
 float temp;
 
-vec4 CalculateLight(vec3 norm, vec3 viewDir );
+vec4 CalculateLight(vec3 norm, vec3 viewDir,float shadowCalc );
 float near = 0.1; 
 float far  = 100.0; 
 
@@ -78,6 +79,11 @@ float LinearizeDepth(float depth)
 uniform bool isDepthBuffer;
 uniform samplerCube skybox;
 
+uniform float biasValue;
+uniform vec3 lightDir;
+uniform sampler2D shadowMap;
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal);
+
 void main()
 {    
     // properties
@@ -86,7 +92,9 @@ void main()
 
     vec3 R = reflect(-viewDir, norm);
 
-    vec4 result = CalculateLight(norm,viewDir);
+    float shadow = 1 - ShadowCalculation(FragPosLightSpace,norm);
+
+    vec4 result = CalculateLight(norm,viewDir,shadow);
   
      vec4 cutOff = texture(diffuse_Texture, TextureCoordinates);
  
@@ -143,10 +151,34 @@ void main()
 
 }
 
+
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal)
+{
+   // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), biasValue); 
+
+    float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+
+	if(projCoords.z > 1.0)
+	{
+		shadow = 0;
+	}
+
+    return shadow;
+}
+
   
 
 
-vec4 CalculateLight(vec3 norm, vec3 viewDir )
+vec4 CalculateLight(vec3 norm, vec3 viewDir,float shadowCalc)
 {
 
     vec4 result = vec4(0,0,0,0);
@@ -171,7 +203,7 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir )
 
 
           vec4 diffuse = diff * lights[index].color;
-	       diffuse *= textureColor;
+	       diffuse *= textureColor * shadowCalc ;
 
            vec4 specularColor = texture(specular_Texture, TextureCoordinates);
            vec3 reflectDir = reflect(-lightDir, norm);
@@ -192,7 +224,7 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir )
 //         vec3 diffuse =  lights[index].diffuse * diff * meshColour.rgb;
 //         vec3 specular =  lights[index].specular * spec *meshColour.rgb;
 
-         vec4 finalValueforDir =(ambientColor+diffuse+specular);
+         vec4 finalValueforDir =(ambientColor+ diffuse  +specular);
          //vec4 finalValueforDir = material.baseColor;
 
         // result+=finalValueforDir*lights[index].color;
