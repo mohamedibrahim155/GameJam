@@ -40,7 +40,14 @@ PlayerController::PlayerController(ApplicationRenderer* application)
 {
     this->application = application;
 
+ 
+
     LoadModel("Models/Character/X Bot.fbx");
+
+    name = "PlayerController";
+    tag = "Player";
+    entityLayer = Layer::PLAYER;
+
     transform.SetScale(glm::vec3(0.01f));
 
     LoadAnimation("Models/Character/Idle.fbx", "Idle");

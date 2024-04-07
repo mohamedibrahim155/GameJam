@@ -1,6 +1,6 @@
 #include"ApplicationRenderer.h"
 #include "Player/PlayerController.h"
-
+#include "PostProcessing bounds/CubeVolume.h"
 ApplicationRenderer::ApplicationRenderer()
 {
     sceneViewcamera = new Camera();
@@ -171,6 +171,8 @@ void ApplicationRenderer::InitializeShaders()
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
     GraphicsRender::GetInstance().stencilShader = stencilShader; 
     GraphicsRender::GetInstance().animationShader = animationShader;
+    GraphicsRender::GetInstance().alphaBlendShader = alphaBlendShader;
+    GraphicsRender::GetInstance().alphaCutoutShader = alphaCutoutShader;
 
    
 
@@ -252,6 +254,12 @@ void ApplicationRenderer::Start()
      terrain->transform.SetRotation(glm::vec3(-90, 0, 0));
      terrain->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
 
+
+     CubeVolume* cube = new CubeVolume();
+     cube->transform.SetPosition(glm::vec3(0, -1, 5));
+     cube->transform.SetScale(glm::vec3(0.5f));
+     cube->Intialize(gameScenecamera);
+     
 
 }
 

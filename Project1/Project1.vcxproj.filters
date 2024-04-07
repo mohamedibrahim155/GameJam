@@ -303,6 +303,12 @@
     <ClCompile Include="src\Player\CameraController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PostProcessing bounds\BaseVolume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PostProcessing bounds\CubeVolume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -627,6 +633,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Cursor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PostProcessing bounds\BaseVolume.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PostProcessing bounds\CubeVolume.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

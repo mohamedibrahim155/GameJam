@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\PostProcessing bounds\CubeVolume.cpp" />
+    <ClCompile Include="src\PostProcessing bounds\BaseVolume.cpp" />
     <ClCompile Include="src\Player\CameraController.cpp" />
     <ClCompile Include="src\Player\States\RunState.cpp" />
     <ClCompile Include="src\Player\States\IdleState.cpp" />
@@ -238,6 +240,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\PostProcessing bounds\CubeVolume.h" />
+    <ClInclude Include="src\PostProcessing bounds\BaseVolume.h" />
     <ClInclude Include="src\Cursor.h" />
     <ClInclude Include="src\Player\CameraController.h" />
     <ClInclude Include="src\Player\States\RunState.h" />
