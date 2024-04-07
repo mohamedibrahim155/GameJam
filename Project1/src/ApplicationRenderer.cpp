@@ -501,6 +501,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     
     /* ScrollShader->Bind();
        ScrollShader->setMat4("ProjectionMatrix", _projection);*/
+    EntityManager::GetInstance().Render();
 
     GraphicsRender::GetInstance().Draw();
 
@@ -515,7 +516,6 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
             camera->postprocessing->ApplyPostprocessing(framebuffer);
         }
     }
-    EntityManager::GetInstance().Render();
 
      framebuffer->Unbind();
 }
