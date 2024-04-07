@@ -35,11 +35,24 @@ void PhysicsSkinMeshRenderer::LoadModel(std::string const& path, bool isLoadText
 void PhysicsSkinMeshRenderer::DrawProperties()
 {
 	PhysXObject::DrawProperties();
+
+    ImGui::NewLine();
+    if (!ImGui::TreeNodeEx("Physical Mesh",ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        return;
+    }
+    float column = 250;
+    DrawBoolImGui("EnableControlTime", enableAnimationControl, column);
+    DrawDragFloatImGui("ControlTime", controlTime, 0.001f, 0, 1, columnWidth);
+
+    ImGui::TreePop();
 }
 
 void PhysicsSkinMeshRenderer::SceneDraw()
 {
 	PhysXObject::SceneDraw();
+
+    
 }
 
 void PhysicsSkinMeshRenderer::Start()
@@ -54,35 +67,43 @@ void PhysicsSkinMeshRenderer::Update(float deltaTime)
     if (deltaTime > 1.0f / 60.0f) { deltaTime = 1.0f / 60.0f; }
 
 
-
-    currentTimeStep += deltaTime * frameSpeed;
-
-    if (GetCurrentAnimation()->isLoop && currentTimeStep >= GetCurrentAnimation()->Duration)
+    if (!enableAnimationControl)
     {
-        currentTimeStep = 0;
-    }
+        currentTimeStep += deltaTime * frameSpeed;
 
-    if (isBlending)
-    {
-        previousTimeStep += deltaTime * frameSpeed;
-
-        currentBlendTime += deltaTime;
-
-
-        if (previousAnimation->isLoop && previousTimeStep >= previousAnimation->Duration)
+        if (GetCurrentAnimation()->isLoop && currentTimeStep >= GetCurrentAnimation()->Duration)
         {
-            previousTimeStep = 0;
-
+            currentTimeStep = 0;
         }
 
-        if (currentBlendTime > blendDuration)
+        if (isBlending)
         {
-            currentBlendTime = 0;
-            isBlending = false;
+            previousTimeStep += deltaTime * frameSpeed;
+
+            currentBlendTime += deltaTime;
+
+
+            if (previousAnimation->isLoop && previousTimeStep >= previousAnimation->Duration)
+            {
+                previousTimeStep = 0;
+
+            }
+
+            if (currentBlendTime > blendDuration)
+            {
+                currentBlendTime = 0;
+                isBlending = false;
+            }
+
+
         }
-
-
     }
+    else
+    {
+        currentTimeStep = MathUtils::Math::Remap(controlTime, 0, 1, 0, GetCurrentAnimation()->Duration);
+    }
+
+    
 
     UpdateSkeletonAnimation(deltaTime);
 }

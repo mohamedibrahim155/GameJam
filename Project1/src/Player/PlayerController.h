@@ -6,11 +6,12 @@
 
 
 class CameraController;
-
-class PlayerController : public PhysicsSkinMeshRenderer, public iInputObserver
+class ApplicationRenderer;
+class PlayerController : public PhysicsSkinMeshRenderer
 {
 public:
 	PlayerController();
+	PlayerController(ApplicationRenderer* application);
 	~PlayerController();
 
 	 void DrawProperties() override;
@@ -36,22 +37,14 @@ public:
 	 void RmoveState(ePlayerState playerstate);
 	 void SetPlayerState(ePlayerState state);
 
+	 float playerMoveSpeed = 2.5f;
+
 	 BaseState* GetCurrentState() const;
 	 BaseState* GetState(ePlayerState state);
 
-	 float playerMoveSpeed = 2.5f;
 	 CameraController* cameraController = nullptr;
 
 private:
-
-
-	// Inherited via iInputObserver
-	void OnKeyPressed(const int& key) override;
-	void OnKeyReleased(const int& key) override;
-	void OnKeyHold(const int& key) override;
-	void OnMouseButtonPressed(const int& mouseButton) override;
-	void OnMouseButtonReleased(const int& mouseButton) override;
-
 	void DrawPlayerControllerProperties();
 
 	int currentStateIndex = 0;
@@ -59,10 +52,6 @@ private:
 	BaseState* currentState;
 	std::unordered_map<ePlayerState, BaseState*> listOfPlayerStates;
 
-
-
-	// Inherited via iInputObserver
-	void OnMouseMouseMove(float& moveX, float& moveY) override;
-
+	ApplicationRenderer* application;
 };
 

@@ -3,7 +3,7 @@
 #include "States/IdleState.h"
 #include "States/RunState.h"
 #include "CameraController.h"
-
+#include "../ApplicationRenderer.h"
 PlayerController::PlayerController()
 {
     LoadModel("Models/Character/X Bot.fbx");
@@ -16,7 +16,40 @@ PlayerController::PlayerController()
 
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
 
-    InputManager::GetInstance().AddObserver(this);
+
+    Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::CAPSULE);
+
+    rigidBody->freezeRotation = Contraints(true, true, true);
+    collider->SetCentreOffset(glm::vec3(0, 1, 0));
+    collider->AsCapsuleCollider()->SetRadius(0.3f);
+    collider->AsCapsuleCollider()->SetHalfLength(0.7f);
+
+    PhysicsMaterial playermaterial;
+    playermaterial.dynamicFriction = 1;
+    collider->SetPhysicsMaterial(playermaterial);
+
+    AddState(ePlayerState::IDLE, new IdleState());
+    AddState(ePlayerState::RUN, new RunState());
+
+    frameSpeed = 30;
+
+    cameraController = new CameraController(this);
+}
+
+PlayerController::PlayerController(ApplicationRenderer* application)
+{
+    this->application = application;
+
+    LoadModel("Models/Character/X Bot.fbx");
+    transform.SetScale(glm::vec3(0.01f));
+
+    LoadAnimation("Models/Character/Idle.fbx", "Idle");
+    LoadAnimation("Models/Character/Running.fbx", "Run");
+
+    transform.SetRotation(glm::vec3(0, 180, 0));
+
+    GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
+
 
     Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::CAPSULE);
 
@@ -39,6 +72,21 @@ PlayerController::PlayerController()
 
 PlayerController::~PlayerController()
 {
+    delete cameraController;
+
+    for (std::pair<ePlayerState, BaseState*> pair : listOfPlayerStates)
+    {
+        if(pair.second)
+        delete pair.second;
+    }
+
+    listOfPlayerStates.clear();
+
+    if (currentState)
+    {
+        delete currentState;
+    }
+
 }
 
 
@@ -46,6 +94,8 @@ PlayerController::~PlayerController()
 void PlayerController::Start()
 {
     OnStateChange(ePlayerState::IDLE);
+
+    application->ChangeCursorState(eCursorState::LOCKED);
 }
 
 void PlayerController::Update(float deltaTime)
@@ -70,7 +120,7 @@ void PlayerController::DrawProperties()
 
     DrawPlayerControllerProperties();
 
-    GetCurrentState()->DrawStateProperties();
+    //GetCurrentState()->DrawStateProperties();
 
 
 }
@@ -141,37 +191,9 @@ BaseState* PlayerController::GetState(ePlayerState state)
     return listOfPlayerStates[state];
 }
 
-void PlayerController::OnKeyPressed(const int& key)
-{
-    if (key == GLFW_KEY_W || key == GLFW_KEY_S || key == GLFW_KEY_A || key == GLFW_KEY_D)
-    {
-        OnStateChange(ePlayerState::RUN);
-    }
-}
-
-void PlayerController::OnKeyReleased(const int& key)
-{
-    if (key == GLFW_KEY_W || key == GLFW_KEY_S || key == GLFW_KEY_A || key == GLFW_KEY_D)
-    {
-        OnStateChange(ePlayerState::IDLE);
-    }
-}
-
-void PlayerController::OnKeyHold(const int& key)
-{
-
-}
-
-void PlayerController::OnMouseButtonPressed(const int& mouseButton)
-{
-}
-
-void PlayerController::OnMouseButtonReleased(const int& mouseButton)
-{
-}
-
 void PlayerController::DrawPlayerControllerProperties()
 {
+    ImGui::NewLine();
     if (!ImGui::TreeNodeEx("PlayerController Properties", ImGuiTreeNodeFlags_DefaultOpen))
     {
         return;
@@ -179,10 +201,13 @@ void PlayerController::DrawPlayerControllerProperties()
 
     DrawDragFloatImGui("MoveSpeed", playerMoveSpeed, 0.1f, 1.0f);
 
+    for (std::pair<ePlayerState, BaseState*> pair : listOfPlayerStates)
+    {
+        pair.second->DrawStateProperties();
+    }
+
     ImGui::TreePop();
 
 }
 
-void PlayerController::OnMouseMouseMove(float& moveX, float& moveY)
-{
-}
+

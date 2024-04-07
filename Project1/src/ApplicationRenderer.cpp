@@ -242,7 +242,7 @@ void ApplicationRenderer::Start()
     // CharacterAnimation* character = new CharacterAnimation();
     // ParticleSystem* particle = new ParticleSystem();
 
-     PlayerController* player = new PlayerController();
+     PlayerController* player = new PlayerController(this);
      
      PhysXObject* terrain = new PhysXObject();
      terrain->LoadModel("Models/Terrain/Terrain.fbx");
@@ -606,8 +606,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
              }
              if (key == GLFW_KEY_K)
              {
-                 ChangeCursorState(eCursorState::LOCKED);
-
+                // ChangeCursorState(eCursorState::LOCKED);
              }
              InputManager::GetInstance().OnKeyPressed(key);
          }

@@ -54,10 +54,12 @@ public:
     float previousTimeStep;
     float currentBlendTime;
     float blendDuration;
+    float frameSpeed = 40.0f;
+   
 
     bool isPlayAnimation = true;
     bool isBlending = false;
-    float frameSpeed = 40.0f;
+
 private:
 
     void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
@@ -68,6 +70,11 @@ private:
 
     int boneCount = 0;
     int currentAnimationIndex = 0;
+    
+    float controlTime;
+    float columnWidth = 200;
+
+    bool enableAnimationControl = false;
 
     std::map<std::string, BoneInfo> boneInfoMap;
     std::map<std::string, BoneNode*> boneNodeMap;

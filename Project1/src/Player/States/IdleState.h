@@ -11,7 +11,7 @@ public:
 	void DrawStateProperties() override;
 private:
 
-
+	bool HandleInput();
 
 
 
