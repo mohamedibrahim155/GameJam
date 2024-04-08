@@ -1,6 +1,6 @@
 #include"ApplicationRenderer.h"
-#include "Player/PlayerController.h"
-#include "PostProcessing bounds/CubeVolume.h"
+
+#include "SceneManager/Scenes/SceneOne.h"
 ApplicationRenderer::ApplicationRenderer()
 {
     sceneViewcamera = new Camera();
@@ -140,9 +140,13 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     renderTextureCamera->transform.position = glm::vec3(0, 0, -1.0f);
 
     renderTextureCamera->IntializeRenderTexture(specification);
-   // renderTextureCamera->IntializeRenderTexture(new RenderTexture());
   
+    sceneViewcamera->postprocessing->InitializePostProcessing();
+    gameScenecamera->postprocessing->InitializePostProcessing();
+
     isImguiPanelsEnable = true;
+
+    SceneManager::GetInstance().application = this;
 
     PhysXEngine::GetInstance().InitializePhysX();
 }
@@ -164,18 +168,15 @@ void ApplicationRenderer::InitializeShaders()
     skyboxShader = new Shader("Shaders/SkyboxShader.vert", "Shaders/SkyboxShader.frag");
     skyboxShader->modelUniform = false;
 
-    animationShader = new Shader("Shaders/AnimationShader.vert", "Shaders/AnimationShader.frag");
-    animationShader->blendMode = OPAQUE;
+    boneAnimationShader = new Shader("Shaders/AnimationShader.vert", "Shaders/AnimationShader.frag");
+    boneAnimationShader->blendMode = OPAQUE;
 
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
     GraphicsRender::GetInstance().stencilShader = stencilShader; 
-    GraphicsRender::GetInstance().animationShader = animationShader;
+    GraphicsRender::GetInstance().boneAnimationShader = boneAnimationShader;
     GraphicsRender::GetInstance().alphaBlendShader = alphaBlendShader;
     GraphicsRender::GetInstance().alphaCutoutShader = alphaCutoutShader;
-
-   
-
 }
 
 void ApplicationRenderer::InitializeSkybox()
@@ -205,127 +206,11 @@ void ApplicationRenderer::InitializeSkybox()
 void ApplicationRenderer::Start()
 {
 
+    BaseScene* sceneOne = new SceneOne("SceneOne");
 
-    sceneViewcamera->postprocessing->InitializePostProcessing();
-
-    gameScenecamera->postprocessing->InitializePostProcessing();
-
- 
-
-     Light* directionLight = new Light();
-     directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
-     directionLight->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-
-     directionLight->SetColor(glm::vec4(1, 1, 1, 1.0f));
-     directionLight->SetAttenuation(1, 1, 0.01f);
-     directionLight->SetInnerAndOuterCutoffAngle(11, 12);
-
-     directionLight->transform.SetRotation(glm::vec3(0, 0, 5));
-     directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
-    
-
-
-   //  Model* plant = new Model("Models/Plant.fbm/Plant.fbx");
- 
-     //Model* characterModel = new Model("Models/Character/X Bot.fbx");
-     //characterModel->name = "CharacterModel";
-     //characterModel->transform.SetScale(glm::vec3(0.01f));
-
-    // Model* characterModel = new Model("Models/Character/Adventurer Aland@Idle.fbx");
-     //GraphicsRender::GetInstance().AddModelAndShader(characterModel, defaultShader);
-
-    // SkinnedMeshRenderer* xBot = new SkinnedMeshRenderer("Models/Character/X Bot.fbx");
-    // xBot->transform.SetScale(glm::vec3(0.01f));
-    //
-    // xBot->LoadAnimation("Models/Character/Rumba Dancing.fbx");
-    //
-    // GraphicsRender::GetInstance().AddModelAndShader(xBot, animationShader);
-
-    // CharacterAnimation* character = new CharacterAnimation();
-    // ParticleSystem* particle = new ParticleSystem();
-
-     PlayerController* player = new PlayerController(this);
-     
-     PhysXObject* terrain = new PhysXObject();
-     terrain->LoadModel("Models/Terrain/Terrain.fbx");
-     GraphicsRender::GetInstance().AddModelAndShader(terrain, defaultShader);
-     terrain->name = "Terrain";
-     terrain->transform.SetPosition(glm::vec3(0, -2, 0));
-     terrain->transform.SetRotation(glm::vec3(-90, 0, 0));
-     terrain->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
-
-
-     CubeVolume* cube = new CubeVolume();
-     cube->transform.SetPosition(glm::vec3(0, -1, 5));
-     cube->transform.SetScale(glm::vec3(0.5f));
-     cube->Intialize(gameScenecamera);
-     
-
+    SceneManager::GetInstance().OnChangeScene("SceneOne");
 }
 
-void ApplicationRenderer::PreRender()
-{
-    projection = sceneViewcamera->GetProjectionMatrix();
-
-    view = sceneViewcamera->GetViewMatrix();
-
-    skyBoxView = glm::mat4(glm::mat3(sceneViewcamera->GetViewMatrix()));
-  
-
-    defaultShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(defaultShader);
-
-    defaultShader->setMat4("projection", projection);
-    defaultShader->setMat4("view", view);
-    defaultShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
-    defaultShader->setFloat("time", scrollTime);
-    defaultShader->setBool("isDepthBuffer", false);
-
-    animationShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(animationShader);
-
-    animationShader->setMat4("projection", projection);
-    animationShader->setMat4("view", view);
-    animationShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
-    animationShader->setBool("isDepthBuffer", false);
-
-    alphaBlendShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(alphaBlendShader);
-    alphaBlendShader->setMat4("projection", projection);
-    alphaBlendShader->setMat4("view", view);
-    alphaBlendShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
-    alphaBlendShader->setFloat("time", scrollTime);
-    alphaBlendShader->setBool("isDepthBuffer", false);
-
-    alphaCutoutShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(alphaCutoutShader);
-    alphaCutoutShader->setMat4("projection", projection);
-    alphaCutoutShader->setMat4("view", view);
-    alphaCutoutShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
-    alphaCutoutShader->setFloat("time", scrollTime);
-    alphaCutoutShader->setBool("isDepthBuffer", false);
-
-    solidColorShader->Bind();
-    solidColorShader->setMat4("projection", projection);
-    solidColorShader->setMat4("view", view);
-
-    stencilShader->Bind();
-    stencilShader->setMat4("projection", projection);
-    stencilShader->setMat4("view", view);
-
-    glDepthFunc(GL_LEQUAL);
-    skyboxShader->Bind();
-    skyboxShader->setMat4("projection", projection);
-    skyboxShader->setMat4("view", skyBoxView);
-
-    GraphicsRender::GetInstance().SkyBoxModel->Draw(*skyboxShader);
-    glDepthFunc(GL_LESS);
-
-
-    /* ScrollShader->Bind();
-       ScrollShader->setMat4("ProjectionMatrix", _projection);*/
-
-}
 
 void ApplicationRenderer::Render()
 {
@@ -335,21 +220,14 @@ void ApplicationRenderer::Render()
     EditorLayout::GetInstance().InitializeEditors();
 
     Time::GetInstance().lastFrame = glfwGetTime();
-   // glEnable(GL_BLEND);
-  //  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-   
+
     while (!glfwWindowShouldClose(window))
     {
-
         Time::GetInstance().SetCurrentTime(glfwGetTime());
-       
-      
-       // scrollTime += Time::GetInstance().deltaTime;
 
         EngineGameLoop();
 
         EngineGraphicsRender();
-
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -378,31 +256,13 @@ void ApplicationRenderer::EngineGraphicsRender()
         PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
     }
 
-   
-
-
-    /*sceneViewframeBuffer->Bind();
-
-    GraphicsRender::GetInstance().Clear();
-    PreRender();
-    GraphicsRender::GetInstance().Draw();
-
-    sceneViewframeBuffer->Unbind();*/
     RenderForCamera(sceneViewcamera, sceneViewframeBuffer);
-
-
-  /*  RenderForCamera(gameScenecamera, gameframeBuffer);
-
-    RenderForCamera(renderTextureCamera, renderTextureCamera->renderTexture->framebuffer);*/
-
 
     for (Camera* camera :  CameraManager::GetInstance().GetCameras())
     {
         if (camera->renderTexture == nullptr)
         {
-            RenderForCamera(camera, gameframeBuffer);                  // GAME SCENE CAMERA
-
-           
+            RenderForCamera(camera, gameframeBuffer);
         }
         else
         {
@@ -411,12 +271,6 @@ void ApplicationRenderer::EngineGraphicsRender()
        
     }
 
-    //gameframeBuffer->Bind();
-    //GraphicsRender::GetInstance().Clear();
-    //PreRender();
-    //GraphicsRender::GetInstance().Draw();
-
-    //gameframeBuffer->Unbind();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -431,6 +285,7 @@ void ApplicationRenderer::EngineGameLoop()
     {
         EntityManager::GetInstance().Update(Time::GetInstance().deltaTime);
         InputManager::GetInstance().Update(Time::GetInstance().deltaTime);
+        SceneManager::GetInstance().Update();
         ParticleSystemManager::GetInstance().Update(Time::GetInstance().deltaTime);
     }
 
@@ -438,13 +293,6 @@ void ApplicationRenderer::EngineGameLoop()
 }
 void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuffer)
 {
-
-  /*  sceneViewframeBuffer->Bind();
-
-    GraphicsRender::GetInstance().Clear();
-    PreRender();
-    GraphicsRender::GetInstance().Draw();*/
-
 
     framebuffer->Bind();
 
@@ -466,12 +314,12 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", false);
 
-    animationShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(animationShader);
-    animationShader->setMat4("projection", projection);
-    animationShader->setMat4("view", view);
-    animationShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
-    animationShader->setBool("isDepthBuffer", false);
+    boneAnimationShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(boneAnimationShader);
+    boneAnimationShader->setMat4("projection", projection);
+    boneAnimationShader->setMat4("view", view);
+    boneAnimationShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
+    boneAnimationShader->setBool("isDepthBuffer", false);
 
 
     alphaBlendShader->Bind();
@@ -506,23 +354,18 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
     glDepthFunc(GL_LESS);
 
-    
-    /* ScrollShader->Bind();
-       ScrollShader->setMat4("ProjectionMatrix", _projection);*/
+
     EntityManager::GetInstance().Render();
+
+    SceneManager::GetInstance().Render();
 
     GraphicsRender::GetInstance().Draw();
 
     ParticleSystemManager::GetInstance().Render();
 
-   
-
     if (camera->isPostprocessing)
     {
-       // if (camera->postprocessing.isPostProccesingEnabled)
-        {
-            camera->postprocessing->ApplyPostprocessing(framebuffer);
-        }
+        camera->postprocessing->ApplyPostprocessing(framebuffer);
     }
 
      framebuffer->Unbind();
@@ -563,13 +406,13 @@ void ApplicationRenderer::Clear()
 
 void ApplicationRenderer::ShutDown()
 {
+
     PhysXEngine::GetInstance().ShutDown();
+    SceneManager::GetInstance().ShutDown();
 }
 
 void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 {
-   // if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        //glfwSetWindowShouldClose(window, true);
 
     float cameraSpeed=25;
 
@@ -613,10 +456,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
              {
                  ChangeCursorState(eCursorState::VISIBLE);
              }
-             if (key == GLFW_KEY_K)
-             {
-                // ChangeCursorState(eCursorState::LOCKED);
-             }
+             
              InputManager::GetInstance().OnKeyPressed(key);
          }
          else if(action == GLFW_RELEASE)
@@ -636,14 +476,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
         float xpos = static_cast<float>(xposIn);
         float ypos = static_cast<float>(yposIn);
      
-        /*if (firstMouse)
-        {
-            firstMouse = false;
-            return;
-        }*/
-        
-
-
+      
         currentMousePos.x = xpos;
         currentMousePos.y = ypos;
 
@@ -656,18 +489,11 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
         lastMousePos.x = xpos;
         lastMousePos.y = ypos;
 
-        //glm::vec2 mouseDeltaPos = InputManager::GetInstance().mouseDelta;
-
          if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS && EditorLayout::GetInstance().IsViewportHovered())
          {
-
             sceneViewcamera->ProcessMouseMovement(mouseDeltaPos.x, mouseDeltaPos.y);
          }
-         
-         if (isPlayMode  && EditorLayout::GetInstance().IsGameViewportHovered())
-         {
-            // InputManager::GetInstance().OnMouseMoveObservers(xpos, ypos);
-         }
+
  }
 
  void ApplicationRenderer::MouseHeldCallBack(GLFWwindow* window, int& button, int& action, int& mods)
@@ -680,8 +506,6 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
      {
          InputManager::GetInstance().OnMouseButtonReleased(button);
      }
-
-
  }
 
  void ApplicationRenderer::MouseScroll(GLFWwindow* window, double xoffset, double yoffset)
@@ -691,18 +515,6 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
  void ApplicationRenderer::MouseInputUpdate()
  {
-     ////if (firstMouse) return;
-     //InputManager::GetInstance().mouseDelta = InputManager::GetInstance().mouseCurrentPosition - InputManager::GetInstance().mouseLastPosition;
-
-     //// Invert Y-axis 
-     //InputManager::GetInstance().mouseDelta.y = -InputManager::GetInstance().mouseDelta.y;
-
-     //smoothedMouseDelta = smoothedMouseDelta * mouseSmoothingFactor + InputManager::GetInstance().mouseDelta * (1.0f - mouseSmoothingFactor);
-     //InputManager::GetInstance().mouseLastPosition = InputManager::GetInstance().mouseCurrentPosition;
-
-
-     //InputManager::GetInstance().SetMouseSmoothDelta(smoothedMouseDelta);
-
 
       // Calculate the raw mouse delta
      glm::vec2 rawMouseDelta = InputManager::GetInstance().mouseCurrentPosition - InputManager::GetInstance().mouseLastPosition;

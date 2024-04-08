@@ -9,7 +9,6 @@ PhysXEngine::PhysXEngine()
 
 PhysXEngine::~PhysXEngine()
 {
-	//ShutDown();
 }
 
 PhysXEngine& PhysXEngine::GetInstance()
@@ -69,6 +68,9 @@ void PhysXEngine::InitializePhysX()
 
 void PhysXEngine::ShutDown()
 {
+	
+	physicsObjects.clear();
+
 	PX_RELEASE(scene);
 	PX_RELEASE(dispatcher);
 	PX_RELEASE(physics);

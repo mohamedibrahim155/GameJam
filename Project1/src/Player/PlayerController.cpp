@@ -14,7 +14,7 @@ PlayerController::PlayerController()
 
     transform.SetRotation(glm::vec3(0, 180, 0));
 
-    GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
+    GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().boneAnimationShader);
 
 
     Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::CAPSULE);
@@ -55,7 +55,7 @@ PlayerController::PlayerController(ApplicationRenderer* application)
 
     transform.SetRotation(glm::vec3(0, 180, 0));
 
-    GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
+    GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().boneAnimationShader);
 
 
     Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::CAPSULE);
@@ -79,7 +79,10 @@ PlayerController::PlayerController(ApplicationRenderer* application)
 
 PlayerController::~PlayerController()
 {
-    delete cameraController;
+   /* if (cameraController)
+    {
+        delete cameraController;
+    }
 
     for (std::pair<ePlayerState, BaseState*> pair : listOfPlayerStates)
     {
@@ -92,7 +95,7 @@ PlayerController::~PlayerController()
     if (currentState)
     {
         delete currentState;
-    }
+    }*/
 
 }
 

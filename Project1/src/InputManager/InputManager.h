@@ -26,6 +26,8 @@ public:
 	void SetMouseSmoothDelta(const glm::vec2& delta);
 	void InputAxis();
 
+	void ClearObservers();
+
 	float GetMouseX();
 	float GetMouseY();
 	float GetMouseDeltaX();

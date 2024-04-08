@@ -9,6 +9,8 @@ public:
 
 	void AddCamera(Camera* camera);
 	void RemoveCamera(Camera* camera);
+	void ClearCameras();
+
 
 	Camera* GetMainCamera();
 

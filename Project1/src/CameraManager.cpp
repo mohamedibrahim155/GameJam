@@ -29,6 +29,16 @@ void CameraManager::RemoveCamera(Camera* camera)
 	listOfCameras.erase(it, listOfCameras.end());
 }
 
+void CameraManager::ClearCameras()
+{
+	for (Camera* camera : listOfCameras)
+	{
+		delete camera;
+	}
+
+	listOfCameras.clear();
+}
+
 Camera* CameraManager::GetMainCamera()
 {
 	for (Camera* camera : listOfCameras)

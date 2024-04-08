@@ -9,6 +9,8 @@ EntityManager& EntityManager::GetInstance()
     return instance;
 }
 
+
+
 void EntityManager::AddEntity(Entity* entity)
 {
     std::string entityId = std::to_string((int)listOfEntities.size());
@@ -52,6 +54,11 @@ void EntityManager::RemoveEntity(const std::string& entityId)
             return;
         }
     }
+}
+
+void EntityManager::ClearEntitiesList()
+{
+    listOfEntities.clear();
 }
 
 void EntityManager::Start()
@@ -118,6 +125,26 @@ void EntityManager::Render()
                 item.second->Render();
             }
         }
+    }
+    catch (const std::exception& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+}
+
+void EntityManager::CleanUp()
+{
+    try
+    {
+        for (std::pair<const std::string&, Entity*> item : listOfEntities)
+        {
+            if (item.second)
+            {
+                delete item.second;
+            }
+        }
+
+        ClearEntitiesList();
     }
     catch (const std::exception& e)
     {

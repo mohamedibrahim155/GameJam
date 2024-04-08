@@ -15,7 +15,7 @@ CharacterAnimation::CharacterAnimation()
     LoadAnimation("Models/Character/Mma Kick.fbx","Kick");
     LoadAnimation("Models/Character/Snake Hip Hop Dance.fbx", "Dance2");
 
-    GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().animationShader);
+    GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().boneAnimationShader);
 
     InputManager::GetInstance().AddObserver(this);
 }

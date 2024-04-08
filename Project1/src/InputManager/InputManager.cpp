@@ -173,6 +173,16 @@ void InputManager::InputAxis()
 
 }
 
+void InputManager::ClearObservers()
+{
+	for (iInputObserver* observers  : observersList)
+	{
+		delete observers;
+	}
+
+	observersList.clear();
+}
+
 float InputManager::GetMouseX()
 {
 	return mouseX;

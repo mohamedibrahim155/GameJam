@@ -4,7 +4,7 @@
 #include"model.h"
 #include "Shader.h"
 #include "Camera.h"
-
+#include "SkinnedMeshRenderer.h"
 
 struct ModelAndShader
 {
@@ -61,6 +61,8 @@ public:
 	void DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec4 color ,bool isWireFrame = false);
 	void DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec3 rotation, glm::vec4 color ,bool isWireFrame = false);
 	void DrawLine(glm::vec3 start, glm::vec3 endpoint, glm::vec4 color);
+	void ClearModelList();
+	void CleanUpData();
 
 	Model* selectedModel;
 	Shader* selectedShader;
@@ -68,16 +70,16 @@ public:
 	Shader* defaultShader;
 	Shader* solidColorShader;
 	Shader* stencilShader;
-	Shader* animationShader;
+	Shader* boneAnimationShader;
 	Shader* alphaCutoutShader;
 	Shader* alphaBlendShader;
 	void SetSelectedModel(Model* model);
 	Model* GetSelectedModel();
 
+
 private:
 	
 
-	void ClearData();
 
 
 

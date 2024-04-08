@@ -9,11 +9,7 @@ RigidBody::RigidBody()
 
 RigidBody::~RigidBody()
 {
-	if (rigidActor)
-	{
-		rigidActor->release();
-		isRigidBodyInitilized = false;
-	}
+	
 }
 
 PxRigidDynamic* RigidBody::AsDynamicRigidBody()

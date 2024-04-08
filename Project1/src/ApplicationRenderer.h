@@ -26,12 +26,12 @@
 #include "InputManager/InputManager.h"
 #include "EntityManager/EntityManager.h"
 #include "CameraManager.h"
-#include "SkinnedMeshRenderer.h"
 #include "CharacterAnimation/CharacterAnimation.h"
 #include "ParticleSystem/ParticleSystemManager.h"
-#include "ParticleSystem/ParticleSystem.h"
+#include "SceneManager/SceneManager.h"
 #include "PhysX/PhysXEngine.h"
 #include "Cursor.h"
+
 class ApplicationRenderer
 {
 public:
@@ -49,7 +49,6 @@ public:
 	void InitializeSkybox();
 	
 	void Start();
-	void PreRender();
 	void Render();
 	void PostRender();
 	void Clear();
@@ -69,6 +68,15 @@ public:
 	Camera* gameScenecamera;
 	Camera* renderTextureCamera;
 
+	Shader* defaultShader;
+	Shader* solidColorShader;
+	Shader* alphaBlendShader;
+	Shader* alphaCutoutShader;
+	Shader* boneAnimationShader;
+
+	Shader* stencilShader;
+	Shader* skyboxShader;
+
 	glm::mat4 projection;
 	glm::mat4 view;
 	glm::mat4 skyBoxView;
@@ -79,21 +87,8 @@ public:
 	int windowWidth;
 	int  WindowHeight;
 private:
+
 	GLFWwindow* window;
-	
-	
-
-	//GraphicsRender render;
-
-	Shader* defaultShader;
-	Shader* solidColorShader;
-	Shader* alphaBlendShader;
-	Shader* alphaCutoutShader;
-	Shader* animationShader;
-
-	Shader* stencilShader;
-	Shader* skyboxShader;
-
 
 	SkyboxMaterial* skyBoxMaterial;
 

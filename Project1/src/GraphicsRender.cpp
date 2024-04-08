@@ -7,7 +7,7 @@ GraphicsRender::GraphicsRender()
 
 GraphicsRender::~GraphicsRender()
 {
-	ClearData();	
+	CleanUpData();
 }
 
 GraphicsRender& GraphicsRender::GetInstance()
@@ -223,6 +223,12 @@ void GraphicsRender::DrawLine(glm::vec3 start, glm::vec3 endpoint, glm::vec4 col
 
 }
 
+void GraphicsRender::ClearModelList()
+{
+	modelAndShaderList.clear();
+	transparentmodelAndShaderList.clear();
+}
+
 
 void GraphicsRender::SetSelectedModel(Model* model)
 
@@ -235,7 +241,7 @@ Model* GraphicsRender::GetSelectedModel()
 	return selectedModel;
 }
 
-void GraphicsRender::ClearData()
+void GraphicsRender::CleanUpData()
 {
 
 	for (ModelAndShader* modelAndShader : modelAndShaderList)

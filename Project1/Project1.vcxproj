@@ -141,6 +141,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\SceneManager\Scenes\SceneOne.cpp" />
+    <ClCompile Include="src\SceneManager\BaseScene.cpp" />
+    <ClCompile Include="src\SceneManager\SceneManager.cpp" />
     <ClCompile Include="src\PostProcessing bounds\CubeVolume.cpp" />
     <ClCompile Include="src\PostProcessing bounds\BaseVolume.cpp" />
     <ClCompile Include="src\Player\CameraController.cpp" />
@@ -240,6 +243,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\SceneManager\Scenes\SceneOne.h" />
+    <ClInclude Include="src\SceneManager\BaseScene.h" />
+    <ClInclude Include="src\SceneManager\SceneManager.h" />
     <ClInclude Include="src\PostProcessing bounds\CubeVolume.h" />
     <ClInclude Include="src\PostProcessing bounds\BaseVolume.h" />
     <ClInclude Include="src\Cursor.h" />
