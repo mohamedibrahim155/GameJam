@@ -46,6 +46,7 @@ public:
     void setMat2(const std::string& name, const glm::mat2& mat) ;  
     void setMat3(const std::string& name, const glm::mat3& mat) ;   
     void setMat4(const std::string& name, const glm::mat4& mat) ;
+    void setMat4(const std::string& name, unsigned int count, bool transpose , const float* value) ;
 
     unsigned  int FindUniformLocations(const std::string& name);
     unsigned int& GetShaderId();

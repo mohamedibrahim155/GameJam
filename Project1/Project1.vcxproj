@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\SceneManager\Scenes\SceneTwo.cpp" />
+    <ClCompile Include="src\Mesh\MeshInstance.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneOne.cpp" />
     <ClCompile Include="src\SceneManager\BaseScene.cpp" />
     <ClCompile Include="src\SceneManager\SceneManager.cpp" />
@@ -243,6 +245,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\SceneManager\Scenes\SceneTwo.h" />
+    <ClInclude Include="src\Mesh\MeshInstance.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneOne.h" />
     <ClInclude Include="src\SceneManager\BaseScene.h" />
     <ClInclude Include="src\SceneManager\SceneManager.h" />
@@ -363,6 +367,8 @@
     <None Include="Shaders\color.vert" />
     <None Include="Shaders\DefaultShader_Fragment.frag" />
     <None Include="Shaders\DefaultShader_Vertex.vert" />
+    <None Include="Shaders\MeshInstanceShader.frag" />
+    <None Include="Shaders\MeshInstanceShader.vert" />
     <None Include="Shaders\PostProcessing\Chromatic.frag" />
     <None Include="Shaders\PostProcessing\Chromatic.vert" />
     <None Include="Shaders\lighting.frag" />

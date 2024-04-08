@@ -73,6 +73,7 @@ public:
 	Shader* alphaBlendShader;
 	Shader* alphaCutoutShader;
 	Shader* boneAnimationShader;
+	Shader* defaultInstanceShader;
 
 	Shader* stencilShader;
 	Shader* skyboxShader;

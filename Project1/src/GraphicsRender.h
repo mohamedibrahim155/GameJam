@@ -5,7 +5,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "SkinnedMeshRenderer.h"
-
+#include "Mesh/MeshInstance.h"
 struct ModelAndShader
 {
 	ModelAndShader(Model* _model, Shader* _shader)
@@ -73,6 +73,7 @@ public:
 	Shader* boneAnimationShader;
 	Shader* alphaCutoutShader;
 	Shader* alphaBlendShader;
+	Shader* defaultInstanceShader;
 	void SetSelectedModel(Model* model);
 	Model* GetSelectedModel();
 

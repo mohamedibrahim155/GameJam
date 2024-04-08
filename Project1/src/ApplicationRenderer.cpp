@@ -1,6 +1,8 @@
 #include"ApplicationRenderer.h"
 
 #include "SceneManager/Scenes/SceneOne.h"
+#include "SceneManager/Scenes/SceneTwo.h"
+
 ApplicationRenderer::ApplicationRenderer()
 {
     sceneViewcamera = new Camera();
@@ -171,12 +173,17 @@ void ApplicationRenderer::InitializeShaders()
     boneAnimationShader = new Shader("Shaders/AnimationShader.vert", "Shaders/AnimationShader.frag");
     boneAnimationShader->blendMode = OPAQUE;
 
+    defaultInstanceShader = new Shader("Shaders/MeshInstanceShader.vert", "Shaders/MeshInstanceShader.frag");
+    defaultInstanceShader->blendMode = OPAQUE;
+    defaultInstanceShader->modelUniform = false;
+
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
     GraphicsRender::GetInstance().stencilShader = stencilShader; 
     GraphicsRender::GetInstance().boneAnimationShader = boneAnimationShader;
     GraphicsRender::GetInstance().alphaBlendShader = alphaBlendShader;
     GraphicsRender::GetInstance().alphaCutoutShader = alphaCutoutShader;
+    GraphicsRender::GetInstance().defaultInstanceShader = defaultInstanceShader;
 }
 
 void ApplicationRenderer::InitializeSkybox()
@@ -207,8 +214,9 @@ void ApplicationRenderer::Start()
 {
 
     BaseScene* sceneOne = new SceneOne("SceneOne");
+    BaseScene* sceneTwo = new SceneTwo("SceneTwo");
 
-    SceneManager::GetInstance().OnChangeScene("SceneOne");
+    SceneManager::GetInstance().OnChangeScene("SceneTwo");
 }
 
 
@@ -337,6 +345,15 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     alphaCutoutShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaCutoutShader->setFloat("time", scrollTime);
     alphaCutoutShader->setBool("isDepthBuffer", false);
+
+    defaultInstanceShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(defaultInstanceShader);
+
+    defaultInstanceShader->setMat4("projection", projection);
+    defaultInstanceShader->setMat4("view", view);
+    defaultInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    defaultInstanceShader->setFloat("time", scrollTime);
+    defaultInstanceShader->setBool("isDepthBuffer", false);
 
     solidColorShader->Bind();
     solidColorShader->setMat4("projection", projection);

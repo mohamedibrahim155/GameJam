@@ -188,6 +188,11 @@ void Shader::setMat4(const std::string& name, const glm::mat4& mat)
     GLCALL(glUniformMatrix4fv(FindUniformLocations(name), 1, GL_FALSE, &mat[0][0]));
 }
 
+void Shader::setMat4(const std::string& name, unsigned int count, bool transpose, const float* value)
+{
+    GLCALL(glUniformMatrix4fv(FindUniformLocations(name), count, transpose, value));
+}
+
 
 unsigned int Shader::FindUniformLocations(const std::string& name)
 {
