@@ -33,7 +33,7 @@ public:
 	{
 		ParticleModel()
 		{
-			particleModel = new Model("Models/DefaultSphere/DefaultSphere.fbx");
+			particleModel = new Model("Models/DefaultQuad/DefaultQuad.fbx");
 
 		}
 

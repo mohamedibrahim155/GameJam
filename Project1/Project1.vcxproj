@@ -141,9 +141,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
-    <ClCompile Include="src\ParticleSystem\ColorOverLifetime.cpp" />
-    <ClCompile Include="src\ParticleSystem\RotationOverLifetime.cpp" />
-    <ClCompile Include="src\ParticleSystem\SizeOverLifetime.cpp" />
+    <ClCompile Include="src\ParticleSystem\Properties\RotationOverLifetime.cpp" />
+    <ClCompile Include="src\ParticleSystem\Properties\SizeOverLifetime.cpp" />
+    <ClCompile Include="src\ParticleSystem\Properties\ColorOverLifetime.cpp" />
     <ClCompile Include="src\MeshInstancing.cpp" />
     <ClCompile Include="src\ImGui\DepthTestPanel.cpp" />
     <ClCompile Include="Extern\imGui\ImCurveEdit.cpp" />
@@ -222,13 +222,14 @@
     <ClCompile Include="src\UnLitMaterial.cpp" />
     <ClCompile Include="src\ImGui\WindowDockingPanel.cpp" />
     <ClCompile Include="src\ImGui\ToolPanel.cpp" />
-    <ClCompile Include="src\ParticleSystem\VelocityOverLifetime.cpp" />
+    <ClCompile Include="src\ParticleSystem\Properties\VelocityOverLifetime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
-    <ClInclude Include="src\ParticleSystem\ColorOverLifetime.h" />
-    <ClInclude Include="src\ParticleSystem\RotationOverLifetime.h" />
-    <ClInclude Include="src\ParticleSystem\SizeOverLifetime.h" />
+    <ClInclude Include="src\ParticleSystem\Particle.h" />
+    <ClInclude Include="src\ParticleSystem\Properties\RotationOverLifetime.h" />
+    <ClInclude Include="src\ParticleSystem\Properties\SizeOverLifetime.h" />
+    <ClInclude Include="src\ParticleSystem\Properties\ColorOverLifetime.h" />
     <ClInclude Include="src\MeshInstancing.h" />
     <ClInclude Include="src\ImGui\DepthTestPanel.h" />
     <ClInclude Include="Extern\imGui\ImCurveEdit.h" />
@@ -253,6 +254,7 @@
     <ClInclude Include="src\ParticleSystem\ParticleEmission.h" />
     <ClInclude Include="src\ParticleSystem\ParticleSystem.h" />
     <ClInclude Include="src\ParticleSystem\ParticleSystemManager.h" />
+    <ClInclude Include="src\ParticleSystem\RandomBetweenTwo.h" />
     <ClInclude Include="src\ParticleSystem\SphereEmitter.h" />
     <ClInclude Include="src\PostProcessing\SinglePassEffect.h" />
     <ClInclude Include="src\PostProcessing\PixelizationEffect.h" />
@@ -317,7 +319,7 @@
     <ClInclude Include="src\UnLitMaterial.h" />
     <ClInclude Include="src\ImGui\WindowDockingPanel.h" />
     <ClInclude Include="src\ImGui\ToolPanel.h" />
-    <ClInclude Include="src\ParticleSystem\VelocityOverLifetime.h" />
+    <ClInclude Include="src\ParticleSystem\Properties\VelocityOverLifetime.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\AnimationShader.frag" />

@@ -5,7 +5,7 @@
 #include <imgui_internal.h>
 #include <imgui.h>
 
-
+extern bool DrawVector4ImGui(std::string label, glm::vec4& values, float resetValue, float& columnWidth);
 extern void DrawTransformVector3ImGui(std::string label, glm::vec3& values, float resetValue, float& columnWidth);
 extern bool DrawTransformVector2ImGui(std::string label, glm::vec2& values, float resetValue, float& columnWidth);
 extern bool DrawDropDownImGui(std::string label, int& currentItem, const char* const* items, int size);

@@ -74,3 +74,17 @@ bool Math::DecomposeTransform(const glm::mat4& transform, glm::vec3& position,  
 
 	return true;
 }
+
+float MathUtils::Math::Remap(float value, float inputMin, float inputMax, float outputMin, float outputMax)
+{
+	
+		if (value < inputMin) value = inputMin;
+		if (value > inputMax) value = inputMax;
+
+		float normalizedValue = (value - inputMin) / (inputMax - inputMin);
+
+		float remapValue = outputMin + normalizedValue * (outputMax - outputMin);
+
+		return remapValue;
+	
+}

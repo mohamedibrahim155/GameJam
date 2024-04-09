@@ -255,16 +255,16 @@
     <ClCompile Include="src\MeshInstancing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ParticleSystem\VelocityOverLifetime.cpp">
+    <ClCompile Include="src\ParticleSystem\Properties\ColorOverLifetime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ParticleSystem\SizeOverLifetime.cpp">
+    <ClCompile Include="src\ParticleSystem\Properties\SizeOverLifetime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ParticleSystem\ColorOverLifetime.cpp">
+    <ClCompile Include="src\ParticleSystem\Properties\VelocityOverLifetime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ParticleSystem\RotationOverLifetime.cpp">
+    <ClCompile Include="src\ParticleSystem\Properties\RotationOverLifetime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -536,16 +536,22 @@
     <ClInclude Include="src\MeshInstancing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ParticleSystem\VelocityOverLifetime.h">
+    <ClInclude Include="src\ParticleSystem\Properties\ColorOverLifetime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ParticleSystem\SizeOverLifetime.h">
+    <ClInclude Include="src\ParticleSystem\Properties\SizeOverLifetime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ParticleSystem\ColorOverLifetime.h">
+    <ClInclude Include="src\ParticleSystem\Properties\VelocityOverLifetime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ParticleSystem\RotationOverLifetime.h">
+    <ClInclude Include="src\ParticleSystem\RandomBetweenTwo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleSystem\Properties\RotationOverLifetime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleSystem\Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

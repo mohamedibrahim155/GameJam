@@ -2,22 +2,14 @@
 #include "../model.h"
 #include "../EntityManager/Entity.h"
 #include "ParticleEmission.h"
-#include "VelocityOverLifetime.h"
 #include "EmitterShapeManager.h"
-#include "SizeOverLifetime.h"
-#include "RotationOverLifetime.h"
-#include "ColorOverLifetime.h"
+#include "Properties/VelocityOverLifetime.h"
+#include "Properties/SizeOverLifetime.h"
+#include "Properties/ColorOverLifetime.h"
+#include "Properties/RotationOverLifetime.h"
 
-struct Particle
-{
-	glm::vec3 position = glm::vec3(0);
-	glm::vec3 rotation = glm::vec3(0);
-	glm::vec3 scale = glm::vec3(0);
-	glm::vec3 velocity = glm::vec3(0);
-	float lifeTime = 0;
 
-}; 
-
+struct Particle;
 
 class ParticleSystem : public Model
 {
@@ -42,7 +34,6 @@ public:
 	glm::vec3 startScale = glm::vec3(1.0f);
 	glm::vec3 liftimeStartScale = glm::vec3(0.1f);
 	glm::vec3 startRotation = glm::vec3(0.8f);
-
 	glm::vec2 startVelocity = glm::vec2(3, 5);
 	glm::vec3 gravity = glm::vec3(0);
 
@@ -51,8 +42,8 @@ public:
 	EmitterShapeManager shapeManager;
 	VelocityOverLifetime velocityOverLifetime;
 	SizeOverLifetime sizeOverLifetime;
-	RotationOverLifetime rotationOverLifetime;
 	ColorOverLifetime colorOverLifetime;
+	RotationOverLifetime rotationOverLifetime;
 
 private:
 

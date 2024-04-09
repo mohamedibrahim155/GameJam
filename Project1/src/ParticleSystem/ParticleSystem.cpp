@@ -3,6 +3,7 @@
 #include "../GraphicsRender.h"
 #include "../ImGui/EditorLayout.h"
 #include "ParticleSystemManager.h"
+#include "Particle.h"
 
 
 ParticleSystem::ParticleSystem()
@@ -18,6 +19,12 @@ ParticleSystem::ParticleSystem()
 	
 
 }
+void Particle::SetLifeTime(float lifeTime)
+{
+	this->currentLifetime = lifeTime;
+	this->lifeTime = lifeTime;
+}
+
 
 ParticleSystem::~ParticleSystem()
 {
@@ -48,10 +55,12 @@ void ParticleSystem::RenderParticles()
 {
 	for (Particle& particle : mListOfParticles)
 	{
-		if (particle.lifeTime <= 0) continue;
+		if (particle.currentLifetime <= 0) continue;
 
 		particleEmission.m_ParticleModel->particleModel->transform.SetPosition(particle.position);
-		particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale);
+		particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale * sizeOverLifetime.ScaleParticle(particle));
+		particleEmission.m_ParticleModel->particleModel->transform.SetRotation(startRotation * rotationOverLifetime.AngularVelocity(particle));
+		//Find a Way to use this function colorOverLifetime.SendColorToMat(args..) inside material of the mesh.
 		particleEmission.m_ParticleModel->particleModel->Draw(GraphicsRender::GetInstance().solidColorShader);
 	}
 
@@ -124,7 +133,7 @@ void ParticleSystem::ParticleSystemProperties()
 	DrawTransformVector2ImGui("Velocity", startVelocity, 0, columnWidth);
 
 	DrawTransformVector3ImGui("Size", startScale, 0, columnWidth);
-	DrawTransformVector3ImGui("Rotation", startRotation, 0, columnWidth);
+	DrawTransformVector3ImGui("Rotation", startRotation , 0, columnWidth);
 	DrawTransformVector3ImGui("Gravity", gravity, 0, columnWidth);
 
 
@@ -178,12 +187,12 @@ void ParticleSystem::ParticleUpdate(float deltaTime)
 {
 	for (Particle& particle : mListOfParticles)
 	{
-		if (particle.lifeTime <= 0) continue;
+		if (particle.currentLifetime <= 0) continue;
 
-		particle.lifeTime -= deltaTime;
-
+		particle.currentLifetime -= deltaTime;
 		particle.velocity += gravity * deltaTime;
 		particle.position += particle.velocity * deltaTime;
+		particle.rotation += startRotation.z * rotationOverLifetime.AngularVelocity(particle) * deltaTime;
 	}
 }
 
@@ -202,9 +211,9 @@ void ParticleSystem::SpawnParticles(int count, float deltaTime)
 
 		particle->position = transform.position + pos;
 		particle->velocity = dir * GetRandomFloatNumber(startVelocity.x + velocityOverLifetime.particleSpeed, startVelocity.y + velocityOverLifetime.particleSpeed)   ;
-		particle->lifeTime =GetRandomFloatNumber(startLiftime.x, startLiftime.y);
+		particle->SetLifeTime(GetRandomFloatNumber(startLiftime.x, startLiftime.y));
 		particle->scale = startScale * GetRandomFloatNumber(particleEmission.m_ParticleModel->minParticleSize, particleEmission.m_ParticleModel->maxParticleSize);
-		
+		particle->rotation = startRotation;
 		//particle->scale = sizeOverLifetime.ScaleOverLifetime(liftimeStartScale, startScale,deltaTime);
 	}
 	
@@ -225,7 +234,7 @@ bool ParticleSystem::GetDeadParticle(Particle*& outParticle)
 {
 	for (Particle& particle : mListOfParticles)
 	{
-		if (particle.lifeTime <= 0)
+		if (particle.currentLifetime <= 0)
 		{
 			outParticle = &particle;
 			return true;

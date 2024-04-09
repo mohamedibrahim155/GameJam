@@ -11,9 +11,7 @@ public:
 
 	virtual void DrawProperties();
 	virtual void SceneDraw() = 0;
-
 	virtual void UpdateParticle(glm::vec3& pos, glm::vec3& dir) = 0;
-
 	virtual void Render() = 0;
 
 	
