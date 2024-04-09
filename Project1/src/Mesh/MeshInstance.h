@@ -21,6 +21,7 @@ class MeshInstance : public Model
 public:
 	void Draw(Shader* shader) override;
 	void AddTransformData(const TransformData& transformData);
+	void AddTransformData(const glm::vec3& position =  glm::vec3(0), const glm::vec3& rotation = glm::vec3(0), const glm::vec3 scale = glm::vec3(1));
 
 	void DrawProperties() override;
 	void SceneDraw() override;

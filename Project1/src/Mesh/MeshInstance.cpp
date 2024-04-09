@@ -2,8 +2,6 @@
 
 void MeshInstance::Draw(Shader* shader)
 {
-
-
     if (!isVisible)
     {
         return;
@@ -25,13 +23,6 @@ void MeshInstance::Draw(Shader* shader)
         {
             GLCALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
         }
-
-        //std::vector<glm::mat4> matrixList;
-        //matrixList.reserve(listOfMatices.size());
-        //for (unsigned int index = 0; index < listOfMatices.size(); index++)
-        //{
-        //    matrixList.push_back(listOfMatices[index]);
-        //}
 
         const unsigned int numberCount = listOfMatices.size();
 
@@ -60,6 +51,17 @@ void MeshInstance::AddTransformData(const TransformData& transformData)
 
 	listOfMatices.push_back(transformedMatrix);
 	meshTransformDataList.push_back(transformData);
+}
+
+void MeshInstance::AddTransformData(const glm::vec3& position, const glm::vec3& rotation, const glm::vec3 scale)
+{
+    glm::mat4 rotationMatrix = glm::mat4_cast(glm::quat(glm::radians(rotation)));
+
+    glm::mat4 transformedMatrix = glm::translate(glm::mat4(1.0f), position) * rotationMatrix *
+        glm::scale(glm::mat4(1.0f), scale);
+
+    listOfMatices.push_back(transformedMatrix);
+    meshTransformDataList.push_back(TransformData(position, rotation,scale));
 }
 
 void MeshInstance::DrawProperties()

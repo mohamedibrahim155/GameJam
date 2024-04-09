@@ -22,17 +22,38 @@ void SceneTwo::Start()
 
 
     MeshInstance* instanceMesh = new MeshInstance();
-    instanceMesh->LoadModel("Models/DefaultSphere/DefaultSphere.fbx");
-    instanceMesh->name = "InstancedSphere";
+    instanceMesh->LoadModel("Models/DefaultCube/DefaultCube.fbx");
+    instanceMesh->name = "InstancedCube";
     TransformData data;
     data.position = glm::vec3(0, 5, 1);
     data.rotation = glm::vec3(0);
     data.scale = glm::vec3(0.5f);
 
-    for (size_t i = 0; i < 10; i++)
+    const float radius = 10;
+
+    float startAngle = 45.0f; // Starting angle of the arc
+    float endAngle = 360.0f;  // Ending angle of the arc
+
+
+ /*   glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));*/
+
+
+
+    glm::vec3 center(0); // Center point
+    float objectSpacing = 20; // Spacing between objects along the circle
+
+    for (float i = 0; i < 360; i += objectSpacing)
     {
-        data.position.x += i;
-        instanceMesh->AddTransformData(data);
+        float angleRadians = glm::radians(i);
+        float x = center.x + glm::sin(angleRadians) * radius;
+        float z = center.z + glm::cos(angleRadians) * radius;
+
+        // Instantiate object at calculated position
+        instanceMesh->AddTransformData(glm::vec3(x, center.y, z));
+
 
     }
 
