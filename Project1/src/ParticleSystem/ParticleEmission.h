@@ -34,6 +34,13 @@ public:
 		ParticleModel()
 		{
 			particleModel = new Model("Models/DefaultQuad/DefaultQuad.fbx");
+			std::string difPath = "Textures/Particles/FogTexture.png";
+			Texture* diffuse = new Texture(difPath);
+			Texture* cutout = new Texture(difPath);
+			particleModel->meshes[0]->meshMaterial->material()->diffuseTexture = diffuse;
+			particleModel->meshes[0]->meshMaterial->material()->alphaTexture = cutout;
+			particleModel->meshes[0]->meshMaterial->material()->useMaskTexture = true;
+
 
 		}
 

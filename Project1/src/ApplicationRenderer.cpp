@@ -182,11 +182,16 @@ void ApplicationRenderer::InitializeShaders()
 
     shadowDepthShader = new Shader("Shaders/Shadow/ShadowDepth.vert", "Shaders/Shadow/ShadowDepth.frag");
 
+    particleShader = new Shader("Shaders/ParticleShader.vert", "Shaders/ParticleShader.frag");
+    particleShader->blendMode = ALPHA_BLEND;
+
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
     GraphicsRender::GetInstance().stencilShader = stencilShader; 
     GraphicsRender::GetInstance().animationShader = animationShader;
     GraphicsRender::GetInstance().shadowDepthShader = shadowDepthShader;
+    GraphicsRender::GetInstance().particleShader = particleShader;
+    GraphicsRender::GetInstance().alphaCutoutShader = alphaCutoutShader;
 
    
 
@@ -234,7 +239,7 @@ void ApplicationRenderer::Start()
      directionLight->SetAttenuation(1, 1, 0.01f);
      directionLight->SetInnerAndOuterCutoffAngle(11, 12);
 
-     directionLight->transform.SetRotation(glm::vec3(175, 45, 0));
+     directionLight->transform.SetRotation(glm::vec3(175, 175, 0));
      directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
 
      LightManager::GetInstance().SetLightForShadow(directionLight);
@@ -441,7 +446,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 {
 
 
-    ShadowRender();
+    //ShadowRender();
 
     framebuffer->Bind();
     GraphicsRender::GetInstance().Clear();
@@ -494,17 +499,21 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     stencilShader->setMat4("projection", projection);
     stencilShader->setMat4("view", view);
 
+    particleShader->Bind();
+    particleShader->setMat4("projection", projection);
+    particleShader->setMat4("view", view);
+
     glDepthFunc(GL_LEQUAL);
     skyboxShader->Bind();
     skyboxShader->setMat4("projection", projection);
     skyboxShader->setMat4("view", skyBoxView);
 
     GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
-    ParticleSystemManager::GetInstance().Render();
     glDepthFunc(GL_LESS);
 
 
      GraphicsRender::GetInstance().Draw();
+     ParticleSystemManager::GetInstance().Render();
 
     framebuffer->Unbind();
 

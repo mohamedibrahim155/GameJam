@@ -16,7 +16,6 @@ void BoxEmitter::DrawProperties()
 	DrawTransformVector3ImGui("Emitter Direction ", particleDir, 0, columnWidth);
 	DrawTransformVector3ImGui("Emitter Scale ", scale, 1, columnWidth);
 
-    BaseEmitterShape::DrawProperties();
 }
 
 void BoxEmitter::SceneDraw()

@@ -115,7 +115,8 @@ void Material::UpdateMaterial(Shader* shader)
 {
     shader->Bind();
 
-    shader->setVec4("material.baseColor", this->GetBaseColor().x, this->GetBaseColor().y, this->GetBaseColor().z, this->GetBaseColor().w);
+    glm::vec4 baseColor = this->GetBaseColor() * color;
+    shader->setVec4("material.baseColor", baseColor);
     shader->setVec4("material.ambientColor", this->GetAmbientColor().x, this->GetAmbientColor().y, this->GetBaseColor().z, this->GetAmbientColor().w);
 
     shader->setFloat("material.specularValue", this->GetSpecular());

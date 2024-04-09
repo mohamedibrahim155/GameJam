@@ -96,6 +96,7 @@ private:
 	Shader* animationShader;
 	Shader* ShadowQuadRenderShader;
 	Shader* shadowDepthShader;
+	Shader* particleShader;
 
 	Shader* stencilShader;
 	Shader* skyboxShader;

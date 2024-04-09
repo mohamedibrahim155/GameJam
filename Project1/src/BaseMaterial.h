@@ -15,8 +15,11 @@ public:
 
 	Material* material();
 	SkyboxMaterial* skyboxMaterial();
-
 	UnLitMaterial* unLitMaterial();
+
+
+	glm::vec4 color = glm::vec4(1);
+
 
 private:
 

@@ -58,10 +58,12 @@ void ParticleSystem::RenderParticles()
 		if (particle.currentLifetime <= 0) continue;
 
 		particleEmission.m_ParticleModel->particleModel->transform.SetPosition(particle.position);
-		particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale * sizeOverLifetime.ScaleParticle(particle));
+		particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale /** sizeOverLifetime.ScaleParticle(particle)*/);
 		particleEmission.m_ParticleModel->particleModel->transform.SetRotation(startRotation * rotationOverLifetime.AngularVelocity(particle));
 		//Find a Way to use this function colorOverLifetime.SendColorToMat(args..) inside material of the mesh.
-		particleEmission.m_ParticleModel->particleModel->Draw(GraphicsRender::GetInstance().solidColorShader);
+		//ApplyColorToMesh(colorOverLifetime.SendColorToMat(particle));
+
+		particleEmission.m_ParticleModel->particleModel->Draw(GraphicsRender::GetInstance().alphaCutoutShader);
 	}
 
 }
@@ -80,12 +82,7 @@ void ParticleSystem::InitializeParticles()
 
 void ParticleSystem::Render()
 {
-	/*std::vector<Object*> selectedObjects = EditorLayout::GetInstance().GetSelectedObjects();
-
-	if (selectedObjects.size() == 0) return;
-
-	if (selectedObjects[0] != this) return;*/
-
+	
 
 	shapeManager.Render();
 }
@@ -242,4 +239,13 @@ bool ParticleSystem::GetDeadParticle(Particle*& outParticle)
 	}
 
 	return false;
+}
+
+void ParticleSystem::ApplyColorToMesh(glm::vec4 color)
+{
+
+	for (std::shared_ptr<Mesh> mesh : particleEmission.m_ParticleModel->particleModel->meshes)
+	{
+		mesh->meshMaterial->material()->SetBaseColor(color) ;
+	}
 }

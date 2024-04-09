@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include "../Particle.h"
+#include <iostream>
 
 class ColorOverLifetime : public EmitterProperty
 {

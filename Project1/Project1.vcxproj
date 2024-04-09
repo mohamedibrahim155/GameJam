@@ -328,6 +328,8 @@
     <None Include="Shaders\color.vert" />
     <None Include="Shaders\DefaultShader_Fragment.frag" />
     <None Include="Shaders\DefaultShader_Vertex.vert" />
+    <None Include="Shaders\ParticleShader.frag" />
+    <None Include="Shaders\ParticleShader.vert" />
     <None Include="Shaders\PostProcessing\Chromatic.frag" />
     <None Include="Shaders\PostProcessing\Chromatic.vert" />
     <None Include="Shaders\lighting.frag" />

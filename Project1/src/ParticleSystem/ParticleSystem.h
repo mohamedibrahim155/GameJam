@@ -67,6 +67,7 @@ private:
 	void SpawnParticles(int count, float deltaTime);
 	void SpawnBurstParticles(Burst& burst);
 	bool GetDeadParticle(Particle*& outParticle);
+	void ApplyColorToMesh(glm::vec4 color);
 
 	float columnWidth = 150;
 	float mRateOverTimeCarryOver = 0;

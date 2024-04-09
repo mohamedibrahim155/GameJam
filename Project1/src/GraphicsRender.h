@@ -67,6 +67,8 @@ public:
 	Shader* stencilShader;
 	Shader* animationShader;
 	Shader* shadowDepthShader;
+	Shader* particleShader;
+	Shader* alphaCutoutShader;
 	void SetSelectedModel(Model* model);
 	Model* GetSelectedModel();
 

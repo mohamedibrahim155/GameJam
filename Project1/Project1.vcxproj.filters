@@ -586,5 +586,7 @@
     <None Include="Shaders\Shadow\ShadowMapShader.frag" />
     <None Include="Shaders\Shadow\ShadowDepth.vert" />
     <None Include="Shaders\Shadow\ShadowDepth.frag" />
+    <None Include="Shaders\ParticleShader.vert" />
+    <None Include="Shaders\ParticleShader.frag" />
   </ItemGroup>
 </Project>
