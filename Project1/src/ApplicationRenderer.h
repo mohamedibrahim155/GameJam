@@ -94,7 +94,7 @@ private:
 	Shader* alphaBlendShader;
 	Shader* alphaCutoutShader;
 	Shader* animationShader;
-	Shader* shadowMapShader;
+	Shader* ShadowQuadRenderShader;
 	Shader* shadowDepthShader;
 
 	Shader* stencilShader;

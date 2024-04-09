@@ -29,9 +29,19 @@ void ParticleSystem::UpdateSystem(float deltaTime)
 {
 	currentTime += deltaTime;
 
-	HandleRateOverTime(deltaTime);
-	HandleBurst(deltaTime);
-	HandleParticleMove(deltaTime);	
+	if (particleEmission.rateOverTime == 0) return;
+
+	float currentRate = (particleEmission.rateOverTime * deltaTime) + mRateOverTimeCarryOver ;
+	int numOfParticlesThisFrame = (int)currentRate;
+
+
+	mRateOverTimeCarryOver = currentRate - numOfParticlesThisFrame;
+
+	SpawnParticles(numOfParticlesThisFrame,currentTime);
+
+
+	BurstUpdate(deltaTime);
+	ParticleUpdate(deltaTime);	
 }
 
 void ParticleSystem::RenderParticles()
@@ -68,7 +78,7 @@ void ParticleSystem::Render()
 	if (selectedObjects[0] != this) return;*/
 
 
-	shapeManager.Render(transform.position);
+	shapeManager.Render();
 }
 
 void ParticleSystem::DrawProperties()
@@ -82,8 +92,13 @@ void ParticleSystem::DrawProperties()
 	}
 	ParticleSystemProperties();
 
-	DrawProperty("Emission", particleEmission);
-	DrawProperty("Shape", shapeManager);
+	DrawPropertyImGui("Emission", particleEmission);
+	DrawPropertyImGui("Velocity Over Lifetime", velocityOverLifetime);
+	DrawPropertyImGui("Size Over Lifetime", sizeOverLifetime);
+	DrawPropertyImGui("Rotation Over Lifetime", rotationOverLifetime);
+	DrawPropertyImGui("Color Over Lifetime", colorOverLifetime);
+	DrawPropertyImGui("Shape", shapeManager);
+
 
 	ImGui::TreePop();
 }
@@ -116,7 +131,7 @@ void ParticleSystem::ParticleSystemProperties()
 	ImGui::TreePop();
 }
 
-void ParticleSystem::DrawProperty(std::string propertyName, EmitterProperty& property)
+void ParticleSystem::DrawPropertyImGui(std::string propertyName, EmitterProperty& property)
 {
 	if (!ImGui::TreeNodeEx(propertyName.c_str()))
 	{
@@ -128,20 +143,9 @@ void ParticleSystem::DrawProperty(std::string propertyName, EmitterProperty& pro
 	ImGui::TreePop();
 }
 
-void ParticleSystem::HandleRateOverTime(float deltaTime)
-{
-	if (particleEmission.rateOverTime == 0) return;
-
-	float currentRate = (particleEmission.rateOverTime * deltaTime) + mRateOverTimeCarryOver;
-	int numOfParticlesThisFrame = (int)currentRate;
 
 
-	mRateOverTimeCarryOver = currentRate - numOfParticlesThisFrame;
-
-	SpawnParticles(numOfParticlesThisFrame);
-}
-
-void ParticleSystem::HandleBurst(float deltaTime)
+void ParticleSystem::BurstUpdate(float deltaTime)
 {
 
 	for (Burst& burst : particleEmission.m_ListOfBursts)
@@ -170,7 +174,7 @@ void ParticleSystem::HandleBurst(float deltaTime)
 	}
 }
 
-void ParticleSystem::HandleParticleMove(float deltaTime)
+void ParticleSystem::ParticleUpdate(float deltaTime)
 {
 	for (Particle& particle : mListOfParticles)
 	{
@@ -183,7 +187,7 @@ void ParticleSystem::HandleParticleMove(float deltaTime)
 	}
 }
 
-void ParticleSystem::SpawnParticles(int count)
+void ParticleSystem::SpawnParticles(int count, float deltaTime)
 {
 	glm::vec3 pos;
 	glm::vec3 dir;
@@ -194,13 +198,14 @@ void ParticleSystem::SpawnParticles(int count)
 		if (!GetDeadParticle(particle)) return;
 		if (particle == nullptr) return;
 
-		shapeManager.GetParticlePosAndDir(pos, dir);
+		shapeManager.UpdateParticle(pos, dir);
 
 		particle->position = transform.position + pos;
-		particle->velocity = dir * GetRandomFloatNumber(startVelocity.x, startVelocity.y);
+		particle->velocity = dir * GetRandomFloatNumber(startVelocity.x + velocityOverLifetime.particleSpeed, startVelocity.y + velocityOverLifetime.particleSpeed)   ;
 		particle->lifeTime =GetRandomFloatNumber(startLiftime.x, startLiftime.y);
 		particle->scale = startScale * GetRandomFloatNumber(particleEmission.m_ParticleModel->minParticleSize, particleEmission.m_ParticleModel->maxParticleSize);
-
+		
+		//particle->scale = sizeOverLifetime.ScaleOverLifetime(liftimeStartScale, startScale,deltaTime);
 	}
 	
 }
@@ -211,7 +216,7 @@ void ParticleSystem::SpawnBurstParticles(Burst& burst)
 
 	if (probability < burst.probability)
 	{
-		SpawnParticles(burst.count);
+		SpawnParticles(burst.count,currentTime);
 		burst.currentCycle++;
 	}
 }

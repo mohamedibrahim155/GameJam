@@ -12,11 +12,11 @@ public:
 	virtual void DrawProperties();
 	virtual void SceneDraw() = 0;
 
-	virtual void GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir) = 0;
+	virtual void UpdateParticle(glm::vec3& pos, glm::vec3& dir) = 0;
 
-	virtual void Render(glm::vec3& pos) = 0;
+	virtual void Render() = 0;
 
-	float particleWidth = 150;
+	
 	bool isRandomDir;
 
 };

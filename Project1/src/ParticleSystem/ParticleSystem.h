@@ -2,7 +2,11 @@
 #include "../model.h"
 #include "../EntityManager/Entity.h"
 #include "ParticleEmission.h"
+#include "VelocityOverLifetime.h"
 #include "EmitterShapeManager.h"
+#include "SizeOverLifetime.h"
+#include "RotationOverLifetime.h"
+#include "ColorOverLifetime.h"
 
 struct Particle
 {
@@ -26,7 +30,7 @@ public:
 	void RenderParticles();
 	void InitializeParticles();
 
-	int maxParticles = 1000;
+	int maxParticles = 10000;
 
 
 	float duration = 5;
@@ -36,6 +40,7 @@ public:
 
 	glm::vec2 startLiftime = glm::vec2(3, 5);
 	glm::vec3 startScale = glm::vec3(1.0f);
+	glm::vec3 liftimeStartScale = glm::vec3(0.1f);
 	glm::vec3 startRotation = glm::vec3(0.8f);
 
 	glm::vec2 startVelocity = glm::vec2(3, 5);
@@ -44,6 +49,10 @@ public:
 
 	ParticleEmission particleEmission;
 	EmitterShapeManager shapeManager;
+	VelocityOverLifetime velocityOverLifetime;
+	SizeOverLifetime sizeOverLifetime;
+	RotationOverLifetime rotationOverLifetime;
+	ColorOverLifetime colorOverLifetime;
 
 private:
 
@@ -59,13 +68,12 @@ private:
 	virtual void DrawProperties();
 	
 	void ParticleSystemProperties();
-	void DrawProperty(std::string propertyName, EmitterProperty& property);
+	void DrawPropertyImGui(std::string propertyName, EmitterProperty& property);
 
 
-	void HandleRateOverTime(float deltaTime);
-	void HandleBurst(float deltaTime);
-	void HandleParticleMove(float deltaTime);
-	void SpawnParticles(int count);
+	void BurstUpdate(float deltaTime);
+	void ParticleUpdate(float deltaTime);
+	void SpawnParticles(int count, float deltaTime);
 	void SpawnBurstParticles(Burst& burst);
 	bool GetDeadParticle(Particle*& outParticle);
 

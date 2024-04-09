@@ -92,7 +92,7 @@ void main()
 
     vec3 R = reflect(-viewDir, norm);
 
-    float shadow = 1 - ShadowCalculation(FragPosLightSpace,norm);
+    float shadow =  ShadowCalculation(FragPosLightSpace,norm);
 
     vec4 result = CalculateLight(norm,viewDir,shadow);
   
@@ -203,7 +203,7 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir,float shadowCalc)
 
 
           vec4 diffuse = diff * lights[index].color;
-	       diffuse *= textureColor * shadowCalc ;
+	       diffuse *= textureColor ;
 
            vec4 specularColor = texture(specular_Texture, TextureCoordinates);
            vec3 reflectDir = reflect(-lightDir, norm);
@@ -224,7 +224,7 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir,float shadowCalc)
 //         vec3 diffuse =  lights[index].diffuse * diff * meshColour.rgb;
 //         vec3 specular =  lights[index].specular * spec *meshColour.rgb;
 
-         vec4 finalValueforDir =(ambientColor+ diffuse  +specular);
+         vec4 finalValueforDir =( ambientColor + ((1.0 - shadowCalc) * ( diffuse + specular)) );
          //vec4 finalValueforDir = material.baseColor;
 
         // result+=finalValueforDir*lights[index].color;

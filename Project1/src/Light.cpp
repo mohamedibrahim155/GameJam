@@ -162,14 +162,10 @@ glm::mat4 Light::ViewMatrix()
 {
 	glm::mat4 view = glm::mat4(1.0f);
 
-
-	Camera* scenecamera = GraphicsRender::GetInstance().camera;
-
-
 	glm::vec3 pos = transform.position;
 
 	//view = glm::lookAt(pos, glm::vec3(0.0f), glm::vec3(0, 1, 0));
-	view = glm::lookAt(pos, scenecamera->transform.GetForward(), glm::vec3(0, 1, 0));
+	view = glm::lookAt(pos, transform.GetForward(), glm::vec3(0, 1, 0));
 	return view;
 }
 

@@ -177,8 +177,8 @@ void ApplicationRenderer::InitializeShaders()
     animationShader = new Shader("Shaders/AnimationShader.vert", "Shaders/AnimationShader.frag");
     animationShader->blendMode = OPAQUE;
 
-    shadowMapShader = new Shader("Shaders/Shadow/ShadowMapShader.vert", "Shaders/Shadow/ShadowMapShader.frag");
-    shadowMapShader->blendMode = OPAQUE;
+    ShadowQuadRenderShader = new Shader("Shaders/Shadow/ShadowMapShader.vert", "Shaders/Shadow/ShadowMapShader.frag");
+    ShadowQuadRenderShader->blendMode = OPAQUE;
 
     shadowDepthShader = new Shader("Shaders/Shadow/ShadowDepth.vert", "Shaders/Shadow/ShadowDepth.frag");
 
@@ -274,6 +274,7 @@ void ApplicationRenderer::Start()
      plane->transform.SetScale(glm::vec3(100));
      GraphicsRender::GetInstance().AddModelAndShader(plane, defaultShader);
 
+     ParticleSystem* system = new ParticleSystem();
    
      
 
@@ -499,6 +500,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     skyboxShader->setMat4("view", skyBoxView);
 
     GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
+    ParticleSystemManager::GetInstance().Render();
     glDepthFunc(GL_LESS);
 
 
@@ -542,13 +544,13 @@ void ApplicationRenderer::RenderTestScene(Camera* camera)
     GraphicsRender::GetInstance().Clear();
 
 
-    shadowMapShader->Bind();
+    ShadowQuadRenderShader->Bind();
     GLCALL(glActiveTexture(GL_TEXTURE0));
-    shadowMapShader->setInt("depthMap", 0);
+    ShadowQuadRenderShader->setInt("depthMap", 0);
     GLCALL(glBindTexture(GL_TEXTURE_2D, shadowDepthFBO->GetDepthAttachementID()));
     Quad::GetInstance().RenderQuad();
 
-    shadowMapShader->Unbind();
+    ShadowQuadRenderShader->Unbind();
     testPanelFBO->Unbind();
 }
 

@@ -32,8 +32,8 @@ public:
     void SetLightType(const LightType& type = LightType::POINT_LIGHT);
     void SetNameBaseOnType();
 
-    float xExtents = 10.0f;
-    float yExtents = 10.0f;
+    float xExtents = 100.0f;
+    float yExtents = 100.0f;
     float nearPlane = 0.1f;
     float farPlane = 10.0f;
     float shadowCaptureDistance = 10.0f;

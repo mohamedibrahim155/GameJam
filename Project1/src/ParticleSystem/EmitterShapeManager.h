@@ -22,32 +22,23 @@ public:
 	EmitterShapeManager();
 	~EmitterShapeManager();
 
-	void SetShape(EmitterShape shape);
-	EmitterShape GetShape();
-	EmitterShape GetCurrentShape();
-
-	BaseEmitterShape* GetEmitterShape();
-
-	void AddShape(EmitterShape shapeType, BaseEmitterShape* shape);
-	void RemoveShape(EmitterShape shapeType);
-
-	void Render(glm::vec3& parentPos);
-
-	void GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir);
+	void SetEmitterShape(EmitterShape shape);
+	void AddEmitterShape(EmitterShape shapeType, BaseEmitterShape* shape);
+	void RemoveEmitterShape(EmitterShape shapeType);
+	void Render();
+	void UpdateParticle(glm::vec3& pos, glm::vec3& dir);
 
 
 	// Inherited via EmitterProperty
 	void DrawProperties() override;
-
 	void SceneDraw() override;
 
-	ConeEmitter* AsConeEmitter();
-	BoxEmitter* AsBoxEmitter();
-	SphereEmitter* AsSphereEmitter();
+	
+	BaseEmitterShape* GetEmitterShape();
 
 private :
 
-	const char* shapeString[3] = { "BOX", "CONE", "SPHERE" };
+	const char* shapes[3] = { "BOX", "CONE", "SPHERE" };
 	std::unordered_map< EmitterShape, BaseEmitterShape*> m_ListOfShapes;
 
 	int m_CurrentEmitterShape = 0;

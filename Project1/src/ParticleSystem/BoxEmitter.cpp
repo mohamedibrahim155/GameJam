@@ -23,7 +23,7 @@ void BoxEmitter::SceneDraw()
 {
 }
 
-void BoxEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
+void BoxEmitter::UpdateParticle(glm::vec3& pos, glm::vec3& dir)
 {
 	pos = position + FindPointInsideBox(glm::vec3(0), scale);
 
@@ -33,9 +33,9 @@ void BoxEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
 
 }
 
-void BoxEmitter::Render(glm::vec3& pos)
+void BoxEmitter::Render()
 {
-	glm::vec3 centre = pos + position;
+	glm::vec3 centre = position;
 
 	GraphicsRender::GetInstance().DrawBox(centre, scale, boxColor,true);
 }
