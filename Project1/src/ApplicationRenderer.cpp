@@ -2,6 +2,7 @@
 
 #include "SceneManager/Scenes/SceneOne.h"
 #include "SceneManager/Scenes/SceneTwo.h"
+#include "SceneManager/Scenes/SceneThree.h"
 
 ApplicationRenderer::ApplicationRenderer()
 {
@@ -215,8 +216,9 @@ void ApplicationRenderer::Start()
 
     BaseScene* sceneOne = new SceneOne("SceneOne");
     BaseScene* sceneTwo = new SceneTwo("SceneTwo");
+    BaseScene* sceneThree = new SceneThree("SceneThree");
 
-    SceneManager::GetInstance().OnChangeScene("SceneTwo");
+    SceneManager::GetInstance().OnChangeScene("SceneThree");
 }
 
 

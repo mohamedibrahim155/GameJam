@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\SceneManager\Scenes\SceneThree.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneTwo.cpp" />
     <ClCompile Include="src\Mesh\MeshInstance.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneOne.cpp" />
@@ -245,6 +246,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\SceneManager\Scenes\SceneThree.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneTwo.h" />
     <ClInclude Include="src\Mesh\MeshInstance.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneOne.h" />

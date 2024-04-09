@@ -1,7 +1,7 @@
 #include "model.h"
 #include "ImGui/EditorLayout.h"
 #include "GraphicsRender.h"
-
+#include "CameraManager.h"
 aiMesh* ai_Mesh;
 
 Model::Model()
@@ -61,11 +61,44 @@ void Model::Draw(Shader& shader)
     {
         return;
     }
-    for (unsigned int i = 0; i < meshes.size(); i++)
+
+    if (useLOD)
     {
-       
-        meshes[i]->Draw(&shader);
+        Camera* camera = CameraManager::GetInstance().GetMainCamera();
+
+        if (camera != nullptr)
+        {
+            glm::vec3 diff = camera->transform.position - transform.position;
+            float dot = glm::dot(diff, diff);
+
+              mCameraDistance = glm::distance(transform.position, camera->transform.position);
+
+            if (mCameraDistance <= mdDefaultCulledDistance);
+            {
+                LODElement* element = GetLODbyDistance(mCameraDistance);
+
+                if (element != nullptr)
+                {
+                    for (std::shared_ptr<Mesh> mesh : element->meshes)
+                    {
+                        mesh->Draw(&shader);
+                    }
+                }
+            }
+
+
+        }
     }
+    else
+    {
+        for (unsigned int i = 0; i < meshes.size(); i++)
+        {
+
+            meshes[i]->Draw(&shader);
+        }
+    }
+
+   
 }
 
 void Model::Draw(Shader* shader)
@@ -75,16 +108,50 @@ void Model::Draw(Shader* shader)
     {
         return;
     }
+
     shader->Bind();
     if (shader->modelUniform)
     {
         shader->setMat4("model", transform.GetModelMatrix());
     }
 
-    for (unsigned int i = 0; i < meshes.size(); i++)
+    if (useLOD)
     {
-        meshes[i]->Draw(shader);
+        Camera* camera = CameraManager::GetInstance().GetMainCamera();
+
+        if (camera != nullptr)
+        {
+            glm::vec3 diff = camera->transform.position - transform.position;
+            float dot = glm::dot(diff, diff);
+
+            mCameraDistance = glm::distance(transform.position, camera->transform.position);
+
+            if (mCameraDistance < mdDefaultCulledDistance);
+            {
+                LODElement* element = GetLODbyDistance(mCameraDistance);
+
+                if (element != nullptr)
+                {
+                    for (std::shared_ptr<Mesh> mesh : element->meshes)
+                    {
+                        mesh->Draw(shader);
+                    }
+                }
+            }
+            
+             
+        }
     }
+    else
+    {
+       
+        for (unsigned int i = 0; i < meshes.size(); i++)
+        {
+            meshes[i]->Draw(shader);
+        }
+    }
+
+   
 }
 
 void Model::DrawSolidColor(const glm::vec4& color, bool isWireframe)
@@ -283,6 +350,43 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     return std::make_shared<Mesh>(vertices, indices, baseMeshMaterial);
  }
 
+ void Model::AddLODGroup(const std::vector<unsigned int>& meshIndices, float distance)
+ {
+     if (mdDefaultCulledDistance < distance)
+     {
+         mdDefaultCulledDistance = distance;
+     }
+
+     LODElement element;
+
+     for (const unsigned int& value : meshIndices )
+     {
+         if (value< meshes.size())
+         {
+             element.meshes.push_back(meshes[value]);
+             element.meshesIndex.push_back(value);
+         }
+     }
+
+     element.distance = distance;
+
+     mLODGroup.meshElements.push_back(element);
+
+ }
+
+ LODElement*  Model::GetLODbyDistance(float distance)
+ {
+    
+     for (size_t i = 0; i < mLODGroup.meshElements.size(); i++)
+     {
+         
+         if (distance <= mLODGroup.meshElements[i].distance)
+         {
+             return  &mLODGroup.meshElements[i];
+         }
+     }
+     return nullptr;
+ }
 
 
 
@@ -440,6 +544,7 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
          }
      }
  }
+
 
 
 

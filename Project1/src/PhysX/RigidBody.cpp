@@ -43,7 +43,7 @@ void RigidBody::SetMass(float _mass)
 	mass = _mass;
 	if (rigidActor == nullptr) return;
 
-	if (rigidBodyType == RigidBodyType::DYNAMIC);
+	if (rigidBodyType == RigidBodyType::DYNAMIC)
 	((PxRigidDynamic*)rigidActor)->setMass(mass);
 }
 

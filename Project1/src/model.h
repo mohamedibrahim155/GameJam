@@ -26,7 +26,18 @@
 #include "EntityManager/Entity.h"
 
 
+struct LODElement
+{
 
+    std::vector<std::shared_ptr<Mesh>> meshes;
+    std::vector<unsigned int> meshesIndex;
+    float distance = 0;
+};
+
+struct LODGroup
+{
+    std::vector<LODElement> meshElements;
+};
 
 class Model : public Entity
 {
@@ -50,6 +61,7 @@ public:
     bool gammaCorrection;
     bool isWireFrame;
     bool isVisible = true;
+    bool useLOD = false;
     bool isLoadTexture;
 
     Model();
@@ -70,10 +82,8 @@ public:
     virtual void Render();
     virtual void OnDestroy();
 
+    void AddLODGroup(const std::vector<unsigned int>& meshIndices, float distance);
     virtual std::shared_ptr<Mesh> ProcessMesh(aiMesh* mesh, const aiScene* scene);
-
-
-
 protected:
 
     Texture* LoadDefaultTexture(aiTextureType type, std::string typeName);
@@ -81,10 +91,20 @@ protected:
 
     std::string TextureType(aiTextureType type);
 
+    LODElement* GetLODbyDistance(float distance);
+
     void ProcessNode(aiNode* node, const aiScene* scene);
     void SetModelName();
 
+    LODGroup mLODGroup;
+
     const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
+
+private:
+
+    float mdDefaultCulledDistance = 20;
+    float mCameraDistance;
+
 };
 
 

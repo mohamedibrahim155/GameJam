@@ -318,6 +318,15 @@
     <ClCompile Include="src\SceneManager\Scenes\SceneOne.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\SceneManager\Scenes\SceneTwo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh\MeshInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager\Scenes\SceneThree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -659,6 +668,15 @@
     <ClInclude Include="src\SceneManager\Scenes\SceneOne.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\SceneManager\Scenes\SceneTwo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mesh\MeshInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager\Scenes\SceneThree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.frag" />
@@ -687,5 +705,7 @@
     <None Include="Shaders\PostProcessing\FinalOutputShader.frag" />
     <None Include="Shaders\AnimationShader.vert" />
     <None Include="Shaders\AnimationShader.frag" />
+    <None Include="Shaders\MeshInstanceShader.frag" />
+    <None Include="Shaders\MeshInstanceShader.vert" />
   </ItemGroup>
 </Project>
