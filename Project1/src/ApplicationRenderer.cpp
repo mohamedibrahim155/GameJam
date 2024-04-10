@@ -466,6 +466,8 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", isDepth);
+    defaultShader->setBool("fogActive", isFog);
+
 
     animationShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(animationShader);
@@ -508,6 +510,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     skyboxShader->setMat4("projection", projection);
     skyboxShader->setMat4("view", skyBoxView);
     skyboxShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    skyboxShader->setBool("fogActive", isFog);
 
 
     GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
@@ -647,7 +650,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          }
          if (key == GLFW_KEY_P && action == GLFW_PRESS)
          {
-             isDepth = !isDepth;
+             isFog = !isFog;
          }
      
          if (action == GLFW_PRESS)

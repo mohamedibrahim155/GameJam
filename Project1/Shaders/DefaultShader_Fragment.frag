@@ -92,6 +92,7 @@ uniform float fogDensity = 0.66;
 uniform float fogStart = 8.0;
 uniform float fogEnd = 40;
 uniform vec3 fogColor = vec3(152.0/256.0,152.0/256.0,152.0/256.0);
+uniform bool fogActive = false;
 
 void main()
 {    
@@ -150,7 +151,7 @@ void main()
       }
       else
       {
-            if(fogColor != vec3(0))
+            if(fogColor != vec3(0) && fogActive)
              {
                float fogFactor = CalcLinearFog();
                result = mix(vec4(fogColor,1.0),result,fogFactor);
