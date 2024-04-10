@@ -91,8 +91,13 @@ float CalcExpoFog();
 uniform float fogDensity = 0.66;
 uniform float fogStart = 8.0;
 uniform float fogEnd = 40;
-uniform vec3 fogColor = vec3(152.0/256.0,152.0/256.0,152.0/256.0);
+uniform vec3 fogColor = vec3(0.59,0.59,0.59);
 uniform bool fogActive = false;
+
+//Toon Shader
+const int shadingLevels = 4;
+const float scaleFactor = 1.0/ shadingLevels;
+uniform bool isCellShading = false;
 
 void main()
 {    
@@ -261,19 +266,37 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir,float shadowCalc)
        {
           vec3 lightDir = normalize(-lights[index].direction);
           float diff = max(dot(norm, lightDir), 0.0);
+          if(isCellShading)
+          {
 
-
+            //diff = floor(diff * shadingLevels)*scaleFactor;
+            diff = ceil(diff * shadingLevels)*scaleFactor;
+          }
           vec4 diffuse = diff * lights[index].color;
 	       diffuse *= textureColor ;
 
+           
            vec4 specularColor = texture(specular_Texture, TextureCoordinates);
            vec3 reflectDir = reflect(-lightDir, norm);
 
 
          float spec = pow(max(dot(reflectDir, viewDir), 0.0), material.shininess);
 
+         if(!isCellShading && spec > 0)
+         {
         	vec4 specular = vec4(spec * material.specularValue * lights[index].color.rgb * (specularColor.r),lights[index].color.w);
+            vec4 finalValueforDir =( ambientColor + ((1.0 - shadowCalc) * ( diffuse + specular)) );
+            result += finalValueforDir;
+            
 
+
+         }
+         else
+         {
+             vec4 finalValueforDir =( ambientColor + ((1.0 - shadowCalc) * ( diffuse )) );
+              result += finalValueforDir;
+
+         }
 
 
          //vec4 ambient = lights[index].ambient   *         meshColour * texture(diffuse, TextureCoordinates);
@@ -285,11 +308,9 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir,float shadowCalc)
 //         vec3 diffuse =  lights[index].diffuse * diff * meshColour.rgb;
 //         vec3 specular =  lights[index].specular * spec *meshColour.rgb;
 
-         vec4 finalValueforDir =( ambientColor + ((1.0 - shadowCalc) * ( diffuse + specular)) );
          //vec4 finalValueforDir = material.baseColor;
 
         // result+=finalValueforDir*lights[index].color;
-         result += finalValueforDir;
         
        }
        if(LightType ==POINT_LIGHT_ID)

@@ -467,6 +467,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", isDepth);
     defaultShader->setBool("fogActive", isFog);
+    defaultShader->setBool("isCellShading", isCellShade);
 
 
     animationShader->Bind();
@@ -651,6 +652,10 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          if (key == GLFW_KEY_P && action == GLFW_PRESS)
          {
              isFog = !isFog;
+         }
+         if (key == GLFW_KEY_L && action == GLFW_PRESS)
+         {
+             isCellShade = !isCellShade;
          }
      
          if (action == GLFW_PRESS)

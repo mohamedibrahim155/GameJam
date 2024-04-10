@@ -76,6 +76,7 @@ public:
 	bool isPlayMode = false;
 	bool isDepth = false;
 	bool isFog = false;
+	bool isCellShade = false;
 
 	glm::mat4 projection;
 	glm::mat4 view;
