@@ -33,12 +33,13 @@ public:
 	void DrawProperties() override;
 	void SceneDraw() override;
 
-	
+	BoxEmitter* asBoxEmitter();
+	ConeEmitter* asConeEmitter();
 	BaseEmitterShape* GetEmitterShape();
 
 private :
 
-	const char* shapes[3] = { "BOX", "SPHERE" };
+	const char* shapes[3] = { "BOX", "CONE","SPHERE" };
 	std::unordered_map< EmitterShape, BaseEmitterShape*> m_ListOfShapes;
 
 	int m_CurrentEmitterShape = 0;

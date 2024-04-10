@@ -141,6 +141,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\ParticleSystem\ParticleAssets\Fire.cpp" />
+    <ClCompile Include="src\ParticleSystem\ParticleAssets\Fog.cpp" />
+    <ClCompile Include="src\ParticleMaterial.cpp" />
     <ClCompile Include="src\ParticleSystem\Properties\RotationOverLifetime.cpp" />
     <ClCompile Include="src\ParticleSystem\Properties\SizeOverLifetime.cpp" />
     <ClCompile Include="src\ParticleSystem\Properties\ColorOverLifetime.cpp" />
@@ -226,6 +229,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\ParticleSystem\ParticleAssets\Fire.h" />
+    <ClInclude Include="src\ParticleSystem\ParticleAssets\Fog.h" />
+    <ClInclude Include="src\ParticleMaterial.h" />
     <ClInclude Include="src\ParticleSystem\Particle.h" />
     <ClInclude Include="src\ParticleSystem\Properties\RotationOverLifetime.h" />
     <ClInclude Include="src\ParticleSystem\Properties\SizeOverLifetime.h" />

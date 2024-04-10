@@ -32,6 +32,7 @@ void ConeEmitter::DrawProperties()
 
 	DrawFloatImGui("Angle", angle);
 	DrawFloatImGui("Radius", radius);
+	
 
 
 	if (DrawDropDownImGui("EmitFrom", currentEmitInt, emitStrings, 2))

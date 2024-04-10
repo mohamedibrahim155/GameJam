@@ -171,48 +171,55 @@ void GraphicsRender::Clear()
 
 void GraphicsRender::DrawSphere(glm::vec3 center, float radius, glm::vec4 color, bool isWireFrame)
 {
-	Model* model = new Model(*(DebugModels::GetInstance().defaultSphere), true);
+	if (isDebugMode)
+	{
+		Model* model = new Model(*(DebugModels::GetInstance().defaultSphere), true);
 
-	model->transform.SetPosition(center);
-	model->transform.SetScale(glm::vec3(radius));
-	model->DrawSolidColor(color,isWireFrame);
-	delete model;
+		model->transform.SetPosition(center);
+		model->transform.SetScale(glm::vec3(radius));
+		model->DrawSolidColor(color, isWireFrame);
+		delete model;
+	}
+	
 
 }
 
 void GraphicsRender::DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec4 color, bool isWireFrame)
 {
-	Model* model = new Model(*(DebugModels::GetInstance().defaultCube), true);
-	model->transform.SetPosition(center);
-	model->transform.SetScale(dimensions);
-	model->DrawSolidColor(color, isWireFrame);
-	delete model;
-
+	if (isDebugMode)
+	{
+		Model* model = new Model(*(DebugModels::GetInstance().defaultCube), true);
+		model->transform.SetPosition(center);
+		model->transform.SetScale(dimensions);
+		model->DrawSolidColor(color, isWireFrame);
+		delete model;
+	}
 }
 
 void GraphicsRender::DrawLine(glm::vec3 start, glm::vec3 endpoint, glm::vec4 color)
 {
-
-	std::vector<Vertex> vertices = 
+	if (isDebugMode)
 	{
-		 {glm::vec3(-1.0f, -1.0f, -1.0f)},  // 0
-		{glm::vec3(1.0f, -1.0f, -1.0f)},  // 1
-		{glm::vec3(1.0f, -1.0f, -1.0f)},  // 2
-	};
+		std::vector<Vertex> vertices =
+		{
+			 {glm::vec3(-1.0f, -1.0f, -1.0f)},  // 0
+			{glm::vec3(1.0f, -1.0f, -1.0f)},  // 1
+			{glm::vec3(1.0f, -1.0f, -1.0f)},  // 2
+		};
 
-	std::vector<unsigned int>indices = { 0,1,1 };
+		std::vector<unsigned int>indices = { 0,1,1 };
 
-	vertices[0].Position = start;
-	vertices[1].Position = endpoint;
+		vertices[0].Position = start;
+		vertices[1].Position = endpoint;
 
-	Model model;
+		Model model;
 
-	UnLitMaterial* material = new UnLitMaterial();
+		UnLitMaterial* material = new UnLitMaterial();
 
-	model.meshes.push_back(std::make_shared<Mesh>(vertices, indices, material));
-	
-	model.DrawSolidColor(color, true);
+		model.meshes.push_back(std::make_shared<Mesh>(vertices, indices, material));
 
+		model.DrawSolidColor(color, true);
+	}
 }
 
 

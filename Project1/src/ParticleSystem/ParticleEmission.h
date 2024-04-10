@@ -2,6 +2,7 @@
 #include "EmitterProperty.h"
 #include "../model.h"
 #include <vector>
+#include "../ParticleMaterial.h"
 
 struct Burst
 {
@@ -34,18 +35,16 @@ public:
 		ParticleModel()
 		{
 			particleModel = new Model("Models/DefaultQuad/DefaultQuad.fbx");
-			std::string difPath = "Textures/Particles/FogTexture.png";
+			std::string difPath = "Textures/Particles/FogTexture1.png";
 			Texture* diffuse = new Texture(difPath);
-			Texture* cutout = new Texture(difPath);
-			particleModel->meshes[0]->meshMaterial->material()->diffuseTexture = diffuse;
-			particleModel->meshes[0]->meshMaterial->material()->alphaTexture = cutout;
-			particleModel->meshes[0]->meshMaterial->material()->useMaskTexture = true;
+			particleModel->meshes[0]->meshMaterial = new ParticleMaterial();
+			particleModel->meshes[0]->meshMaterial->particleMaterial()->diffuseTexture = diffuse;
 
 
 		}
 
 
-		float minParticleSize = 0.0f;
+		float minParticleSize = 0.1f;
 		float maxParticleSize = 1.0f;
 
 		Model* particleModel = nullptr;

@@ -1,5 +1,7 @@
 #include "BaseEmitterShape.h"
 #include "../ImGui/ImGuiUtils.h"
+
+
 void BaseEmitterShape::DrawProperties()
 {
 	float width = 150;
@@ -9,3 +11,4 @@ void BaseEmitterShape::DrawProperties()
 
 	DrawBoolImGui("Randomize Direction", isRandomDir);
 }
+

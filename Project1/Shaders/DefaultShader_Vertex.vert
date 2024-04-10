@@ -9,7 +9,7 @@ layout (location = 3) in vec4 aColor;
  out vec3 Normal;
  out vec2 TextureCoordinates;
  out vec4 meshColour;
-  out vec4 FragPosLightSpace;
+out vec4 FragPosLightSpace;
 
 uniform mat4 model;
 uniform mat4 view;

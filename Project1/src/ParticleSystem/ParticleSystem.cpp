@@ -53,17 +53,58 @@ void ParticleSystem::UpdateSystem(float deltaTime)
 
 void ParticleSystem::RenderParticles()
 {
+	glm::vec3 camPos = GraphicsRender::GetInstance().camera->transform.position;
+	glm::quat lookAt = glm::quat(1, 1, 1, 1);
+	glm::quat quatRot = glm::quat(1, 1, 1, 1);
+
 	for (Particle& particle : mListOfParticles)
 	{
 		if (particle.currentLifetime <= 0) continue;
 
-		particleEmission.m_ParticleModel->particleModel->transform.SetPosition(particle.position);
-		particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale /** sizeOverLifetime.ScaleParticle(particle)*/);
-		particleEmission.m_ParticleModel->particleModel->transform.SetRotation(startRotation * rotationOverLifetime.AngularVelocity(particle));
-		//Find a Way to use this function colorOverLifetime.SendColorToMat(args..) inside material of the mesh.
-		//ApplyColorToMesh(colorOverLifetime.SendColorToMat(particle));
+		
 
-		particleEmission.m_ParticleModel->particleModel->Draw(GraphicsRender::GetInstance().alphaCutoutShader);
+		particleEmission.m_ParticleModel->particleModel->transform.SetPosition(particle.position);
+		if (sizeOverLifetime.isEnabled)
+		{
+			particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale * sizeOverLifetime.ScaleParticle(particle));
+
+		}
+		else
+		{
+			particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale);
+
+		}
+
+		if (rotationOverLifetime.isEnabled)
+		{
+			particleEmission.m_ParticleModel->particleModel->transform.SetRotation(startRotation * rotationOverLifetime.AngularVelocity(particle));
+
+		}
+		else
+		{
+			particleEmission.m_ParticleModel->particleModel->transform.SetRotation(particle.rotation );
+
+		}
+
+		
+
+		if (colorOverLifetime.isEnabled)
+		{
+			ApplyColorToMesh(colorOverLifetime.SendColorToMat(particle));
+
+		}
+		else
+		{
+			ApplyColorToMesh(glm::vec4(1));
+		}
+
+		glm::vec3 dir = glm::normalize(camPos - particle.position);
+		glm::vec3 rotRadians = glm::radians(particle.rotation);
+		lookAt = glm::quatLookAt(dir, glm::vec3(0, 1, 0));
+		quatRot = lookAt * glm::quat(rotRadians);
+		particleEmission.m_ParticleModel->particleModel->transform.SetQuatRotation(quatRot);
+
+		particleEmission.m_ParticleModel->particleModel->Draw(GraphicsRender::GetInstance().particleShader);
 	}
 
 }
@@ -207,11 +248,22 @@ void ParticleSystem::SpawnParticles(int count, float deltaTime)
 		shapeManager.UpdateParticle(pos, dir);
 
 		particle->position = transform.position + pos;
-		particle->velocity = dir * GetRandomFloatNumber(startVelocity.x + velocityOverLifetime.particleSpeed, startVelocity.y + velocityOverLifetime.particleSpeed)   ;
+		if (velocityOverLifetime.isEnabled)
+		{
+			particle->velocity = dir * GetRandomFloatNumber(startVelocity.x + velocityOverLifetime.particleSpeed, startVelocity.y + velocityOverLifetime.particleSpeed);
+
+		}
+		else
+		{
+			particle->velocity = dir * GetRandomFloatNumber(startVelocity.x , startVelocity.y );
+
+		}
 		particle->SetLifeTime(GetRandomFloatNumber(startLiftime.x, startLiftime.y));
+
 		particle->scale = startScale * GetRandomFloatNumber(particleEmission.m_ParticleModel->minParticleSize, particleEmission.m_ParticleModel->maxParticleSize);
+
 		particle->rotation = startRotation;
-		//particle->scale = sizeOverLifetime.ScaleOverLifetime(liftimeStartScale, startScale,deltaTime);
+
 	}
 	
 }
@@ -246,6 +298,6 @@ void ParticleSystem::ApplyColorToMesh(glm::vec4 color)
 
 	for (std::shared_ptr<Mesh> mesh : particleEmission.m_ParticleModel->particleModel->meshes)
 	{
-		mesh->meshMaterial->material()->SetBaseColor(color) ;
+		mesh->meshMaterial->particleMaterial()->SetBaseColor( color) ;
 	}
 }

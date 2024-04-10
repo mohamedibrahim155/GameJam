@@ -29,7 +29,8 @@
 #include "SkinnedMeshRenderer.h"
 #include "CharacterAnimation/CharacterAnimation.h"
 #include "ParticleSystem/ParticleSystemManager.h"
-#include "ParticleSystem/ParticleSystem.h"
+#include "ParticleSystem/ParticleAssets/Fog.h"
+#include "ParticleSystem/ParticleAssets/Fire.h"
 
 class ApplicationRenderer
 {
@@ -73,6 +74,7 @@ public:
 	Camera* gameScenecamera;
 	Camera* renderTextureCamera;
 	bool isPlayMode = false;
+	bool isDepth = false;
 
 	glm::mat4 projection;
 	glm::mat4 view;

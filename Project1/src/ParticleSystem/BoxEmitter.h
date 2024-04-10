@@ -7,7 +7,6 @@ class BoxEmitter : public BaseEmitterShape
 public:
 	BoxEmitter();
 	glm::vec3 particleDir = glm::vec3(0, 1, 0);
-	float columnWidth = 150;
 
 
 	// Inherited via BaseEmitterShape

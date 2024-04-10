@@ -4,7 +4,7 @@
 glm::vec3 RotationOverLifetime::AngularVelocity(Particle& particle)
 {
 	float lerpValue = MathUtils::Math::Remap(particle.currentLifetime, 0, particle.lifeTime, 1, 0);
-	return Lerp(particle.rotation, endRotation, lerpValue);
+	return Lerp(startRotation, endRotation, lerpValue);
 	
 }
 
@@ -15,7 +15,8 @@ void RotationOverLifetime::DrawProperties()
 
 	if (isEnabled)
 	{
-		DrawTransformVector3ImGui("Praticle Rotation", endRotation, 0, width);
+		DrawTransformVector3ImGui("Start Rotation", startRotation, 0, width);
+		DrawTransformVector3ImGui("End Rotation", endRotation, 0, width);
 	}
 }
 

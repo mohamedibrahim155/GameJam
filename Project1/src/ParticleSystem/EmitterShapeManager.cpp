@@ -8,7 +8,7 @@
 
 EmitterShapeManager::EmitterShapeManager()
 {
-	//AddEmitterShape(EmitterShape::CONE, new ConeEmitter());
+	AddEmitterShape(EmitterShape::CONE, new ConeEmitter());
 	AddEmitterShape(EmitterShape::BOX, new BoxEmitter());
 	AddEmitterShape(EmitterShape::SPHERE, new SphereEmitter());
 	SetEmitterShape(EmitterShape::BOX);
@@ -63,6 +63,19 @@ void EmitterShapeManager::DrawProperties()
 
 void EmitterShapeManager::SceneDraw()
 {
+}
+
+BoxEmitter* EmitterShapeManager::asBoxEmitter()
+{
+	
+	return (BoxEmitter*)GetEmitterShape();
+	
+
+}
+
+ConeEmitter* EmitterShapeManager::asConeEmitter()
+{
+	return (ConeEmitter*)GetEmitterShape();
 }
 
 BaseEmitterShape* EmitterShapeManager::GetEmitterShape()

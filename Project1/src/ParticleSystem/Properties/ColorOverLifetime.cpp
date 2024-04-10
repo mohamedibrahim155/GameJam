@@ -3,9 +3,7 @@
 
 ColorOverLifetime::ColorOverLifetime()
 {
-	AddColorKey({ glm::vec4(0,0,0,0), 0 });
-	AddColorKey({ glm::vec4(1,1,1,0), 0.5 });
-	AddColorKey({ glm::vec4(0,0,0,0), 1 });
+	
 }
 
 void ColorOverLifetime::AddColorKey(ColorKey colorKey)
@@ -34,6 +32,7 @@ void ColorOverLifetime::DrawProperties()
 		}
 		
 	}
+	
 
 }
 

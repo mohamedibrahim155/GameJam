@@ -4,6 +4,7 @@
 class Material;
 class SkyboxMaterial;
 class UnLitMaterial;
+class ParticleMaterial;
 
 class BaseMaterial
 {
@@ -16,6 +17,7 @@ public:
 	Material* material();
 	SkyboxMaterial* skyboxMaterial();
 	UnLitMaterial* unLitMaterial();
+	ParticleMaterial* particleMaterial();
 
 
 	glm::vec4 color = glm::vec4(1);

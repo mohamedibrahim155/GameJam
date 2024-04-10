@@ -83,6 +83,12 @@ uniform float biasValue;
 uniform vec3 lightDir;
 uniform sampler2D shadowMap;
 float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal);
+float CalcFog();
+
+//Fog
+uniform float fogStart = 1.0;
+uniform float fogEnd = 2.0;
+uniform vec3 fogColor = vec3(1,1,1);
 
 void main()
 {    
@@ -127,19 +133,29 @@ void main()
 //        FragColor = result*cutOff.a; 
 //     
 //     }
+
+
+
      
 
      if(isDepthBuffer)
      {
 
           float depth = LinearizeDepth(gl_FragCoord.z) / far;
-          FragColor = vec4(vec3(depth), 1.0); 
+          vec4 depthVec4 = vec4(vec3(pow(depth, 1.4)), 7.0);
+          FragColor = (result)* (1 - depthVec4) + depthVec4;
       }
       else
       {
-          //float depth = LinearizeDepth(gl_FragCoord.z) / far;
-        //  FragColor = texture(specular_Texture, TextureCoordinates);
+            if(fogColor != vec3(0))
+             {
+               float fogFactor = CalcFog();
+               result = mix(vec4(fogColor,1.0),result,fogFactor);
+
+             }
           FragColor = result;
+
+
       }
 
 
@@ -148,6 +164,19 @@ void main()
     //FragColor = vec4( temp,temp, temp,1.0);
      
     
+
+}
+
+float CalcFog()
+{
+
+   float camDist = length(viewPos - FragPosition);
+   float fogRange = fogEnd - fogStart;
+   float fogDist = fogEnd - camDist;
+   float fogFactor = fogDist /fogRange;
+   fogFactor  = clamp(fogFactor,0.0,1.0);
+   return fogFactor;
+
 
 }
 

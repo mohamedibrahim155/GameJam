@@ -279,8 +279,8 @@ void ApplicationRenderer::Start()
      plane->transform.SetScale(glm::vec3(100));
      GraphicsRender::GetInstance().AddModelAndShader(plane, defaultShader);
 
-     ParticleSystem* system = new ParticleSystem();
-   
+     Fog* fog = new Fog();
+     Fire* fire = new Fire();
      
 
 }
@@ -465,14 +465,14 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultShader->setMat4("view", view);
     defaultShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     defaultShader->setFloat("time", scrollTime);
-    defaultShader->setBool("isDepthBuffer", false);
+    defaultShader->setBool("isDepthBuffer", isDepth);
 
     animationShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(animationShader);
     animationShader->setMat4("projection", projection);
     animationShader->setMat4("view", view);
     animationShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
-    animationShader->setBool("isDepthBuffer", false);
+    animationShader->setBool("isDepthBuffer", isDepth);
 
 
     alphaBlendShader->Bind();
@@ -481,7 +481,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     alphaBlendShader->setMat4("view", view);
     alphaBlendShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaBlendShader->setFloat("time", scrollTime);
-    alphaBlendShader->setBool("isDepthBuffer", false);
+    alphaBlendShader->setBool("isDepthBuffer", isDepth);
 
     alphaCutoutShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(alphaCutoutShader);
@@ -489,7 +489,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     alphaCutoutShader->setMat4("view", view);
     alphaCutoutShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaCutoutShader->setFloat("time", scrollTime);
-    alphaCutoutShader->setBool("isDepthBuffer", false);
+    alphaCutoutShader->setBool("isDepthBuffer", isDepth);
 
     solidColorShader->Bind();
     solidColorShader->setMat4("projection", projection);
@@ -637,6 +637,15 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
              GraphicsRender::GetInstance().selectedModel = listOfModels[selectedModelCount];
 
 
+         }
+
+         if (key == GLFW_KEY_O && action == GLFW_PRESS)
+         {
+             GraphicsRender::GetInstance().isDebugMode = !GraphicsRender::GetInstance().isDebugMode;
+         }
+         if (key == GLFW_KEY_P && action == GLFW_PRESS)
+         {
+             isDepth = !isDepth;
          }
      
          if (action == GLFW_PRESS)

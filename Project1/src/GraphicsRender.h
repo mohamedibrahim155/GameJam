@@ -77,7 +77,7 @@ public:
 	Camera* camera;
 
 	void RenderShadowModels(Shader* shader);
-
+	bool isDebugMode = true;
 
 private:
 	

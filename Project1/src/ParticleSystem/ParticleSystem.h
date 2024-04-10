@@ -40,6 +40,7 @@ public:
 
 	ParticleEmission particleEmission;
 	EmitterShapeManager shapeManager;
+
 	VelocityOverLifetime velocityOverLifetime;
 	SizeOverLifetime sizeOverLifetime;
 	ColorOverLifetime colorOverLifetime;

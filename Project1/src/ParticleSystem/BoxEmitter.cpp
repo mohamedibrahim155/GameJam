@@ -12,9 +12,11 @@ BoxEmitter::BoxEmitter()
 
 void BoxEmitter::DrawProperties()
 {
-   
-	DrawTransformVector3ImGui("Emitter Direction ", particleDir, 0, columnWidth);
-	DrawTransformVector3ImGui("Emitter Scale ", scale, 1, columnWidth);
+    float width = 150;
+
+    DrawTransformVector3ImGui("Emitter Position ", position, 0, width);
+	DrawTransformVector3ImGui("Emitter Direction ", particleDir, 0, width);
+	DrawTransformVector3ImGui("Emitter Scale ", scale, 1, width);
 
 }
 

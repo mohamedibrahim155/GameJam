@@ -9,7 +9,8 @@ class RotationOverLifetime : public EmitterProperty
 public:
 
 	bool isEnabled = false;
-	glm::vec3 endRotation = glm::vec3(0);
+	glm::vec3 endRotation = glm::vec3(0, 0, 0);
+	glm::vec3 startRotation = glm::vec3(0,0,0);
 
 	glm::vec3 AngularVelocity(Particle& particle);
 
