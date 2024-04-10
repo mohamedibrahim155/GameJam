@@ -159,7 +159,7 @@ void ApplicationRenderer::InitializeShaders()
 {
     defaultShader = new Shader("Shaders/DefaultShader_Vertex.vert", "Shaders/DefaultShader_Fragment.frag");
     defaultShader->blendMode = OPAQUE;
-    defaultShader->useShadowMap = true;
+    defaultShader->useShadowMap = false;
    
     solidColorShader = new Shader("Shaders/SolidColor_Vertex.vert", "Shaders/SolidColor_Fragment.frag", SOLID);
     stencilShader = new Shader("Shaders/StencilOutline.vert", "Shaders/StencilOutline.frag", OPAQUE);
@@ -507,6 +507,8 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     skyboxShader->Bind();
     skyboxShader->setMat4("projection", projection);
     skyboxShader->setMat4("view", skyBoxView);
+    skyboxShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+
 
     GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
     glDepthFunc(GL_LESS);

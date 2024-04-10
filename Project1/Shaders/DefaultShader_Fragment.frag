@@ -84,11 +84,14 @@ uniform vec3 lightDir;
 uniform sampler2D shadowMap;
 float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal);
 float CalcFog();
+float CalcLinearFog();
+float CalcExpoFog();
 
 //Fog
-uniform float fogStart = 1.0;
-uniform float fogEnd = 2.0;
-uniform vec3 fogColor = vec3(1,1,1);
+uniform float fogDensity = 0.66;
+uniform float fogStart = 8.0;
+uniform float fogEnd = 40;
+uniform vec3 fogColor = vec3(152.0/256.0,152.0/256.0,152.0/256.0);
 
 void main()
 {    
@@ -98,9 +101,9 @@ void main()
 
     vec3 R = reflect(-viewDir, norm);
 
-    float shadow =  ShadowCalculation(FragPosLightSpace,norm);
+    //float shadow =  ShadowCalculation(FragPosLightSpace,norm);
 
-    vec4 result = CalculateLight(norm,viewDir,shadow);
+    vec4 result = CalculateLight(norm,viewDir,0);
   
      vec4 cutOff = texture(diffuse_Texture, TextureCoordinates);
  
@@ -149,7 +152,7 @@ void main()
       {
             if(fogColor != vec3(0))
              {
-               float fogFactor = CalcFog();
+               float fogFactor = CalcLinearFog();
                result = mix(vec4(fogColor,1.0),result,fogFactor);
 
              }
@@ -167,17 +170,45 @@ void main()
 
 }
 
-float CalcFog()
+float CalcLinearFog()
 {
 
-   float camDist = length(viewPos - FragPosition);
+   float camDist = length(FragPosition - viewPos);
    float fogRange = fogEnd - fogStart;
    float fogDist = fogEnd - camDist;
    float fogFactor = fogDist /fogRange;
    fogFactor  = clamp(fogFactor,0.0,1.0);
    return fogFactor;
 
+}
 
+float CalcExpoFog()
+{
+   float camDist = length(FragPosition - viewPos);
+   float distRatio = 4.0 * camDist / fogEnd;
+   float fogFactor = exp(-distRatio * fogDensity * distRatio * fogDensity);
+
+   return fogFactor;
+ 
+}
+
+float CalcFog()
+{
+
+  float fogFac = 1;
+
+  if(fogStart >= 0)
+  {
+    fogFac = CalcLinearFog();
+  }
+  else
+  {
+     fogFac = CalcExpoFog();
+  
+  }
+
+
+  return fogFac;
 }
 
 
