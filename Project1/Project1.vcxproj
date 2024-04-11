@@ -141,6 +141,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\Grass\GrassMesh.cpp" />
+    <ClCompile Include="src\SceneManager\Scenes\SceneFour.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneThree.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneTwo.cpp" />
     <ClCompile Include="src\Mesh\MeshInstance.cpp" />
@@ -246,6 +248,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\Grass\GrassMesh.h" />
+    <ClInclude Include="src\SceneManager\Scenes\SceneFour.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneThree.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneTwo.h" />
     <ClInclude Include="src\Mesh\MeshInstance.h" />
@@ -369,6 +373,8 @@
     <None Include="Shaders\color.vert" />
     <None Include="Shaders\DefaultShader_Fragment.frag" />
     <None Include="Shaders\DefaultShader_Vertex.vert" />
+    <None Include="Shaders\Grass\GrassMeshInstanceShader.frag" />
+    <None Include="Shaders\Grass\GrassMeshInstanceShader.vert" />
     <None Include="Shaders\MeshInstanceShader.frag" />
     <None Include="Shaders\MeshInstanceShader.vert" />
     <None Include="Shaders\PostProcessing\Chromatic.frag" />

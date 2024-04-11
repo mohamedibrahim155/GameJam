@@ -3,6 +3,7 @@
 #include "SceneManager/Scenes/SceneOne.h"
 #include "SceneManager/Scenes/SceneTwo.h"
 #include "SceneManager/Scenes/SceneThree.h"
+#include "SceneManager/Scenes/SceneFour.h"
 
 ApplicationRenderer::ApplicationRenderer()
 {
@@ -178,6 +179,9 @@ void ApplicationRenderer::InitializeShaders()
     defaultInstanceShader->blendMode = OPAQUE;
     defaultInstanceShader->modelUniform = false;
 
+    grassInstanceShader = new Shader("Shaders/Grass/GrassMeshInstanceShader.vert", "Shaders/Grass/GrassMeshInstanceShader.frag", ALPHA_CUTOUT);
+    grassInstanceShader->modelUniform = false;
+
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
     GraphicsRender::GetInstance().stencilShader = stencilShader; 
@@ -185,6 +189,7 @@ void ApplicationRenderer::InitializeShaders()
     GraphicsRender::GetInstance().alphaBlendShader = alphaBlendShader;
     GraphicsRender::GetInstance().alphaCutoutShader = alphaCutoutShader;
     GraphicsRender::GetInstance().defaultInstanceShader = defaultInstanceShader;
+    GraphicsRender::GetInstance().grassInstanceShader = grassInstanceShader;
 }
 
 void ApplicationRenderer::InitializeSkybox()
@@ -217,8 +222,9 @@ void ApplicationRenderer::Start()
     BaseScene* sceneOne = new SceneOne("SceneOne");
     BaseScene* sceneTwo = new SceneTwo("SceneTwo");
     BaseScene* sceneThree = new SceneThree("SceneThree");
+    BaseScene* sceneFour = new SceneFour("SceneFour");
 
-    SceneManager::GetInstance().OnChangeScene("SceneThree");
+    SceneManager::GetInstance().OnChangeScene("SceneFour");
 }
 
 
@@ -356,6 +362,13 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     defaultInstanceShader->setFloat("time", scrollTime);
     defaultInstanceShader->setBool("isDepthBuffer", false);
+
+    grassInstanceShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(grassInstanceShader);
+
+    grassInstanceShader->setMat4("projection", projection);
+    grassInstanceShader->setMat4("view", view);
+    grassInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
 
     solidColorShader->Bind();
     solidColorShader->setMat4("projection", projection);

@@ -74,6 +74,7 @@ public:
 	Shader* alphaCutoutShader;
 	Shader* alphaBlendShader;
 	Shader* defaultInstanceShader;
+	Shader* grassInstanceShader;
 	void SetSelectedModel(Model* model);
 	Model* GetSelectedModel();
 

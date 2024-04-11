@@ -74,6 +74,7 @@ public:
 	Shader* alphaCutoutShader;
 	Shader* boneAnimationShader;
 	Shader* defaultInstanceShader;
+	Shader* grassInstanceShader;
 
 	Shader* stencilShader;
 	Shader* skyboxShader;

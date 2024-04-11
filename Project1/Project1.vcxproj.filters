@@ -327,6 +327,12 @@
     <ClCompile Include="src\SceneManager\Scenes\SceneThree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\SceneManager\Scenes\SceneFour.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Grass\GrassMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -677,6 +683,12 @@
     <ClInclude Include="src\SceneManager\Scenes\SceneThree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\SceneManager\Scenes\SceneFour.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Grass\GrassMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.frag" />
@@ -707,5 +719,7 @@
     <None Include="Shaders\AnimationShader.frag" />
     <None Include="Shaders\MeshInstanceShader.frag" />
     <None Include="Shaders\MeshInstanceShader.vert" />
+    <None Include="Shaders\Grass\GrassMeshInstanceShader.frag" />
+    <None Include="Shaders\Grass\GrassMeshInstanceShader.vert" />
   </ItemGroup>
 </Project>

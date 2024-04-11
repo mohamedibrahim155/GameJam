@@ -19,17 +19,17 @@ struct TransformData
 class MeshInstance : public Model
 {
 public:
-	void Draw(Shader* shader) override;
-	void AddTransformData(const TransformData& transformData);
+	virtual void Draw(Shader* shader) override;
+	void AddTransformData(const TransformData& transformData = TransformData(glm::vec3(0), glm::vec3(0), glm::vec3(1)));
 	void AddTransformData(const glm::vec3& position =  glm::vec3(0), const glm::vec3& rotation = glm::vec3(0), const glm::vec3 scale = glm::vec3(1));
 
-	void DrawProperties() override;
-	void SceneDraw() override;
+	virtual void DrawProperties() override;
+	virtual void SceneDraw() override;
 
-	void Start() override {};
-	void Update(float deltaTime) override {};
-	void Render() {};
-	void OnDestroy() {};
+	virtual void Start() override {};
+	virtual void Update(float deltaTime) override {};
+	virtual void Render()  override {};
+	virtual void OnDestroy()  override {};
 private:
 
 	std::vector<glm::mat4> listOfMatices;
