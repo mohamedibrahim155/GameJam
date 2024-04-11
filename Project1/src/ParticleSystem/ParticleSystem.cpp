@@ -3,6 +3,7 @@
 #include "../GraphicsRender.h"
 #include "../ImGui/EditorLayout.h"
 #include "ParticleSystemManager.h"
+#include "Particle.h"
 
 
 ParticleSystem::ParticleSystem()
@@ -18,6 +19,12 @@ ParticleSystem::ParticleSystem()
 	
 
 }
+void Particle::SetLifeTime(float lifeTime)
+{
+	this->currentLifetime = lifeTime;
+	this->lifeTime = lifeTime;
+}
+
 
 ParticleSystem::~ParticleSystem()
 {
@@ -29,22 +36,81 @@ void ParticleSystem::UpdateSystem(float deltaTime)
 {
 	currentTime += deltaTime;
 
-	HandleRateOverTime(deltaTime);
-	HandleBurst(deltaTime);
-	HandleParticleMove(deltaTime);	
+	if (particleEmission.rateOverTime == 0) return;
+
+	float currentRate = (particleEmission.rateOverTime * deltaTime) + mRateOverTimeCarryOver ;
+	int numOfParticlesThisFrame = (int)currentRate;
+
+
+	mRateOverTimeCarryOver = currentRate - numOfParticlesThisFrame;
+
+	SpawnParticles(numOfParticlesThisFrame,currentTime);
+
+
+	BurstUpdate(deltaTime);
+	ParticleUpdate(deltaTime);	
 }
 
 void ParticleSystem::RenderParticles()
 {
-	for (Particle& particle : mListOfParticles)
+	if (!isVisible)
 	{
-		if (particle.lifeTime <= 0) continue;
-
-		particleEmission.m_ParticleModel->particleModel->transform.SetPosition(particle.position);
-		particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale);
-		particleEmission.m_ParticleModel->particleModel->Draw(GraphicsRender::GetInstance().solidColorShader);
+		return;
 	}
 
+		glm::vec3 camPos = GraphicsRender::GetInstance().camera->transform.position;
+		glm::quat lookAt = glm::quat(1, 1, 1, 1);
+		glm::quat quatRot = glm::quat(1, 1, 1, 1);
+
+		for (Particle& particle : mListOfParticles)
+		{
+			if (particle.currentLifetime <= 0) continue;
+
+
+
+			particleEmission.m_ParticleModel->particleModel->transform.SetPosition(particle.position);
+			if (sizeOverLifetime.isEnabled)
+			{
+				particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale * sizeOverLifetime.ScaleParticle(particle));
+
+			}
+			else
+			{
+				particleEmission.m_ParticleModel->particleModel->transform.SetScale(particle.scale);
+
+			}
+
+			if (rotationOverLifetime.isEnabled)
+			{
+				particleEmission.m_ParticleModel->particleModel->transform.SetRotation(startRotation * rotationOverLifetime.AngularVelocity(particle));
+
+			}
+			else
+			{
+				particleEmission.m_ParticleModel->particleModel->transform.SetRotation(particle.rotation);
+
+			}
+
+
+
+			if (colorOverLifetime.isEnabled)
+			{
+				ApplyColorToMesh(colorOverLifetime.SendColorToMat(particle));
+
+			}
+			else
+			{
+				ApplyColorToMesh(glm::vec4(1));
+			}
+
+			glm::vec3 dir = glm::normalize(camPos - particle.position);
+			glm::vec3 rotRadians = glm::radians(particle.rotation);
+			lookAt = glm::quatLookAt(dir, glm::vec3(0, 1, 0));
+			quatRot = lookAt * glm::quat(rotRadians);
+			particleEmission.m_ParticleModel->particleModel->transform.SetQuatRotation(quatRot);
+
+			particleEmission.m_ParticleModel->particleModel->Draw(GraphicsRender::GetInstance().particleShader);
+		}
 }
 
 void ParticleSystem::InitializeParticles()
@@ -61,14 +127,9 @@ void ParticleSystem::InitializeParticles()
 
 void ParticleSystem::Render()
 {
-	/*std::vector<Object*> selectedObjects = EditorLayout::GetInstance().GetSelectedObjects();
-
-	if (selectedObjects.size() == 0) return;
-
-	if (selectedObjects[0] != this) return;*/
-
-
-	shapeManager.Render(transform.position);
+	
+	
+	shapeManager.Render();
 }
 
 void ParticleSystem::DrawProperties()
@@ -82,8 +143,13 @@ void ParticleSystem::DrawProperties()
 	}
 	ParticleSystemProperties();
 
-	DrawProperty("Emission", particleEmission);
-	DrawProperty("Shape", shapeManager);
+	DrawPropertyImGui("Emission", particleEmission);
+	DrawPropertyImGui("Velocity Over Lifetime", velocityOverLifetime);
+	DrawPropertyImGui("Size Over Lifetime", sizeOverLifetime);
+	DrawPropertyImGui("Rotation Over Lifetime", rotationOverLifetime);
+	DrawPropertyImGui("Color Over Lifetime", colorOverLifetime);
+	DrawPropertyImGui("Shape", shapeManager);
+
 
 	ImGui::TreePop();
 }
@@ -109,14 +175,14 @@ void ParticleSystem::ParticleSystemProperties()
 	DrawTransformVector2ImGui("Velocity", startVelocity, 0, columnWidth);
 
 	DrawTransformVector3ImGui("Size", startScale, 0, columnWidth);
-	DrawTransformVector3ImGui("Rotation", startRotation, 0, columnWidth);
+	DrawTransformVector3ImGui("Rotation", startRotation , 0, columnWidth);
 	DrawTransformVector3ImGui("Gravity", gravity, 0, columnWidth);
 
 
 	ImGui::TreePop();
 }
 
-void ParticleSystem::DrawProperty(std::string propertyName, EmitterProperty& property)
+void ParticleSystem::DrawPropertyImGui(std::string propertyName, EmitterProperty& property)
 {
 	if (!ImGui::TreeNodeEx(propertyName.c_str()))
 	{
@@ -128,20 +194,9 @@ void ParticleSystem::DrawProperty(std::string propertyName, EmitterProperty& pro
 	ImGui::TreePop();
 }
 
-void ParticleSystem::HandleRateOverTime(float deltaTime)
-{
-	if (particleEmission.rateOverTime == 0) return;
-
-	float currentRate = (particleEmission.rateOverTime * deltaTime) + mRateOverTimeCarryOver;
-	int numOfParticlesThisFrame = (int)currentRate;
 
 
-	mRateOverTimeCarryOver = currentRate - numOfParticlesThisFrame;
-
-	SpawnParticles(numOfParticlesThisFrame);
-}
-
-void ParticleSystem::HandleBurst(float deltaTime)
+void ParticleSystem::BurstUpdate(float deltaTime)
 {
 
 	for (Burst& burst : particleEmission.m_ListOfBursts)
@@ -170,20 +225,20 @@ void ParticleSystem::HandleBurst(float deltaTime)
 	}
 }
 
-void ParticleSystem::HandleParticleMove(float deltaTime)
+void ParticleSystem::ParticleUpdate(float deltaTime)
 {
 	for (Particle& particle : mListOfParticles)
 	{
-		if (particle.lifeTime <= 0) continue;
+		if (particle.currentLifetime <= 0) continue;
 
-		particle.lifeTime -= deltaTime;
-
+		particle.currentLifetime -= deltaTime;
 		particle.velocity += gravity * deltaTime;
 		particle.position += particle.velocity * deltaTime;
+		particle.rotation += startRotation.z * rotationOverLifetime.AngularVelocity(particle) * deltaTime;
 	}
 }
 
-void ParticleSystem::SpawnParticles(int count)
+void ParticleSystem::SpawnParticles(int count, float deltaTime)
 {
 	glm::vec3 pos;
 	glm::vec3 dir;
@@ -194,12 +249,24 @@ void ParticleSystem::SpawnParticles(int count)
 		if (!GetDeadParticle(particle)) return;
 		if (particle == nullptr) return;
 
-		shapeManager.GetParticlePosAndDir(pos, dir);
+		shapeManager.UpdateParticle(pos, dir);
 
 		particle->position = transform.position + pos;
-		particle->velocity = dir * GetRandomFloatNumber(startVelocity.x, startVelocity.y);
-		particle->lifeTime =GetRandomFloatNumber(startLiftime.x, startLiftime.y);
+		if (velocityOverLifetime.isEnabled)
+		{
+			particle->velocity = dir * GetRandomFloatNumber(startVelocity.x + velocityOverLifetime.particleSpeed, startVelocity.y + velocityOverLifetime.particleSpeed);
+
+		}
+		else
+		{
+			particle->velocity = dir * GetRandomFloatNumber(startVelocity.x , startVelocity.y );
+
+		}
+		particle->SetLifeTime(GetRandomFloatNumber(startLiftime.x, startLiftime.y));
+
 		particle->scale = startScale * GetRandomFloatNumber(particleEmission.m_ParticleModel->minParticleSize, particleEmission.m_ParticleModel->maxParticleSize);
+
+		particle->rotation = startRotation;
 
 	}
 	
@@ -211,7 +278,7 @@ void ParticleSystem::SpawnBurstParticles(Burst& burst)
 
 	if (probability < burst.probability)
 	{
-		SpawnParticles(burst.count);
+		SpawnParticles(burst.count,currentTime);
 		burst.currentCycle++;
 	}
 }
@@ -220,7 +287,7 @@ bool ParticleSystem::GetDeadParticle(Particle*& outParticle)
 {
 	for (Particle& particle : mListOfParticles)
 	{
-		if (particle.lifeTime <= 0)
+		if (particle.currentLifetime <= 0)
 		{
 			outParticle = &particle;
 			return true;
@@ -228,4 +295,13 @@ bool ParticleSystem::GetDeadParticle(Particle*& outParticle)
 	}
 
 	return false;
+}
+
+void ParticleSystem::ApplyColorToMesh(glm::vec4 color)
+{
+
+	for (std::shared_ptr<Mesh> mesh : particleEmission.m_ParticleModel->particleModel->meshes)
+	{
+		mesh->meshMaterial->particleMaterial()->SetBaseColor( color) ;
+	}
 }

@@ -182,6 +182,9 @@ void ApplicationRenderer::InitializeShaders()
     grassInstanceShader = new Shader("Shaders/Grass/GrassMeshInstanceShader.vert", "Shaders/Grass/GrassMeshInstanceShader.frag", ALPHA_CUTOUT);
     grassInstanceShader->modelUniform = false;
 
+    particleShader = new Shader("Shaders/ParticleShader.vert", "Shaders/ParticleShader.frag");
+    particleShader->blendMode = ALPHA_BLEND;
+
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
     GraphicsRender::GetInstance().stencilShader = stencilShader; 
@@ -190,6 +193,7 @@ void ApplicationRenderer::InitializeShaders()
     GraphicsRender::GetInstance().alphaCutoutShader = alphaCutoutShader;
     GraphicsRender::GetInstance().defaultInstanceShader = defaultInstanceShader;
     GraphicsRender::GetInstance().grassInstanceShader = grassInstanceShader;
+    GraphicsRender::GetInstance().particleShader = particleShader;
 }
 
 void ApplicationRenderer::InitializeSkybox()
@@ -225,6 +229,7 @@ void ApplicationRenderer::Start()
     BaseScene* sceneFour = new SceneFour("SceneFour");
 
     SceneManager::GetInstance().OnChangeScene("SceneFour");
+
 }
 
 
@@ -328,14 +333,17 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultShader->setMat4("view", view);
     defaultShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     defaultShader->setFloat("time", scrollTime);
-    defaultShader->setBool("isDepthBuffer", false);
+    defaultShader->setBool("isDepthBuffer", isDepth);
+    defaultShader->setBool("fogActive", isFog);
+    defaultShader->setBool("isCellShading", isCellShade);
+
 
     boneAnimationShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(boneAnimationShader);
     boneAnimationShader->setMat4("projection", projection);
     boneAnimationShader->setMat4("view", view);
     boneAnimationShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
-    boneAnimationShader->setBool("isDepthBuffer", false);
+    boneAnimationShader->setBool("isDepthBuffer", isDepth);
 
 
     alphaBlendShader->Bind();
@@ -344,7 +352,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     alphaBlendShader->setMat4("view", view);
     alphaBlendShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaBlendShader->setFloat("time", scrollTime);
-    alphaBlendShader->setBool("isDepthBuffer", false);
+    alphaBlendShader->setBool("isDepthBuffer", isDepth);
 
     alphaCutoutShader->Bind();
     LightManager::GetInstance().UpdateUniformValuesToShader(alphaCutoutShader);
@@ -352,23 +360,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     alphaCutoutShader->setMat4("view", view);
     alphaCutoutShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     alphaCutoutShader->setFloat("time", scrollTime);
-    alphaCutoutShader->setBool("isDepthBuffer", false);
-
-    defaultInstanceShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(defaultInstanceShader);
-
-    defaultInstanceShader->setMat4("projection", projection);
-    defaultInstanceShader->setMat4("view", view);
-    defaultInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
-    defaultInstanceShader->setFloat("time", scrollTime);
-    defaultInstanceShader->setBool("isDepthBuffer", false);
-
-    grassInstanceShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(grassInstanceShader);
-
-    grassInstanceShader->setMat4("projection", projection);
-    grassInstanceShader->setMat4("view", view);
-    grassInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    alphaCutoutShader->setBool("isDepthBuffer", isDepth);
 
     solidColorShader->Bind();
     solidColorShader->setMat4("projection", projection);
@@ -378,10 +370,33 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     stencilShader->setMat4("projection", projection);
     stencilShader->setMat4("view", view);
 
+  
+
+    defaultInstanceShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(defaultInstanceShader);
+    defaultInstanceShader->setMat4("projection", projection);
+    defaultInstanceShader->setMat4("view", view);
+    defaultInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    defaultInstanceShader->setFloat("time", scrollTime);
+    defaultInstanceShader->setBool("isDepthBuffer", false);
+
+    grassInstanceShader->Bind();
+    LightManager::GetInstance().UpdateUniformValuesToShader(grassInstanceShader);
+    grassInstanceShader->setMat4("projection", projection);
+    grassInstanceShader->setMat4("view", view);
+    grassInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+
+    particleShader->Bind();
+    particleShader->setMat4("projection", projection);
+    particleShader->setMat4("view", view);
+
     glDepthFunc(GL_LEQUAL);
     skyboxShader->Bind();
     skyboxShader->setMat4("projection", projection);
     skyboxShader->setMat4("view", skyBoxView);
+    skyboxShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    skyboxShader->setBool("fogActive", isFog);
+
 
     GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
     glDepthFunc(GL_LESS);
@@ -498,6 +513,19 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
          else if (action == GLFW_REPEAT)
          {
             // InputManager::GetInstance().OnkeyHold(key);
+         }
+
+         if (key == GLFW_KEY_P && action == GLFW_PRESS)
+         {
+             isFog = !isFog;
+         }
+         if (key == GLFW_KEY_L && action == GLFW_PRESS)
+         {
+             isCellShade = !isCellShade;
+         }
+         if (key == GLFW_KEY_O && action == GLFW_PRESS)
+         {
+             GraphicsRender::GetInstance().isDebug = !GraphicsRender::GetInstance().isDebug;
          }
      
  }

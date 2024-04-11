@@ -128,6 +128,7 @@ void GraphicsRender::Draw()
 
 	if (selectedModel != nullptr)
 	{
+	
 		// First pass: Render the model normally and write to the stencil buffer
 		GLCALL(glStencilFunc(GL_ALWAYS, 1, 0xFF));
 		GLCALL(glStencilMask(0xFF));
@@ -157,6 +158,7 @@ void GraphicsRender::Draw()
 		GLCALL(glStencilMask(0xFF));
 		GLCALL(glStencilFunc(GL_ALWAYS, 0, 0xFF));
 	}
+	
 
 }
 
@@ -169,58 +171,60 @@ void GraphicsRender::Clear()
 
 void GraphicsRender::DrawSphere(glm::vec3 center, float radius, glm::vec4 color, bool isWireFrame)
 {
-	Model* model = new Model(*(DebugModels::GetInstance().defaultSphere), true);
+	
+		Model* model = new Model(*(DebugModels::GetInstance().defaultSphere), true);
 
-	model->transform.SetPosition(center);
-	model->transform.SetScale(glm::vec3(radius));
-	model->DrawSolidColor(color,isWireFrame);
-	delete model;
+		model->transform.SetPosition(center);
+		model->transform.SetScale(glm::vec3(radius));
+		model->DrawSolidColor(color, isWireFrame);
+		delete model;
+	
 
 }
 
 void GraphicsRender::DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec4 color, bool isWireFrame)
 {
-	Model* model = new Model(*(DebugModels::GetInstance().defaultCube), true);
-	model->transform.SetPosition(center);
-	model->transform.SetScale(dimensions);
-	model->DrawSolidColor(color, isWireFrame);
-	delete model;
-
+	
+		Model* model = new Model(*(DebugModels::GetInstance().defaultCube), true);
+		model->transform.SetPosition(center);
+		model->transform.SetScale(dimensions);
+		model->DrawSolidColor(color, isWireFrame);
+		delete model;
 }
 
 void GraphicsRender::DrawBox(glm::vec3 center, glm::vec3 dimensions, glm::vec3 rotation, glm::vec4 color, bool isWireFrame)
 {
-	Model* model = new Model(*(DebugModels::GetInstance().defaultCube), true);
-	model->transform.SetPosition(center);
-	model->transform.SetRotation(rotation);
-	model->transform.SetScale(dimensions);
-	model->DrawSolidColor(color, isWireFrame);
-	delete model;
+	
+		Model* model = new Model(*(DebugModels::GetInstance().defaultCube), true);
+		model->transform.SetPosition(center);
+		model->transform.SetRotation(rotation);
+		model->transform.SetScale(dimensions);
+		model->DrawSolidColor(color, isWireFrame);
+		delete model;
 }
 
 void GraphicsRender::DrawLine(glm::vec3 start, glm::vec3 endpoint, glm::vec4 color)
 {
-
-	std::vector<Vertex> vertices = 
-	{
-		 {glm::vec3(-1.0f, -1.0f, -1.0f)},  // 0
-		{glm::vec3(1.0f, -1.0f, -1.0f)},  // 1
-		{glm::vec3(1.0f, -1.0f, -1.0f)},  // 2
-	};
-
-	std::vector<unsigned int>indices = { 0,1,1 };
-
-	vertices[0].Position = start;
-	vertices[1].Position = endpoint;
-
-	Model model;
-
-	UnLitMaterial* material = new UnLitMaterial();
-
-	model.meshes.push_back(std::make_shared<Mesh>(vertices, indices, material));
 	
-	model.DrawSolidColor(color, true);
+		std::vector<Vertex> vertices =
+		{
+			 {glm::vec3(-1.0f, -1.0f, -1.0f)},  // 0
+			{glm::vec3(1.0f, -1.0f, -1.0f)},  // 1
+			{glm::vec3(1.0f, -1.0f, -1.0f)},  // 2
+		};
 
+		std::vector<unsigned int>indices = { 0,1,1 };
+
+		vertices[0].Position = start;
+		vertices[1].Position = endpoint;
+
+		Model model;
+
+		UnLitMaterial* material = new UnLitMaterial();
+
+		model.meshes.push_back(std::make_shared<Mesh>(vertices, indices, material));
+
+		model.DrawSolidColor(color, true);
 }
 
 void GraphicsRender::ClearModelList()
@@ -233,6 +237,11 @@ void GraphicsRender::ClearModelList()
 void GraphicsRender::SetSelectedModel(Model* model)
 
 {
+	/*if (model->tag == "Particles")
+	{
+		selectedModel = nullptr;
+		return ;
+	}*/
 	selectedModel = model;
 }
 

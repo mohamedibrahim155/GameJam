@@ -1,9 +1,12 @@
 #include "ParticleEmission.h"
 
+
 ParticleEmission::ParticleEmission()
 {
 	m_ParticleModel = new ParticleModel();
 }
+
+
 
 void ParticleEmission::AddBurst(Burst burstInfo)
 {

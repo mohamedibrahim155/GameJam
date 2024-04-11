@@ -32,6 +32,7 @@ void ConeEmitter::DrawProperties()
 
 	DrawFloatImGui("Angle", angle);
 	DrawFloatImGui("Radius", radius);
+	
 
 
 	if (DrawDropDownImGui("EmitFrom", currentEmitInt, emitStrings, 2))
@@ -46,7 +47,7 @@ void ConeEmitter::SceneDraw()
 {
 }
 
-void ConeEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
+void ConeEmitter::UpdateParticle(glm::vec3& pos, glm::vec3& dir)
 {
 	float randomHeight = 0;
 
@@ -83,16 +84,16 @@ void ConeEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
 
 }
 
-void ConeEmitter::Render(glm::vec3& pos)
+void ConeEmitter::Render()
 {
 
-	glm::vec3 center = pos + position;
-	glm::vec3 end = pos + endPos;
+	glm::vec3 center = position;
+	glm::vec3 end =  endPos;
 
 	topRadius = GetRadius(height);
 
 	GraphicsRender::GetInstance().DrawSphere(center, radius, bottomColor, true);
-	GraphicsRender::GetInstance().DrawSphere(end + pos, topRadius, topColor, true);
+	GraphicsRender::GetInstance().DrawSphere(end , topRadius, topColor, true);
 }
 
 float ConeEmitter::GetRadius(float& heightValue)

@@ -22,25 +22,24 @@ public:
 	void SetEmitFrom(EmmitFrom emmitFrom);
 	EmmitFrom GetEmifrom();
 
-
-
-
 	// Inherited via BaseEmitterShape
 	void DrawProperties() override;
 
 	void SceneDraw() override;
 
-	void GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir) override;
+	void UpdateParticle(glm::vec3& pos, glm::vec3& dir) override;
 
-	void Render(glm::vec3& pos) override;
-
-private :
+	void Render() override;
 
 	//Unity Particle System Variables, default value 1, adjust radius for size of the two spheres
 	//adjust angle for wider and shorter spawning 
 	//adjust height for cone height
 	float angle = 25.0f;
 	float radius = 1.0f;
+	
+
+private :
+
 	float height = 1.0f;
 	float topRadius = 0;
 

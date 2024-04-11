@@ -12,18 +12,19 @@ BoxEmitter::BoxEmitter()
 
 void BoxEmitter::DrawProperties()
 {
-   
-	DrawTransformVector3ImGui("Emitter Direction ", particleDir, 0, columnWidth);
-	DrawTransformVector3ImGui("Emitter Scale ", scale, 1, columnWidth);
+    float width = 150;
 
-    BaseEmitterShape::DrawProperties();
+    DrawTransformVector3ImGui("Emitter Position ", position, 0, width);
+	DrawTransformVector3ImGui("Emitter Direction ", particleDir, 0, width);
+	DrawTransformVector3ImGui("Emitter Scale ", scale, 1, width);
+
 }
 
 void BoxEmitter::SceneDraw()
 {
 }
 
-void BoxEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
+void BoxEmitter::UpdateParticle(glm::vec3& pos, glm::vec3& dir)
 {
 	pos = position + FindPointInsideBox(glm::vec3(0), scale);
 
@@ -33,9 +34,9 @@ void BoxEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
 
 }
 
-void BoxEmitter::Render(glm::vec3& pos)
+void BoxEmitter::Render()
 {
-	glm::vec3 centre = pos + position;
+	glm::vec3 centre = position;
 
 	GraphicsRender::GetInstance().DrawBox(centre, scale, boxColor,true);
 }

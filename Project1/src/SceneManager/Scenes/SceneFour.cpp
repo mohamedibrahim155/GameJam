@@ -65,6 +65,9 @@ void SceneFour::Start()
     Plane2->transform.SetRotation(glm::vec3(90, 0, 0));
     Plane2->transform.SetScale(glm::vec3(10));
     GraphicsRender::GetInstance().AddModelAndShader(Plane2, application->defaultShader);
+
+    Fire* fire = new Fire();
+
 }
 
 void SceneFour::Update()

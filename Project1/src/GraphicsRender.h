@@ -75,9 +75,11 @@ public:
 	Shader* alphaBlendShader;
 	Shader* defaultInstanceShader;
 	Shader* grassInstanceShader;
+	Shader* particleShader;
 	void SetSelectedModel(Model* model);
 	Model* GetSelectedModel();
-
+	Camera* camera;
+	bool isDebug = false;
 
 private:
 	
@@ -88,7 +90,6 @@ private:
 	std::vector<ModelAndShader*> modelAndShaderList;
 	std::vector<ModelAndShader*> transparentmodelAndShaderList;
 
-	Camera* camera;
 
 };
 

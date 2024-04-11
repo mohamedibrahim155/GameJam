@@ -31,6 +31,7 @@
 #include "SceneManager/SceneManager.h"
 #include "PhysX/PhysXEngine.h"
 #include "Cursor.h"
+#include "ParticleSystem/ParticleAssets/Fire.h"
 
 class ApplicationRenderer
 {
@@ -75,6 +76,7 @@ public:
 	Shader* boneAnimationShader;
 	Shader* defaultInstanceShader;
 	Shader* grassInstanceShader;
+	Shader* particleShader;
 
 	Shader* stencilShader;
 	Shader* skyboxShader;
@@ -86,6 +88,10 @@ public:
 	eCursorState currentCursorState = eCursorState::VISIBLE;
 
 	bool isPlayMode = false;
+	bool isDepth = false;
+	bool isFog = false;
+	bool isCellShade = false;
+
 	int windowWidth;
 	int  WindowHeight;
 private:

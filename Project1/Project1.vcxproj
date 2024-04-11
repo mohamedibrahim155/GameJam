@@ -142,6 +142,13 @@
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
     <ClCompile Include="src\Grass\GrassMesh.cpp" />
+    <ClCompile Include="src\ParticleMaterial.cpp" />
+    <ClCompile Include="src\ParticleSystem\ParticleAssets\Fire.cpp" />
+    <ClCompile Include="src\ParticleSystem\ParticleAssets\Fog.cpp" />
+    <ClCompile Include="src\ParticleSystem\Properties\ColorOverLifetime.cpp" />
+    <ClCompile Include="src\ParticleSystem\Properties\RotationOverLifetime.cpp" />
+    <ClCompile Include="src\ParticleSystem\Properties\SizeOverLifetime.cpp" />
+    <ClCompile Include="src\ParticleSystem\Properties\VelocityOverLifetime.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneFour.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneThree.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneTwo.cpp" />
@@ -249,6 +256,15 @@
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
     <ClInclude Include="src\Grass\GrassMesh.h" />
+    <ClInclude Include="src\ParticleMaterial.h" />
+    <ClInclude Include="src\ParticleSystem\Particle.h" />
+    <ClInclude Include="src\ParticleSystem\ParticleAssets\Fire.h" />
+    <ClInclude Include="src\ParticleSystem\ParticleAssets\Fog.h" />
+    <ClInclude Include="src\ParticleSystem\Properties\ColorOverLifetime.h" />
+    <ClInclude Include="src\ParticleSystem\Properties\RotationOverLifetime.h" />
+    <ClInclude Include="src\ParticleSystem\Properties\SizeOverLifetime.h" />
+    <ClInclude Include="src\ParticleSystem\Properties\VelocityOverLifetime.h" />
+    <ClInclude Include="src\ParticleSystem\RandomBetweenTwo.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneFour.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneThree.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneTwo.h" />
@@ -377,6 +393,8 @@
     <None Include="Shaders\Grass\GrassMeshInstanceShader.vert" />
     <None Include="Shaders\MeshInstanceShader.frag" />
     <None Include="Shaders\MeshInstanceShader.vert" />
+    <None Include="Shaders\ParticleShader.frag" />
+    <None Include="Shaders\ParticleShader.vert" />
     <None Include="Shaders\PostProcessing\Chromatic.frag" />
     <None Include="Shaders\PostProcessing\Chromatic.vert" />
     <None Include="Shaders\lighting.frag" />

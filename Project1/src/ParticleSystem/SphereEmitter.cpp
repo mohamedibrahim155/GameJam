@@ -23,7 +23,7 @@ void SphereEmitter::SceneDraw()
 {
 }
 
-void SphereEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
+void SphereEmitter::UpdateParticle(glm::vec3& pos, glm::vec3& dir)
 {
 	dir = GetRandomPointInSphere(minDir, maxDir);
 	dir = glm::normalize(dir);
@@ -38,10 +38,10 @@ void SphereEmitter::GetParticlePosAndDir(glm::vec3& pos, glm::vec3& dir)
 	}
 }
 
-void SphereEmitter::Render(glm::vec3& pos)
+void SphereEmitter::Render()
 {
 
-	glm::vec3 center = pos + position;
+	glm::vec3 center =  position;
 
 	if (radiusThickness == 0)
 	{

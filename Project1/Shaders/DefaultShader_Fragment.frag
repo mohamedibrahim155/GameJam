@@ -47,6 +47,7 @@ in vec3 FragPosition;
 in vec3 Normal;  
 in vec2 TextureCoordinates;
 in vec4 meshColour;
+in vec4 FragPosLightSpace;
 
 uniform vec3 viewPos;
 uniform Material material;
@@ -65,7 +66,7 @@ uniform float alphaCutOffThreshold;
 
 float temp;
 
-vec4 CalculateLight(vec3 norm, vec3 viewDir );
+vec4 CalculateLight(vec3 norm, vec3 viewDir,float shadowCalc );
 float near = 0.1; 
 float far  = 100.0; 
 
@@ -78,6 +79,26 @@ float LinearizeDepth(float depth)
 uniform bool isDepthBuffer;
 uniform samplerCube skybox;
 
+uniform float biasValue;
+uniform vec3 lightDir;
+uniform sampler2D shadowMap;
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal);
+float CalcFog();
+float CalcLinearFog();
+float CalcExpoFog();
+
+//Fog
+uniform float fogDensity = 0.66;
+uniform float fogStart = 8.0;
+uniform float fogEnd = 40;
+uniform vec3 fogColor = vec3(0.59,0.59,0.59);
+uniform bool fogActive = false;
+
+//Toon Shader
+const int shadingLevels = 4;
+const float scaleFactor = 1.0/ shadingLevels;
+uniform bool isCellShading = false;
+
 void main()
 {    
     // properties
@@ -86,7 +107,9 @@ void main()
 
     vec3 R = reflect(-viewDir, norm);
 
-    vec4 result = CalculateLight(norm,viewDir);
+    //float shadow =  ShadowCalculation(FragPosLightSpace,norm);
+
+    vec4 result = CalculateLight(norm,viewDir,0);
   
      vec4 cutOff = texture(diffuse_Texture, TextureCoordinates);
  
@@ -119,19 +142,29 @@ void main()
 //        FragColor = result*cutOff.a; 
 //     
 //     }
+
+
+
      
 
      if(isDepthBuffer)
      {
 
           float depth = LinearizeDepth(gl_FragCoord.z) / far;
-          FragColor = vec4(vec3(depth), 1.0); 
+          vec4 depthVec4 = vec4(vec3(pow(depth, 1.4)), 7.0);
+          FragColor = (result)* (1 - depthVec4) + depthVec4;
       }
       else
       {
-          //float depth = LinearizeDepth(gl_FragCoord.z) / far;
-        //  FragColor = texture(specular_Texture, TextureCoordinates);
+            if(fogColor != vec3(0) && fogActive)
+             {
+               float fogFactor = CalcLinearFog();
+               result = mix(vec4(fogColor,1.0),result,fogFactor);
+
+             }
           FragColor = result;
+
+
       }
 
 
@@ -143,10 +176,75 @@ void main()
 
 }
 
+float CalcLinearFog()
+{
+
+   float camDist = length(FragPosition - viewPos);
+   float fogRange = fogEnd - fogStart;
+   float fogDist = fogEnd - camDist;
+   float fogFactor = fogDist /fogRange;
+   fogFactor  = clamp(fogFactor,0.0,1.0);
+   return fogFactor;
+
+}
+
+float CalcExpoFog()
+{
+   float camDist = length(FragPosition - viewPos);
+   float distRatio = 4.0 * camDist / fogEnd;
+   float fogFactor = exp(-distRatio * fogDensity * distRatio * fogDensity);
+
+   return fogFactor;
+ 
+}
+
+float CalcFog()
+{
+
+  float fogFac = 1;
+
+  if(fogStart >= 0)
+  {
+    fogFac = CalcLinearFog();
+  }
+  else
+  {
+     fogFac = CalcExpoFog();
+  
+  }
+
+
+  return fogFac;
+}
+
+
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal)
+{
+   // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), biasValue); 
+
+    float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+
+	if(projCoords.z > 1.0)
+	{
+		shadow = 0;
+	}
+
+    return shadow;
+}
+
   
 
 
-vec4 CalculateLight(vec3 norm, vec3 viewDir )
+vec4 CalculateLight(vec3 norm, vec3 viewDir,float shadowCalc)
 {
 
     vec4 result = vec4(0,0,0,0);
@@ -168,19 +266,37 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir )
        {
           vec3 lightDir = normalize(-lights[index].direction);
           float diff = max(dot(norm, lightDir), 0.0);
+          if(isCellShading)
+          {
 
-
+            //diff = floor(diff * shadingLevels)*scaleFactor;
+             diff = ceil(diff * shadingLevels)*scaleFactor;
+          }
           vec4 diffuse = diff * lights[index].color;
-	       diffuse *= textureColor;
+	       diffuse *= textureColor ;
 
+           
            vec4 specularColor = texture(specular_Texture, TextureCoordinates);
            vec3 reflectDir = reflect(-lightDir, norm);
 
 
          float spec = pow(max(dot(reflectDir, viewDir), 0.0), material.shininess);
 
+         if(!isCellShading && spec > 0)
+         {
         	vec4 specular = vec4(spec * material.specularValue * lights[index].color.rgb * (specularColor.r),lights[index].color.w);
+            vec4 finalValueforDir =( ambientColor + ((1.0 - shadowCalc) * ( diffuse + specular)) );
+            result += finalValueforDir;
+            
 
+
+         }
+         else
+         {
+             vec4 finalValueforDir =( ambientColor + ((1.0 - shadowCalc) * ( diffuse )) );
+              result += finalValueforDir;
+
+         }
 
 
          //vec4 ambient = lights[index].ambient   *         meshColour * texture(diffuse, TextureCoordinates);
@@ -192,11 +308,9 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir )
 //         vec3 diffuse =  lights[index].diffuse * diff * meshColour.rgb;
 //         vec3 specular =  lights[index].specular * spec *meshColour.rgb;
 
-         vec4 finalValueforDir =(ambientColor+diffuse+specular);
          //vec4 finalValueforDir = material.baseColor;
 
         // result+=finalValueforDir*lights[index].color;
-         result += finalValueforDir;
         
        }
        if(LightType ==POINT_LIGHT_ID)

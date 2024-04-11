@@ -2,6 +2,7 @@
 #include "material.h"
 #include "SkyboxMaterial.h"
 #include "UnLitMaterial.h"
+#include "ParticleMaterial.h"
 
 
 Material* BaseMaterial::material()
@@ -17,4 +18,9 @@ SkyboxMaterial* BaseMaterial::skyboxMaterial()
 UnLitMaterial* BaseMaterial::unLitMaterial()
 {
 	return (UnLitMaterial*)this;
+}
+
+ParticleMaterial* BaseMaterial::particleMaterial()
+{
+	return (ParticleMaterial*)this;
 }

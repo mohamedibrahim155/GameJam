@@ -9,6 +9,7 @@ layout (location = 3) in vec4 aColor;
  out vec3 Normal;
  out vec2 TextureCoordinates;
  out vec4 meshColour;
+out vec4 FragPosLightSpace;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -16,6 +17,7 @@ uniform mat4 projection;
 uniform float time = 0;
 
 uniform bool isScrollingTexture;
+uniform mat4 lightSpaceMatrix;
 
 // function prototypes
 
@@ -34,8 +36,8 @@ void main()
 	  TextureCoordinates = aTexCoords;
 	}
 	 meshColour = aColor;
-	//gl_Position = projection * view * model;
-	gl_Position = projection * view * vec4(FragPosition, 1.0);
+	 FragPosLightSpace = lightSpaceMatrix * vec4(FragPosition, 1.0);
+	 gl_Position = projection * view * vec4(FragPosition, 1.0);
 }
 
 
