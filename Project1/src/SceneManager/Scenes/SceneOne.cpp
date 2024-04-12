@@ -50,6 +50,10 @@ void SceneOne::Start()
     cathedral->transform.SetRotation(glm::vec3(0, 0, 0));
     cathedral->transform.SetScale(glm::vec3(0.01, 0.01, 0.01));
     cathedral->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);*/
+
+    Model* tree = new Model("Models/Tree/NewTree.fbx");
+    GraphicsRender::GetInstance().AddModelAndShader(tree, application->defaultShader);
+
 }
 
 void SceneOne::Update()

@@ -149,6 +149,7 @@
     <ClCompile Include="src\ParticleSystem\Properties\RotationOverLifetime.cpp" />
     <ClCompile Include="src\ParticleSystem\Properties\SizeOverLifetime.cpp" />
     <ClCompile Include="src\ParticleSystem\Properties\VelocityOverLifetime.cpp" />
+    <ClCompile Include="src\SceneManager\Scenes\SceneFive.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneFour.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneThree.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneTwo.cpp" />
@@ -265,6 +266,7 @@
     <ClInclude Include="src\ParticleSystem\Properties\SizeOverLifetime.h" />
     <ClInclude Include="src\ParticleSystem\Properties\VelocityOverLifetime.h" />
     <ClInclude Include="src\ParticleSystem\RandomBetweenTwo.h" />
+    <ClInclude Include="src\SceneManager\Scenes\SceneFive.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneFour.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneThree.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneTwo.h" />

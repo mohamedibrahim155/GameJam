@@ -354,6 +354,9 @@
     <ClCompile Include="src\ParticleSystem\ParticleAssets\Fog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\SceneManager\Scenes\SceneFive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -735,6 +738,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ParticleSystem\ParticleAssets\Fog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager\Scenes\SceneFive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

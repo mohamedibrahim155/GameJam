@@ -49,7 +49,7 @@ PlayerController::PlayerController(ApplicationRenderer* application)
     tag = "Player";
     entityLayer = Layer::PLAYER;
 
-    transform.SetScale(glm::vec3(0.001f));
+    transform.SetScale(glm::vec3(0.01f));
 
     LoadAnimation("Models/Character/Player/Idle.fbx", "Idle");
     LoadAnimation("Models/Character/Player/Run.fbx", "Run");

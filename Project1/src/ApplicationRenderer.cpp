@@ -4,6 +4,7 @@
 #include "SceneManager/Scenes/SceneTwo.h"
 #include "SceneManager/Scenes/SceneThree.h"
 #include "SceneManager/Scenes/SceneFour.h"
+#include "SceneManager/Scenes/SceneFive.h"
 
 ApplicationRenderer::ApplicationRenderer()
 {
@@ -133,8 +134,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     GraphicsRender::GetInstance().SetCamera(sceneViewcamera);
 
     sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
-    sceneViewcamera->transform.position = glm::vec3(0, 1.00, 5);
-    sceneViewcamera->transform.SetRotation(glm::vec3(0));
+    sceneViewcamera->transform.position = glm::vec3(-75.91, 5.82, 105.85);
+    sceneViewcamera->transform.SetRotation(glm::vec3(0, -361.50,0));
 
     gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     gameScenecamera->transform.position = glm::vec3(0, 1.00, 5);
@@ -227,8 +228,9 @@ void ApplicationRenderer::Start()
     BaseScene* sceneTwo = new SceneTwo("SceneTwo");
     BaseScene* sceneThree = new SceneThree("SceneThree");
     BaseScene* sceneFour = new SceneFour("SceneFour");
+    BaseScene* sceneFive = new SceneFive("SceneFive");
 
-    SceneManager::GetInstance().OnChangeScene("SceneOne");
+    SceneManager::GetInstance().OnChangeScene("SceneFive");
 
 }
 

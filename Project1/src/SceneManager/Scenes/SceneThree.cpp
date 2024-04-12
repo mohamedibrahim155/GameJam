@@ -20,13 +20,22 @@ void SceneThree::Start()
     directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
 
 
-    Model* LODTest = new Model("Models/LOD_test/LOD_test.fbx");
+    /*Model* LODTest = new Model("Models/LOD_test/LOD_test.fbx");
     LODTest->name = "LOD Mesh";
     LODTest->useLOD = true;
     LODTest->AddLODGroup({ 0 }, 2);
     LODTest->AddLODGroup({ 1 }, 6);
     LODTest->AddLODGroup({ 2 }, 9);
-    GraphicsRender::GetInstance().AddModelAndShader(LODTest, application->defaultShader);
+    GraphicsRender::GetInstance().AddModelAndShader(LODTest, application->defaultShader);*/
+
+    Model* Tree = new Model("Models/Tree/TreeTwo.fbx");
+    Tree->transform.SetScale(glm::vec3(0.01f));
+    Tree->name = "LOD Mesh";
+    Tree->useLOD = true;
+    Tree->AddLODGroup({ 0 }, 15);
+    Tree->AddLODGroup({ 1 }, 28);
+    Tree->AddLODGroup({ 2 }, 32);
+    GraphicsRender::GetInstance().AddModelAndShader(Tree, application->defaultShader);
 
     Model* defaultCube = new Model("Models/DefaultCube/DefaultCube.fbx");
     defaultCube->name = "Cube";
