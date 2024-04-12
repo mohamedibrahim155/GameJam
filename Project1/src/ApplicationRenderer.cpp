@@ -132,15 +132,15 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     GraphicsRender::GetInstance().SetCamera(sceneViewcamera);
 
-    sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
+    sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     sceneViewcamera->transform.position = glm::vec3(0, 1.00, 5);
     sceneViewcamera->transform.SetRotation(glm::vec3(0));
 
-    gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
+    gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     gameScenecamera->transform.position = glm::vec3(0, 1.00, 5);
     gameScenecamera->transform.SetRotation(glm::vec3(0));
 
-    renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 100.0f);
+    renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     renderTextureCamera->transform.position = glm::vec3(0, 0, -1.0f);
 
     renderTextureCamera->IntializeRenderTexture(specification);
@@ -228,7 +228,7 @@ void ApplicationRenderer::Start()
     BaseScene* sceneThree = new SceneThree("SceneThree");
     BaseScene* sceneFour = new SceneFour("SceneFour");
 
-    SceneManager::GetInstance().OnChangeScene("SceneFour");
+    SceneManager::GetInstance().OnChangeScene("SceneOne");
 
 }
 

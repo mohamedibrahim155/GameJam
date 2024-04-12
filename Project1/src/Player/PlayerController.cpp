@@ -42,19 +42,23 @@ PlayerController::PlayerController(ApplicationRenderer* application)
 
  
 
-    LoadModel("Models/Character/X Bot.fbx");
+    //LoadModel("Models/Character/X Bot.fbx");
+    LoadModel("Models/Character/Player/Player2.fbx");
 
     name = "PlayerController";
     tag = "Player";
     entityLayer = Layer::PLAYER;
 
-    transform.SetScale(glm::vec3(0.01f));
+    transform.SetScale(glm::vec3(0.001f));
 
-    LoadAnimation("Models/Character/Idle.fbx", "Idle");
-    LoadAnimation("Models/Character/Running.fbx", "Run");
+    LoadAnimation("Models/Character/Player/Idle.fbx", "Idle");
+    LoadAnimation("Models/Character/Player/Run.fbx", "Run");
 
     transform.SetRotation(glm::vec3(0, 180, 0));
 
+    std::string diffuseTexture = "Models/Character/Textures/Player.png";
+    Texture* texture = new Texture(diffuseTexture);
+    meshes[0]->meshMaterial->material()->diffuseTexture = texture;
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().boneAnimationShader);
 
 
