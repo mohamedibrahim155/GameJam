@@ -12,7 +12,7 @@
 
 
 
-Texture::Texture(std::string& filePath)
+Texture::Texture(const std::string& filePath)
 {
 	this->path = filePath;
 	this->id = LoadTextureID(filePath.c_str());

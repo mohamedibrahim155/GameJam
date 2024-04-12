@@ -195,6 +195,13 @@ void ApplicationRenderer::InitializeShaders()
     GraphicsRender::GetInstance().defaultInstanceShader = defaultInstanceShader;
     GraphicsRender::GetInstance().grassInstanceShader = grassInstanceShader;
     GraphicsRender::GetInstance().particleShader = particleShader;
+
+    LightManager::GetInstance().AddShader(defaultShader);
+    LightManager::GetInstance().AddShader(boneAnimationShader);
+    LightManager::GetInstance().AddShader(alphaBlendShader);
+    LightManager::GetInstance().AddShader(alphaCutoutShader);
+    LightManager::GetInstance().AddShader(defaultInstanceShader);
+    LightManager::GetInstance().AddShader(grassInstanceShader);
 }
 
 void ApplicationRenderer::InitializeSkybox()
@@ -329,10 +336,10 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 
     skyBoxView = glm::mat4(glm::mat3(camera->GetViewMatrix()));
 
+    LightManager::GetInstance().RenderLights();
+
 
     defaultShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(defaultShader);
-
     defaultShader->setMat4("projection", projection);
     defaultShader->setMat4("view", view);
     defaultShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
@@ -343,7 +350,6 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 
 
     boneAnimationShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(boneAnimationShader);
     boneAnimationShader->setMat4("projection", projection);
     boneAnimationShader->setMat4("view", view);
     boneAnimationShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
@@ -351,7 +357,6 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 
 
     alphaBlendShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(alphaBlendShader);
     alphaBlendShader->setMat4("projection", projection);
     alphaBlendShader->setMat4("view", view);
     alphaBlendShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
@@ -359,7 +364,6 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     alphaBlendShader->setBool("isDepthBuffer", isDepth);
 
     alphaCutoutShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(alphaCutoutShader);
     alphaCutoutShader->setMat4("projection", projection);
     alphaCutoutShader->setMat4("view", view);
     alphaCutoutShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
@@ -377,7 +381,6 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
   
 
     defaultInstanceShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(defaultInstanceShader);
     defaultInstanceShader->setMat4("projection", projection);
     defaultInstanceShader->setMat4("view", view);
     defaultInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
@@ -385,7 +388,6 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultInstanceShader->setBool("isDepthBuffer", false);
 
     grassInstanceShader->Bind();
-    LightManager::GetInstance().UpdateUniformValuesToShader(grassInstanceShader);
     grassInstanceShader->setMat4("projection", projection);
     grassInstanceShader->setMat4("view", view);
     grassInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);

@@ -230,7 +230,6 @@
     <ClCompile Include="Extern\imGui\imgui_tables.cpp" />
     <ClCompile Include="Extern\imGui\imgui_widgets.cpp" />
     <ClCompile Include="src\SkinnedMeshRenderer.cpp" />
-    <ClCompile Include="src\Skybox.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\ApplicationRenderer.cpp" />
     <ClCompile Include="src\GraphicsRender.cpp" />
@@ -357,7 +356,6 @@
     <ClInclude Include="Extern\imGui\imstb_textedit.h" />
     <ClInclude Include="Extern\imGui\imstb_truetype.h" />
     <ClInclude Include="src\SkinnedMeshRenderer.h" />
-    <ClInclude Include="src\Skybox.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\ApplicationRenderer.h" />
     <ClInclude Include="src\GraphicsRender.h" />

@@ -42,6 +42,21 @@ void LightManager::RemoveLight(Light* light)
     lightList.erase(std::remove(lightList.begin(), lightList.end(), light), lightList.end());
 }
 
+void LightManager::AddShader(Shader* shader)
+{
+    listOfShaders.push_back(shader);
+}
+
+void LightManager::RemoveShader(Shader* shader)
+{
+    std::vector<Shader*> ::iterator it = std::find(listOfShaders.begin(), listOfShaders.end(), shader);
+
+    if (it!= listOfShaders.end())
+    {
+        listOfShaders.erase(it);
+    }
+}
+
 
 
 
@@ -122,6 +137,40 @@ void LightManager::UpdateUniformValuesToShader(Shader* shader)
 
     }
     return;
+}
+
+void LightManager::RenderLights()
+{
+    for (Shader* shader :  listOfShaders)
+    {
+        shader->Bind();
+        for (size_t i = 0; i < lightList.size(); i++)
+        {
+            if (lightList.size() > LightManager::MAX_LIGHT)
+            {
+                std::cout << "Light exceeded ...  File : " << __FILE__ << " Line : " << __LINE__ << std::endl;
+                break;
+            }
+            std::string index = std::to_string(i);
+            float intensity = lightList[i]->GetIntensityValue();
+            shader->setVec3("lights[" + index + "].position", lightList[i]->transform.position.x, lightList[i]->transform.position.y, lightList[i]->transform.position.z);
+            shader->setVec3("lights[" + index + "].direction", lightList[i]->transform.GetForward());
+            shader->setVec4("lights[" + index + "].ambient", lightList[i]->GetAmbientColor().x * intensity,
+                lightList[i]->GetAmbientColor().y * intensity, lightList[i]->GetAmbientColor().z * intensity, lightList[i]->GetAmbientColor().w);
+            shader->setInt("lights[" + index + "].lightType", (int)lightList[i]->lightType);
+            shader->setFloat("lights[" + index + "].linear", lightList[i]->GetAttenuation().x);    // Linear
+            shader->setFloat("lights[" + index + "].quadratic", lightList[i]->GetAttenuation().y); // Quadratic
+            shader->setFloat("lights[" + index + "].constant", lightList[i]->GetAttenuation().z);  // Constant
+            shader->setFloat("lights[" + index + "].cutOff", glm::cos(glm::radians(lightList[i]->GetInnerAndOuterAngle().x)));
+            shader->setFloat("lights[" + index + "].outerCutOff", glm::cos(glm::radians(lightList[i]->GetInnerAndOuterAngle().y)));
+
+
+
+            shader->setVec4("lights[" + index + "].color", lightList[i]->GetLightColor().x * intensity, lightList[i]->GetLightColor().y * intensity,
+                lightList[i]->GetLightColor().z * intensity, lightList[i]->GetLightColor().w);
+
+        }
+    }
 }
 
 const std::vector<Light*>& LightManager::GetLightList()
