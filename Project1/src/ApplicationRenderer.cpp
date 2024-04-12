@@ -232,6 +232,8 @@ void ApplicationRenderer::Start()
 
     SceneManager::GetInstance().OnChangeScene("SceneFive");
 
+    FPS* fps = new FPS();
+
 }
 
 

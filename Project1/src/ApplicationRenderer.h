@@ -32,7 +32,7 @@
 #include "PhysX/PhysXEngine.h"
 #include "Cursor.h"
 #include "ParticleSystem/ParticleAssets/Fire.h"
-
+#include "FPS/FPS.h"
 class ApplicationRenderer
 {
 public:
