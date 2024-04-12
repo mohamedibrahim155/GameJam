@@ -27,7 +27,7 @@ void SceneOne::Start()
     /*std::string difPath = "Models/Terrain/Terrain.png";
     Texture* dif = new Texture(difPath);*/
 
-    terrain->LoadModel("Models/Terrain/Terrain.obj");
+    terrain->LoadModel("Models/Terrain/Terrain2.fbx");
    // terrain->meshes[0]->meshMaterial->material()->diffuseTexture = dif;
     GraphicsRender::GetInstance().AddModelAndShader(terrain, application->defaultShader);
     terrain->name = "Terrain";
