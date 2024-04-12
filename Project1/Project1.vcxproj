@@ -170,7 +170,6 @@
     <ClCompile Include="Extern\imGui\ImSequencer.cpp" />
     <ClCompile Include="src\Player\PlayerController.cpp" />
     <ClCompile Include="src\PhysX\PhysicsSkinMeshRenderer.cpp" />
-    <ClCompile Include="ShadowFBO.cpp" />
     <ClCompile Include="src\Animation\Animation.cpp" />
     <ClCompile Include="src\Animation\AnimationSequence.cpp" />
     <ClCompile Include="src\Animation\AnimationSystem.cpp" />
@@ -289,7 +288,6 @@
     <ClInclude Include="Extern\imGui\ImZoomSlider.h" />
     <ClInclude Include="src\Player\PlayerController.h" />
     <ClInclude Include="src\PhysX\PhysicsSkinMeshRenderer.h" />
-    <ClInclude Include="ShadowFBO.h" />
     <ClInclude Include="src\Animation\Animation.h" />
     <ClInclude Include="src\Animation\AnimationSequence.h" />
     <ClInclude Include="src\Animation\AnimationSystem.h" />

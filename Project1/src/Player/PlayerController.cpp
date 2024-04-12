@@ -70,7 +70,8 @@ PlayerController::PlayerController(ApplicationRenderer* application)
     collider->AsCapsuleCollider()->SetHalfLength(0.7f);
 
     PhysicsMaterial playermaterial;
-    playermaterial.dynamicFriction = 1;
+    playermaterial.dynamicFriction = 5;
+    playermaterial.staticFriction = 5;
     collider->SetPhysicsMaterial(playermaterial);
 
     AddState(ePlayerState::IDLE, new IdleState());
