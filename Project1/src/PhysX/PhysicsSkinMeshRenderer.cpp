@@ -801,4 +801,9 @@ void PhysicsSkinMeshRenderer::CalculateMatrices(BoneNode* boneNode, const glm::m
 
 void PhysicsSkinMeshRenderer::SetDefaultVertexBoneData(Vertex& vertex)
 {
+    for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+    {
+        vertex.BoneID[i] = -1;
+        vertex.BoneWeight[i] = 0.0f;
+    }
 }
