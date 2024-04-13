@@ -18,7 +18,8 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
     glm::mat4 cameraView = sceneViewportCamera->GetViewMatrix();
     glm::mat4 cameraProjection = sceneViewportCamera->GetProjectionMatrix();
 
-  
+    ImGuizmo::SetOrthographic(false);
+
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 
@@ -34,32 +35,34 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
 
     isHovered = ImGui::IsWindowHovered();
 
-    if (viewportSize.x!= viewPortPanelSize.x ||viewportSize.y !=viewPortPanelSize.y)
+   
+
+
+    if (viewportSize.x != viewPortPanelSize.x || viewportSize.y != viewPortPanelSize.y)
     {
         viewportSize = viewPortPanelSize;
 
         frameBuffer->Resize(viewportSize.x, viewportSize.y);
         sceneViewportCamera->Resize(viewportSize.x, viewportSize.y);
     }
-   
 
-
+    ImGui::Image((void*)frameBuffer->GetColorAttachmentID(), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
 
     Model* selectedModel = GraphicsRender::GetInstance().GetSelectedModel();
 
     if (selectedModel != nullptr)
     {
-        ImGuizmo::SetOrthographic(false);
 
         ImGuizmo::SetDrawlist();
 
         float windowWidth = (float)ImGui::GetWindowWidth();
         float windowHeight = (float)ImGui::GetWindowHeight();
 
-        ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
 
         glm::mat4 transform = selectedModel->transform.GetModelMatrix();
+
+        ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
         ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
             gizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
@@ -74,19 +77,14 @@ void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
 
 
             selectedModel->transform.SetPosition(position);
-           // selectedModel->transform.rotation += deltaRotation;
-
-           // selectedModel->transform.SetRotation(selectedModel->transform.rotation + deltaRotation)
+            //selectedModel->transform.rotation += deltaRotation;
+            //selectedModel->transform.SetRotation(glm::vec3(rotation));
+           // selectedModel->transform.SetRotation(selectedModel->transform.rotation + deltaRotation);
             selectedModel->transform.SetScale(scale);
         }
 
     }
   
-
-
-
-
-    ImGui::Image((void*)frameBuffer->GetColorAttachmentID(), viewportSize, ImVec2(0, 1), ImVec2(1, 0));
 
     ImGui::End();
 
