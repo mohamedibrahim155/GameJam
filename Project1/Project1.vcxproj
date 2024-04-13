@@ -141,6 +141,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\SceneManager\Scenes\SceneSix.cpp" />
+    <ClCompile Include="src\AI\Enemy.cpp" />
+    <ClCompile Include="src\AI\State\BaseEnemyState.cpp" />
+    <ClCompile Include="src\AI\State\EnemyFaceState.cpp" />
+    <ClCompile Include="src\AI\State\EnemyIdleState.cpp" />
+    <ClCompile Include="src\AI\State\EnemyPatrolState.cpp" />
+    <ClCompile Include="src\AI\State\PursueEnemyState.cpp" />
     <ClCompile Include="src\FPS\FPS.cpp" />
     <ClCompile Include="src\Grass\GrassMesh.cpp" />
     <ClCompile Include="src\ParticleMaterial.cpp" />
@@ -255,6 +262,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\SceneManager\Scenes\SceneSix.h" />
+    <ClInclude Include="src\AI\Enemy.h" />
+    <ClInclude Include="src\AI\State\BaseEnemyState.h" />
+    <ClInclude Include="src\AI\State\eEnemyState.h" />
+    <ClInclude Include="src\AI\State\EnemyFaceState.h" />
+    <ClInclude Include="src\AI\State\EnemyIdleState.h" />
+    <ClInclude Include="src\AI\State\EnemyPatrolState.h" />
+    <ClInclude Include="src\AI\State\PursueEnemyState.h" />
     <ClInclude Include="src\FPS\FPS.h" />
     <ClInclude Include="src\Grass\GrassMesh.h" />
     <ClInclude Include="src\ParticleMaterial.h" />

@@ -13,8 +13,11 @@ public:
 private:
 	void HandleMovement();
 
-	float rangedSpeed;
+	float rangedSpeed =0 ;
 	bool playAttackAnimation = false;
+	bool isAttackStart = false;
+	float attackTimer =0;
+	float attackStateTime = 1;
 
 };
 

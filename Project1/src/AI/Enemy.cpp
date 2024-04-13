@@ -21,15 +21,17 @@ Enemy::Enemy(PlayerController* player)
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().boneAnimationShader);
 
 
-    Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::CAPSULE);
+    Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::CAPSULE);
 
+    rigidBody->freezePosition = Contraints(true, false, true);
     rigidBody->freezeRotation = Contraints(true, true, true);
     collider->SetCentreOffset(glm::vec3(0, 1, 0));
     collider->AsCapsuleCollider()->SetRadius(0.3f);
     collider->AsCapsuleCollider()->SetHalfLength(0.7f);
 
     PhysicsMaterial playermaterial;
-    playermaterial.dynamicFriction = 1;
+    playermaterial.dynamicFriction = 5;
+    playermaterial.dynamicFriction = 5;
     collider->SetPhysicsMaterial(playermaterial);
 
     this->player = player;

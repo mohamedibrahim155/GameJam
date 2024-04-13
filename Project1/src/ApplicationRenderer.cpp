@@ -5,7 +5,7 @@
 #include "SceneManager/Scenes/SceneThree.h"
 #include "SceneManager/Scenes/SceneFour.h"
 #include "SceneManager/Scenes/SceneFive.h"
-
+#include "SceneManager/Scenes/SceneSix.h"
 ApplicationRenderer::ApplicationRenderer()
 {
     sceneViewcamera = new Camera();
@@ -236,8 +236,9 @@ void ApplicationRenderer::Start()
     BaseScene* sceneThree = new SceneThree("SceneThree");
     BaseScene* sceneFour = new SceneFour("SceneFour");
     BaseScene* sceneFive = new SceneFive("SceneFive");
+    BaseScene* sceneSix = new SceneSix("SceneSix");
 
-    SceneManager::GetInstance().OnChangeScene("SceneFive");
+    SceneManager::GetInstance().OnChangeScene("SceneSix");
 
     FPS* fps = new FPS();
 

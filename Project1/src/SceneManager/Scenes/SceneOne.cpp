@@ -23,6 +23,8 @@ void SceneOne::Start()
     PlayerController* player = new PlayerController(application);
     player->transform.SetPosition(glm::vec3(-40.53, 23.10, 75.10));
 
+
+
     PhysXObject* terrain = new PhysXObject();
     /*std::string difPath = "Models/Terrain/Terrain.png";
     Texture* dif = new Texture(difPath);*/
