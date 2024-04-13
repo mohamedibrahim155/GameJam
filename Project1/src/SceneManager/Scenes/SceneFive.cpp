@@ -219,9 +219,9 @@ void SceneFive::Start()
     FenceBig->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
     GraphicsRender::GetInstance().AddModelAndShader(FenceBig, application->defaultShader);
     FenceBig->name = "Fence Big";
-    FenceBig->transform.SetPosition(glm::vec3(-53.80, 7.10, 84.10));
+    FenceBig->transform.SetPosition(glm::vec3(-65.16, 7.12, 83.13));
     FenceBig->transform.SetRotation(glm::vec3(-90.00, 0, 0));
-    FenceBig->transform.SetScale(glm::vec3(1));
+    FenceBig->transform.SetScale(glm::vec3(1, 1, 1.1));
     FenceBig->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
 
 
@@ -231,18 +231,247 @@ void SceneFive::Start()
     BigHouse->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
     GraphicsRender::GetInstance().AddModelAndShader(BigHouse, application->defaultShader);
     BigHouse->name = "Big House";
-    BigHouse->transform.SetPosition(glm::vec3(-52.70, 6.70, 72.50));
+    BigHouse->transform.SetPosition(glm::vec3(-47.18, 7.35, 80.54));
     BigHouse->transform.SetRotation(glm::vec3(0, -125.10, 0));
-    BigHouse->transform.SetScale(glm::vec3(0.03,0.03,0.04));
+    BigHouse->transform.SetScale(glm::vec3(0.02,0.014,0.02));
     BigHouse->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
 
    
 
+    PhysXObject* wallCopy13 = new PhysXObject();
+    wallCopy13->LoadModel("Models/Graveyard/Fences/Wall.fbx");
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy13, application->defaultShader);
+    wallCopy13->name = "Wall 13";
+    wallCopy13->transform.SetPosition(glm::vec3(-37.94, 6.40, 86.14));
+    wallCopy13->transform.SetRotation(glm::vec3(0, 0, 0));
+    wallCopy13->transform.SetScale(glm::vec3(0.015));
+    wallCopy13->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
 
 
+    PhysXObject* wallCopy14 = new PhysXObject();
+    wallCopy14->LoadModel(*wallCopy13);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy14, application->defaultShader);
+    wallCopy14->name = "Wall 14";
+    wallCopy14->transform.SetPosition(glm::vec3(-34.92, 5.38, 86.14));
+    wallCopy14->transform.SetRotation(glm::vec3(0, 0, 0));
+    wallCopy14->transform.SetScale(glm::vec3(0.015, 0.015,0.015));
+    wallCopy14->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
 
+    PhysXObject* wallCopy15 = new PhysXObject();
+    wallCopy15->LoadModel(*wall);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy15, application->defaultShader);
+    wallCopy15->name = "Wall 15";
+    wallCopy15->transform.SetPosition(glm::vec3(-30.03, 5.52, 86.14));
+    wallCopy15->transform.SetRotation(glm::vec3(0, 0, 0));
+    wallCopy15->transform.SetScale(glm::vec3(0.015, 0.015,0.015));
+    wallCopy15->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+
+    PhysXObject* wallCopy16 = new PhysXObject();
+    wallCopy16->LoadModel(*wallCopy13);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy16, application->defaultShader);
+    wallCopy16->name = "Wall 16";
+    wallCopy16->transform.SetPosition(glm::vec3(-27.69, 4.46, 86.14));
+    wallCopy16->transform.SetRotation(glm::vec3(0, 0, 0));
+    wallCopy16->transform.SetScale(glm::vec3(0.015, 0.015, 0.015));
+    wallCopy16->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* corner3 = new PhysXObject();
+    corner3->LoadModel(*corner2);
+    GraphicsRender::GetInstance().AddModelAndShader(corner3, application->defaultShader);
+    corner3->name = "Corner 3";
+    corner3->transform.SetPosition(glm::vec3(-24.97, 4.27, 86.15));
+    corner3->transform.SetRotation(glm::vec3(0, 0, 0));
+    corner3->transform.SetScale(glm::vec3(0.015, 0.015, -0.015));
+    corner3->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* corner4 = new PhysXObject();
+    corner4->LoadModel(*corner2);
+    GraphicsRender::GetInstance().AddModelAndShader(corner4, application->defaultShader);
+    corner4->name = "Corner 4";
+    corner4->transform.SetPosition(glm::vec3(-23.55, 3.94, 84.94));
+    corner4->transform.SetRotation(glm::vec3(0, 80.10, 0));
+    corner4->transform.SetScale(glm::vec3(0.015, 0.015, 0.015));
+    corner4->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* corner5 = new PhysXObject();
+    corner5->LoadModel(*corner2);
+    GraphicsRender::GetInstance().AddModelAndShader(corner5, application->defaultShader);
+    corner5->name = "Corner 5";
+    corner5->transform.SetPosition(glm::vec3(-21.77, 3.57, 83.75));
+    corner5->transform.SetRotation(glm::vec3(0, 10.10, 0));
+    corner5->transform.SetScale(glm::vec3(0.015, 0.015, -0.015));
+    corner5->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
     
+
+    PhysXObject* corner6 = new PhysXObject();
+    corner6->LoadModel(*corner2);
+    GraphicsRender::GetInstance().AddModelAndShader(corner6, application->defaultShader);
+    corner6->name = "Corner 6";
+    corner6->transform.SetPosition(glm::vec3(-16.07, 2.84, 81.92));
+    corner6->transform.SetRotation(glm::vec3(0, 0, 0));
+    corner6->transform.SetScale(glm::vec3(0.015, 0.015, -0.015));
+    corner6->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* wallCopy17 = new PhysXObject();
+    wallCopy17->LoadModel(*wall);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy17, application->defaultShader);
+    wallCopy17->name = "Wall 17";
+    wallCopy17->transform.SetPosition(glm::vec3(-18.62, 4.23, 81.94));
+    wallCopy17->transform.SetRotation(glm::vec3(0, 0, 0));
+    wallCopy17->transform.SetScale(glm::vec3(0.015, 0.015, 0.015));
+    wallCopy17->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* wallCopy18 = new PhysXObject();
+    wallCopy18->LoadModel(*wall);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy18, application->defaultShader);
+    wallCopy18->name = "Wall 18";
+    wallCopy18->transform.SetPosition(glm::vec3(-53.53, 7.74, 48.31));
+    wallCopy18->transform.SetRotation(glm::vec3(0, 180.00, 0));
+    wallCopy18->transform.SetScale(glm::vec3(0.015, 0.015, 0.015));
+    wallCopy18->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* wallCopy19 = new PhysXObject();
+    wallCopy19->LoadModel(*wall);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy19, application->defaultShader);
+    wallCopy19->name = "Wall 19";
+    wallCopy19->transform.SetPosition(glm::vec3(-49.18, 6.54, 48.31));
+    wallCopy19->transform.SetRotation(glm::vec3(0, 180.00, 0));
+    wallCopy19->transform.SetScale(glm::vec3(0.015, 0.015, 0.015));
+    wallCopy19->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* wallCopy20 = new PhysXObject();
+    wallCopy20->LoadModel(*wall);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy20, application->defaultShader);
+    wallCopy20->name = "Wall 20";
+    wallCopy20->transform.SetPosition(glm::vec3(-44.68, 6.23, 48.31));
+    wallCopy20->transform.SetRotation(glm::vec3(0, 180.00, 0));
+    wallCopy20->transform.SetScale(glm::vec3(0.015, 0.015, 0.015));
+    wallCopy20->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* wallCopy21 = new PhysXObject();
+    wallCopy21->LoadModel(*wall);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy21, application->defaultShader);
+    wallCopy21->name = "Wall 21";
+    wallCopy21->transform.SetPosition(glm::vec3(-40.19, 6.22, 48.31));
+    wallCopy21->transform.SetRotation(glm::vec3(0, 180.00, 0));
+    wallCopy21->transform.SetScale(glm::vec3(0.015, 0.015, 0.015));
+    wallCopy21->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* wallCopy22 = new PhysXObject();
+    wallCopy22->LoadModel(*wall);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy22, application->defaultShader);
+    wallCopy22->name = "Wall 22";
+    wallCopy22->transform.SetPosition(glm::vec3(-35.64, 6.23, 48.31));
+    wallCopy22->transform.SetRotation(glm::vec3(0, 180.00, 0));
+    wallCopy22->transform.SetScale(glm::vec3(0.015, 0.015, 0.015));
+    wallCopy22->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* wallCopy23 = new PhysXObject();
+    wallCopy23->LoadModel(*wall);
+    GraphicsRender::GetInstance().AddModelAndShader(wallCopy23, application->defaultShader);
+    wallCopy23->name = "Wall 23";
+    wallCopy23->transform.SetPosition(glm::vec3(-31.11, 6.19, 48.31));
+    wallCopy23->transform.SetRotation(glm::vec3(0, 180.00, 0));
+    wallCopy23->transform.SetScale(glm::vec3(0.015, 0.015, 0.015));
+    wallCopy23->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* Tree = new PhysXObject();
+    Tree->LoadModel("Models/Graveyard/TreeTwo.fbx");
+    Tree->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(Tree, application->defaultShader);
+    Tree->name = "Tree";
+    Tree->transform.SetPosition(glm::vec3(-68.67, 3.16, 99.81));
+    Tree->transform.SetRotation(glm::vec3(0, -26.20, 0));
+    Tree->transform.SetScale(glm::vec3(0.013, 0.013, 0.013));
+    Tree->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* Tree2 = new PhysXObject();
+    Tree2->LoadModel(*Tree);
+    GraphicsRender::GetInstance().AddModelAndShader(Tree2, application->defaultShader);
+    Tree2->name = "Tree2";
+    Tree2->transform.SetPosition(glm::vec3(-42.05, 7.28, 85.52));
+    Tree2->transform.SetRotation(glm::vec3(0, 31.00, 0));
+    Tree2->transform.SetScale(glm::vec3(0.013, 0.013, 0.013));
+    Tree2->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* Tree3 = new PhysXObject();
+    Tree3->LoadModel(*Tree);
+    GraphicsRender::GetInstance().AddModelAndShader(Tree3, application->defaultShader);
+    Tree3->name = "Tree3";
+    Tree3->transform.SetPosition(glm::vec3(-92.69, 4.98, 71.95));
+    Tree3->transform.SetRotation(glm::vec3(7.40, 40.10, 0));
+    Tree3->transform.SetScale(glm::vec3(0.013, 0.013, 0.013));
+    Tree3->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* Tree4 = new PhysXObject();
+    Tree4->LoadModel(*Tree);
+    GraphicsRender::GetInstance().AddModelAndShader(Tree4, application->defaultShader);
+    Tree4->name = "Tree4";
+    Tree4->transform.SetPosition(glm::vec3(-61.58, 8.83, 50.88));
+    Tree4->transform.SetRotation(glm::vec3(0, 40.10, 0));
+    Tree4->transform.SetScale(glm::vec3(0.013, 0.013, 0.013));
+    Tree4->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* TreeOne = new PhysXObject();
+    TreeOne->LoadModel("Models/Graveyard/TreeOne.fbx");
+    TreeOne->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(TreeOne, application->defaultShader);
+    TreeOne->name = "TreeOne";
+    TreeOne->transform.SetPosition(glm::vec3(-64.96, 7.06, 85.66));
+    TreeOne->transform.SetRotation(glm::vec3(0, -26.20, 0));
+    TreeOne->transform.SetScale(glm::vec3(0.013, 0.013, 0.013));
+    TreeOne->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* TreeOne1 = new PhysXObject();
+    TreeOne1->LoadModel(*TreeOne);
+    GraphicsRender::GetInstance().AddModelAndShader(TreeOne1, application->defaultShader);
+    TreeOne1->name = "TreeOne1";
+    TreeOne1->transform.SetPosition(glm::vec3(-47.46, 7.47, 88.37));
+    TreeOne1->transform.SetRotation(glm::vec3(0, -26.20, 0));
+    TreeOne1->transform.SetScale(glm::vec3(0.013, 0.013, 0.013));
+    TreeOne1->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    MeshInstance* instanceMesh = new MeshInstance();
+    instanceMesh->LoadModel("Models/Graveyard/TreeThree.fbx");
+    instanceMesh->name = "InstancedTree";
+    instanceMesh->AddTransformData(glm::vec3(-98.32, 1.77, 101.94), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-95.13, 1.77, 97.47), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-95.13, 1.77, 102.73), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-95.13, 1.77, 108.11), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-90.26, 1.77, 108.11), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-98.09, 1.77, 93.41), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-104.33, 3.07, 93.41), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-104.33, 3.07, 93.41), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-104.33, 3.07, 88.94), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-94.99, 1.97, 91.27), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-98.82, 1.97, 87.12), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-102.19, 3.53, 83.21), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-97.01, 3.53, 83.21), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-82.33, 1.97, 110.49), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-80.46, 1.97, 113.56), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-77.43, 1.97, 111.13), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-72.91, 1.97, 117.52), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-71.19, 1.97, 113.00), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-68.77, 1.97, 115.72), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-68.77, 1.97, 118.15), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-65.35, 1.97, 118.15), glm::vec3(0), glm::vec3(0.015));
+
+
+
+    GraphicsRender::GetInstance().AddModelAndShader(instanceMesh, application->defaultInstanceShader);
+
+    Model* dummy = new Model();
+    dummy->LoadModel("Models/Graveyard/TreeThree.fbx");
+    dummy->name = "dummy";
+    dummy->transform.SetPosition(glm::vec3(-98.32, 1.97, 101.94));
+    dummy->transform.SetRotation(glm::vec3(0));
+    dummy->transform.SetScale(glm::vec3(0.015));
+    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);
+
 }
+
+//TreeThree
 
 void SceneFive::Update()
 {

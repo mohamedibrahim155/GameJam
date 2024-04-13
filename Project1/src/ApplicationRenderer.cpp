@@ -239,7 +239,7 @@ void ApplicationRenderer::Start()
     BaseScene* sceneFive = new SceneFive("SceneFive");
     BaseScene* sceneSix = new SceneSix("SceneSix");
 
-    SceneManager::GetInstance().OnChangeScene("SceneSix");
+    SceneManager::GetInstance().OnChangeScene("SceneFive");
 
     FPS* fps = new FPS();
 
