@@ -223,6 +223,7 @@ void PhysXEngine::UpdatePhysicsRenders()
 			rotation /= nbShapes;
 
 
+			
 
 			if (physObject->rigidBody->freezeRotation.x)
 			{
@@ -235,6 +236,22 @@ void PhysXEngine::UpdatePhysicsRenders()
 			if (physObject->rigidBody->freezeRotation.z)
 			{
 				rotation.z = physObject->transform.rotation.z;
+			}
+			if (physObject->rigidBody->freezePosition.x)
+			{
+				position.x = physObject->transform.position.x;
+			}
+
+			if (physObject->rigidBody->freezePosition.y)
+			{
+				position.y = physObject->transform.position.y;
+
+			}
+
+			if (physObject->rigidBody->freezePosition.z)
+			{
+				position.z = physObject->transform.position.z;
+
 			}
 
 
