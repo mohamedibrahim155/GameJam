@@ -10,6 +10,7 @@ ApplicationRenderer::ApplicationRenderer()
 {
     sceneViewcamera = new Camera();
     sceneViewcamera->name = "Sceneview Camera";
+    CameraManager::GetInstance().sceneViewCamera = sceneViewcamera;
 
     gameScenecamera = new Camera();
     gameScenecamera->name = "GameScene Camera";

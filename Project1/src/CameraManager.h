@@ -15,6 +15,7 @@ public:
 	Camera* GetMainCamera();
 
 	std::vector<Camera*> GetCameras();
+	Camera* sceneViewCamera = nullptr;
 private:
 
 	std::vector<Camera*> listOfCameras;
