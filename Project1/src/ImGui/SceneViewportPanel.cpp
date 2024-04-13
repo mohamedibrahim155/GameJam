@@ -1,12 +1,14 @@
 #include "SceneViewportPanel.h"
 #include "../GraphicsRender.h"
 #include "../Math.h"
+#include "EditorLayout.h"
 SceneViewportPanel::SceneViewportPanel()
 {
     InputManager::GetInstance().AddObserver(this);
 }
 void SceneViewportPanel::OnRender(float windowWidth, float windowHeight)
 {
+    if (EditorLayout::GetInstance().IsMaximizePressed()) return;
    // isEnable = false;
     if (!isPanelOpen)
     {

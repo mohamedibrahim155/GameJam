@@ -17,9 +17,12 @@ public :
 	void InitializeEditors();
 	void SetSelectedObjects(std::vector<Object*> objects);
 	void SetSelectedObjectsEnable(bool isEnable);
+	void SetIsMaxiizePressedState(bool state);
 
 	bool IsViewportHovered();
 	bool IsGameViewportHovered();
+	bool IsMaximizePressed();
+
 
 	Object* GetCurrentSelectedObject();
 	std::vector<Object*> GetSelectedObjects();

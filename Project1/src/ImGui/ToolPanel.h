@@ -7,5 +7,7 @@ public:
 	void OnRender(float windowWidth, float windowHeight) override;
 
 	bool* isApplicationPlayMode = nullptr;
+	bool isMaximizePressed = true;
+
 };
 

@@ -1,5 +1,5 @@
 #include "ToolPanel.h"
-
+#include  "EditorLayout.h"
 void ToolPanel::OnRender(float windowWidth, float windowHeight)
 {
     if (!isPanelOpen)
@@ -49,6 +49,18 @@ void ToolPanel::OnRender(float windowWidth, float windowHeight)
 		{
 			*isApplicationPlayMode = !(*isApplicationPlayMode);
 		}
+
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(panelSizeX * 0.1f, 0));
+        ImGui::Spacing();
+        ImGui::PopStyleVar();
+
+
+        if (ImGui::Button("Maximize"))
+        {
+            isMaximizePressed = !isMaximizePressed;
+            EditorLayout::GetInstance().SetIsMaxiizePressedState(isMaximizePressed);
+        }
+        
 
 		ImGui::EndMenuBar();
 	}

@@ -56,6 +56,11 @@ void EditorLayout::SetSelectedObjectsEnable(bool isEnable)
     }
 }
 
+void EditorLayout::SetIsMaxiizePressedState(bool state)
+{
+    applicationRenderer->isMaximizePressed = state;
+}
+
 bool EditorLayout::IsViewportHovered()
 {
     return sceneViewportPanel->isHovered;
@@ -64,6 +69,11 @@ bool EditorLayout::IsViewportHovered()
 bool EditorLayout::IsGameViewportHovered()
 {
     return gameviewportPanel->isHovered;
+}
+
+bool EditorLayout::IsMaximizePressed()
+{
+    return applicationRenderer->isMaximizePressed;
 }
 
 std::vector<Object*> EditorLayout::GetSelectedObjects()

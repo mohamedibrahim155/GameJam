@@ -1,6 +1,7 @@
 #include "Heirachy.h"
 #include "../EntityManager/EntityManager.h"
 #include "../LightManager.h"
+#include "EditorLayout.h"
 Heirachy::Heirachy()
 {
     entityManager = &EntityManager::GetInstance();
@@ -9,6 +10,7 @@ Heirachy::Heirachy()
 
 void Heirachy::OnRender(float windowWidth, float windowHeight)
 {
+    if (EditorLayout::GetInstance().IsMaximizePressed()) return;
 
     
     if (!isPanelOpen)

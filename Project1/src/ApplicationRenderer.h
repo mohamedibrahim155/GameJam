@@ -88,6 +88,7 @@ public:
 	eCursorState currentCursorState = eCursorState::VISIBLE;
 
 	bool isPlayMode = false;
+	bool isMaximizePressed = false;
 	bool isDepth = false;
 	bool isFog = false;
 	bool isCellShade = false;

@@ -2,6 +2,8 @@
 #include "EditorLayout.h"
 void Inspector::OnRender(float windowWidth, float windowHeight)
 {
+    if (EditorLayout::GetInstance().IsMaximizePressed()) return;
+
     if (!isPanelOpen)
     {
         return;

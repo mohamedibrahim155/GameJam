@@ -289,7 +289,10 @@ void ApplicationRenderer::EngineGraphicsRender()
         PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
     }
 
-    RenderForCamera(sceneViewcamera, sceneViewframeBuffer);
+    if (!isMaximizePressed)
+    {
+        RenderForCamera(sceneViewcamera, sceneViewframeBuffer);
+    }
 
     for (Camera* camera :  CameraManager::GetInstance().GetCameras())
     {
