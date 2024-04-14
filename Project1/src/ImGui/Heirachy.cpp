@@ -1,7 +1,9 @@
 #include "Heirachy.h"
 #include "../EntityManager/EntityManager.h"
 #include "../LightManager.h"
+#include "../CameraManager.h"
 #include "EditorLayout.h"
+
 Heirachy::Heirachy()
 {
     entityManager = &EntityManager::GetInstance();
@@ -23,7 +25,7 @@ void Heirachy::OnRender(float windowWidth, float windowHeight)
         ImGui::End();
         return;
     }
-
+    ShowAllCameras();
     ShowAllEntities();
     ShowLights();
     ImGui::End();
@@ -60,4 +62,23 @@ void Heirachy::ShowLights()
         light->SceneDraw();
     }
 
+}
+
+void Heirachy::ShowAllCameras()
+{
+
+    if (!ImGui::CollapsingHeader("Cameras", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        return;
+    }
+
+    std::vector<Camera*> cameras = CameraManager::GetInstance().GetCameras();
+
+    CameraManager::GetInstance().sceneViewCamera->SceneDraw();
+
+    for (Camera* camera : cameras)
+    {
+        camera->SceneDraw();
+    }
+  
 }

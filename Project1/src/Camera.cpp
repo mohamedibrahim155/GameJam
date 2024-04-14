@@ -120,7 +120,7 @@ void Camera::InitializeCamera(CameraType cameraType, float fov, float nearPlane,
 
     postprocessing = new PostProcessing(glm::vec2(cameraWidth, cameraHeight));
 
-    InitializeEntity(this);
+   // InitializeEntity(this);
 
  
 }

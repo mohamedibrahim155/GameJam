@@ -19,5 +19,6 @@ private :
 
 	void ShowAllEntities();
 	void ShowLights();
+	void ShowAllCameras();
 };
 
