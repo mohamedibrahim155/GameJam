@@ -83,9 +83,6 @@ uniform float biasValue;
 uniform vec3 lightDir;
 uniform sampler2D shadowMap;
 float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal);
-float CalcFog();
-float CalcLinearFog();
-float CalcExpoFog();
 
 //Fog
 uniform float fogDensity = 0.66;
@@ -93,6 +90,10 @@ uniform float fogStart = 8.0;
 uniform float fogEnd = 40;
 uniform vec3 fogColor = vec3(0.59,0.59,0.59);
 uniform bool fogActive = false;
+float CalcFog();
+float CalcLinearFog();
+float CalcExpoFog();
+
 
 //Toon Shader
 const int shadingLevels = 4;

@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\ParticleSystem\Properties\Noise.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneSeven.cpp" />
     <ClCompile Include="src\PhysX\Occulsion\OcculsionManager.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneSix.cpp" />
@@ -264,6 +265,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\ParticleSystem\Properties\Noise.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneSeven.h" />
     <ClInclude Include="src\PhysX\Occulsion\OcculsionManager.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneSix.h" />

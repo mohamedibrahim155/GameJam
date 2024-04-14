@@ -136,8 +136,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     GraphicsRender::GetInstance().SetCamera(sceneViewcamera);
 
     sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
-    sceneViewcamera->transform.position = glm::vec3(0, 1, 10);
-    sceneViewcamera->transform.SetRotation(glm::vec3(0, -361.50,0));
+    sceneViewcamera->transform.position = glm::vec3(-79.46, 11.76, 107.19);
+    sceneViewcamera->transform.SetRotation(glm::vec3(-41.70, -31.50,0));
 
     gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     gameScenecamera->transform.position = glm::vec3(0, 1.00, 5);
@@ -396,6 +396,8 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     defaultInstanceShader->setFloat("time", scrollTime);
     defaultInstanceShader->setBool("isDepthBuffer", false);
+    defaultInstanceShader->setBool("fogActive", isFog);
+
 
     grassInstanceShader->Bind();
     grassInstanceShader->setMat4("projection", projection);

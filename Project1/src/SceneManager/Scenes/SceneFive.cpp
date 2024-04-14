@@ -12,6 +12,9 @@ void SceneFive::Start()
     std::string diffuseTexturePath = "Models/Graveyard/Fences/atlas-universal-albedo-a.png";
     Texture* diffuseTexture = new Texture(diffuseTexturePath);
 
+    std::string diffuseFoilage = "Models/Graveyard/Fences/foliage-a.png";
+    Texture* diffFoilage = new Texture(diffuseFoilage);
+
     Light* directionLight = new Light();
     directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
     directionLight->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
@@ -20,7 +23,7 @@ void SceneFive::Start()
     directionLight->SetAttenuation(1, 1, 0.01f);
     directionLight->SetInnerAndOuterCutoffAngle(11, 12);
 
-    directionLight->transform.SetRotation(glm::vec3(0, 0, 5));
+    directionLight->transform.SetRotation(glm::vec3(0, 90.00, 90.00));
     directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
 
     PlayerController* player = new PlayerController(application);
@@ -226,16 +229,40 @@ void SceneFive::Start()
     FenceBig->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
 
 
+    std::string RoofPath = "Models/Graveyard/Fences/Roof_01.png";
+    std::string bodyPath = "Models/Graveyard/Fences/PolygonDarkFantasy_Texture_04_A.png";
+    Texture* roof = new Texture(RoofPath);
+    Texture* body = new Texture(bodyPath);
     //try to bring in the Cathedral
     PhysXObject* BigHouse = new PhysXObject();
     BigHouse->LoadModel("Models/Graveyard/Fences/BigHouse.fbx");
-    BigHouse->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    BigHouse->meshes[0]->meshMaterial->material()->diffuseTexture = body;
+    BigHouse->meshes[1]->meshMaterial->material()->diffuseTexture = roof;
     GraphicsRender::GetInstance().AddModelAndShader(BigHouse, application->defaultShader);
     BigHouse->name = "Big House";
     BigHouse->transform.SetPosition(glm::vec3(-47.18, 7.35, 80.54));
     BigHouse->transform.SetRotation(glm::vec3(0, -125.10, 0));
     BigHouse->transform.SetScale(glm::vec3(0.02,0.014,0.02));
     BigHouse->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+
+    PhysXObject* BigHouse2 = new PhysXObject();
+    BigHouse2->LoadModel(*BigHouse);    
+    GraphicsRender::GetInstance().AddModelAndShader(BigHouse2, application->defaultShader);
+    BigHouse2->name = "Big House 2";
+    BigHouse2->transform.SetPosition(glm::vec3(-32.74, 4.16, 55.15));
+    BigHouse2->transform.SetRotation(glm::vec3(0, -46.60, 0));
+    BigHouse2->transform.SetScale(glm::vec3(0.01));
+    BigHouse2->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* BigHouse3 = new PhysXObject();
+    BigHouse3->LoadModel(*BigHouse);
+    GraphicsRender::GetInstance().AddModelAndShader(BigHouse3, application->defaultShader);
+    BigHouse3->name = "Big House";
+    BigHouse3->transform.SetPosition(glm::vec3(-88.12, 3.32, 88.25));
+    BigHouse3->transform.SetRotation(glm::vec3(0, 85.20, 0));
+    BigHouse3->transform.SetScale(glm::vec3(0.01));
+    BigHouse3->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
 
    
 
@@ -246,7 +273,7 @@ void SceneFive::Start()
     wallCopy13->transform.SetPosition(glm::vec3(-37.94, 6.40, 86.14));
     wallCopy13->transform.SetRotation(glm::vec3(0, 0, 0));
     wallCopy13->transform.SetScale(glm::vec3(0.015));
-    wallCopy13->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+    wallCopy13->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
 
 
     PhysXObject* wallCopy14 = new PhysXObject();
@@ -256,7 +283,7 @@ void SceneFive::Start()
     wallCopy14->transform.SetPosition(glm::vec3(-34.92, 5.38, 86.14));
     wallCopy14->transform.SetRotation(glm::vec3(0, 0, 0));
     wallCopy14->transform.SetScale(glm::vec3(0.015, 0.015,0.015));
-    wallCopy14->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+    wallCopy14->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
 
     PhysXObject* wallCopy15 = new PhysXObject();
     wallCopy15->LoadModel(*wall);
@@ -436,41 +463,359 @@ void SceneFive::Start()
     MeshInstance* instanceMesh = new MeshInstance();
     instanceMesh->LoadModel("Models/Graveyard/TreeThree.fbx");
     instanceMesh->name = "InstancedTree";
-    instanceMesh->AddTransformData(glm::vec3(-98.32, 1.77, 101.94), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-95.13, 1.77, 97.47), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-95.13, 1.77, 102.73), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-95.13, 1.77, 108.11), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-90.26, 1.77, 108.11), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-98.09, 1.77, 93.41), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-104.33, 3.07, 93.41), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-104.33, 3.07, 93.41), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-104.33, 3.07, 88.94), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-94.99, 1.97, 91.27), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-98.82, 1.97, 87.12), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-102.19, 3.53, 83.21), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-97.01, 3.53, 83.21), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-82.33, 1.97, 110.49), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-80.46, 1.97, 113.56), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-77.43, 1.97, 111.13), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-72.91, 1.97, 117.52), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-71.19, 1.97, 113.00), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-68.77, 1.97, 115.72), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-68.77, 1.97, 118.15), glm::vec3(0), glm::vec3(0.015));
-    instanceMesh->AddTransformData(glm::vec3(-65.35, 1.97, 118.15), glm::vec3(0), glm::vec3(0.015));
+    instanceMesh->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.7, 0, 1));
+    instanceMesh->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.5, 0,1));
+    instanceMesh->AddTransformData(glm::vec3(-98.32, 1.77, 101.94), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-95.13, 0.77, 97.47),  glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-95.13, 1.77, 102.73), glm::vec3(0,270 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-95.13, 0.77, 108.11), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-90.26, 1.77, 108.11), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-98.09, 0.77, 93.41),  glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-104.33, 3.07, 93.41), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-104.33, 1.07, 93.41), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-104.33, 3.07, 88.94), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-94.99, 1.97, 91.27),  glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-98.82, 0.97, 87.12),  glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-102.19, 3.53, 83.21), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-97.01, 2.53, 83.21),  glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-82.33, 1.97, 110.49), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-80.46, 0.97, 113.56), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-77.43, 1.97, 111.13), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-72.91, 0.97, 117.52), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-71.19, 1.97, 113.00), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-68.77, 0.97, 115.72), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-68.77, 1.97, 118.15), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-65.35, 0.97, 118.15), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-62.96, 1.97, 111.69), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-60.33, 0.62, 115.69), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-57.02, 0.98, 114.39), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-57.02, 0.62, 110.60), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-60.06, 0.96, 106.27), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-63.35, 1.77, 106.27), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-59.32, 0.78, 101.12), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-59.32, 2.34, 97.52),  glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-56.83, 2.34, 97.52),  glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-54.54, 1.68, 101.18), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-51.53, 0.89, 105.44), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-49.94, -0.29, 110.66),glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-47.51, 1.0, 101.94),  glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-47.51, 1.0, 98.24),   glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-43.97, 0.0, 98.24),   glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-42.61, 1.0, 101.94),  glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-40.17, 1.0, 105.70),  glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-44.07, -0.49, 111.41),glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-40.22, 0.20, 111.41), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-36.27, -0.66, 111.41),glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-36.27, 0.14, 106.71), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-36.27, 0.14, 106.71), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-36.27, 1.19, 101.03), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-32.86, 0.84, 101.03), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-32.86, 1.06, 96.13),  glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-28.64, 2.06, 94.78),  glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-28.64, 2.21, 91.45),  glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-24.46, 1.94, 94.31),  glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-24.46, 1.34, 89.01),  glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-20.30, 1.08, 93.72),  glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-18.33, 1.50, 97.07),  glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-22.73, 0.97, 102.54), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-22.73, 0.97, 107.50), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-19.36, 0.51, 85.86),  glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-15.40, 2.08, 89.22),  glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-10.40, 1.08, 84.37),  glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-8.91, 0.74, 89.37),   glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-8.55, 0.74, 95.91),   glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-13.24, -1.25, 103.30),glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-90.19, 0.48, 114.52), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-94.50, -0.79, 114.52),glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-90.45, -1.45, 116.00),glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-85.05, 0.10, 117.00), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-78.48, 0.62, 116.36), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-30.68, -1.65, 107.57),glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-27.22, -0.70, 100.86),glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-97.82, 4.89, 77.90),  glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-99.44, 5.26, 75.23),  glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-102.34, 5.26, 77.13), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-101.09, 5.85, 71.98), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-98.47, 4.85, 67.49),  glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-106.05, 4.39, 71.40), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-107.24, 3.25, 75.06), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-108.29, 3.77, 79.92), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-111.27, 2.93, 76.27), glm::vec3(0,90 ,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-104.65, 4.25, 65.32), glm::vec3(0,180,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-109.55, 4.25, 62.79), glm::vec3(0,270,0), glm::vec3(0.015));
+    instanceMesh->AddTransformData(glm::vec3(-111.77, 5.25, 66.75), glm::vec3(0,90,0), glm::vec3(0.015));
 
 
 
     GraphicsRender::GetInstance().AddModelAndShader(instanceMesh, application->defaultInstanceShader);
 
-    Model* dummy = new Model();
+   /* Model* dummy = new Model();
     dummy->LoadModel("Models/Graveyard/TreeThree.fbx");
     dummy->name = "dummy";
-    dummy->transform.SetPosition(glm::vec3(-98.32, 1.97, 101.94));
+    dummy->transform.SetPosition(glm::vec3(-32.86, 2.06, 96.13));
+    dummy->transform.SetRotation(glm::vec3(0));
+    dummy->transform.SetScale(glm::vec3(0.015));
+    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);*/
+
+
+    PhysXObject* RocksAlone = new PhysXObject();
+    RocksAlone->LoadModel("Models/Graveyard/RocksOne.fbx");
+    RocksAlone->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(RocksAlone, application->defaultShader);
+    RocksAlone->name = "Rocks Alone";
+    RocksAlone->transform.SetPosition(glm::vec3(-26.44, 2.91, 51.96));
+    RocksAlone->transform.SetRotation(glm::vec3(0, 102.90, 0));
+    RocksAlone->transform.SetScale(glm::vec3(0.01, 0.01, 0.01));
+    RocksAlone->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* RocksAlone1 = new PhysXObject();
+    RocksAlone1->LoadModel(*RocksAlone);
+    GraphicsRender::GetInstance().AddModelAndShader(RocksAlone1, application->defaultShader);
+    RocksAlone1->name = "Rocks Alone 1";
+    RocksAlone1->transform.SetPosition(glm::vec3(-23.35, 1.15, 60.93));
+    RocksAlone1->transform.SetRotation(glm::vec3(0, -63.20, 0));
+    RocksAlone1->transform.SetScale(glm::vec3(0.01, 0.01, 0.01));
+    RocksAlone1->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* RocksAlone2 = new PhysXObject();
+    RocksAlone2->LoadModel(*RocksAlone);
+    GraphicsRender::GetInstance().AddModelAndShader(RocksAlone2, application->defaultShader);
+    RocksAlone2->name = "Rocks Alone 2";
+    RocksAlone2->transform.SetPosition(glm::vec3(-18.62, 0.74, 68.53));
+    RocksAlone2->transform.SetRotation(glm::vec3(0, 111.20, 0));
+    RocksAlone2->transform.SetScale(glm::vec3(0.01, 0.01, 0.01));
+    RocksAlone2->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* RocksAlone3 = new PhysXObject();
+    RocksAlone3->LoadModel(*RocksAlone);
+    GraphicsRender::GetInstance().AddModelAndShader(RocksAlone3, application->defaultShader);
+    RocksAlone3->name = "Rocks Alone 3";
+    RocksAlone3->transform.SetPosition(glm::vec3(-15.61, 5.45, 76.95));
+    RocksAlone3->transform.SetRotation(glm::vec3(0, -130.40, 180.00));
+    RocksAlone3->transform.SetScale(glm::vec3(0.01, 0.01, 0.01));
+    RocksAlone3->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* TombOne = new PhysXObject();
+    TombOne->LoadModel("Models/Graveyard/TombOne.fbx");
+    TombOne->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(TombOne, application->defaultShader);
+    TombOne->name = "TombOne";
+    TombOne->transform.SetPosition(glm::vec3(-55.10, 8.11, 71.75));
+    TombOne->transform.SetRotation(glm::vec3(0, -90.00, 0));
+    TombOne->transform.SetScale(glm::vec3(0.02, 0.02, 0.02));
+    TombOne->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* TombTwo = new PhysXObject();
+    TombTwo->LoadModel("Models/Graveyard/TombTwo.fbx");
+    TombTwo->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(TombTwo, application->defaultShader);
+    TombTwo->name = "TombTwo";
+    TombTwo->transform.SetPosition(glm::vec3(-55.10, 8.19, 69.99));
+    TombTwo->transform.SetRotation(glm::vec3(0, -90.00, 0));
+    TombTwo->transform.SetScale(glm::vec3(0.01));
+    TombTwo->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* TombThree = new PhysXObject();
+    TombThree->LoadModel("Models/Graveyard/TombThree.fbx");
+    TombThree->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(TombThree, application->defaultShader);
+    TombThree->name = "TombThree";
+    TombThree->transform.SetPosition(glm::vec3(-55.10, 8.19, 73.28));
+    TombThree->transform.SetRotation(glm::vec3(-90.00, -90.00, 0));
+    TombThree->transform.SetScale(glm::vec3(0.031));
+    TombThree->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* TombFour = new PhysXObject();
+    TombFour->LoadModel("Models/Graveyard/TombFour.fbx");
+    TombFour->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(TombFour, application->defaultShader);
+    TombFour->name = "TombFour";
+    TombFour->transform.SetPosition(glm::vec3(-55.10, 8.19, 75.05));
+    TombFour->transform.SetRotation(glm::vec3(0, -90.00, 0));
+    TombFour->transform.SetScale(glm::vec3(0.02));
+    TombFour->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* LightPole = new PhysXObject();
+    LightPole->LoadModel("Models/Graveyard/LightPole.fbx");
+    LightPole->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10,10,0,1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole, application->defaultShader);
+    LightPole->name = "LightPole";
+    LightPole->transform.SetPosition(glm::vec3(-84.96, 2.94, 94.92));
+    LightPole->transform.SetRotation(glm::vec3(0, 90.00, 0));
+    LightPole->transform.SetScale(glm::vec3(0.012));
+    LightPole->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* LightPole2 = new PhysXObject();
+    LightPole2->LoadModel(*LightPole);
+    LightPole2->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole2->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole2, application->defaultShader);
+    LightPole2->name = "LightPole2";
+    LightPole2->transform.SetPosition(glm::vec3(-90.61, 3.76, 81.70));
+    LightPole2->transform.SetRotation(glm::vec3(0, 65.00, 0));
+    LightPole2->transform.SetScale(glm::vec3(0.012));
+    LightPole2->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* LightPole3 = new PhysXObject();
+    LightPole3->LoadModel(*LightPole);
+    LightPole3->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole3->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole3, application->defaultShader);
+    LightPole3->name = "LightPole3";
+    LightPole3->transform.SetPosition(glm::vec3(-88.30, 6.10, 64.93));
+    LightPole3->transform.SetRotation(glm::vec3(0, 44.40, 0));
+    LightPole3->transform.SetScale(glm::vec3(0.012));
+    LightPole3->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+
+    PhysXObject* LightPole4 = new PhysXObject();
+    LightPole4->LoadModel(*LightPole);
+    LightPole4->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole4->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole4, application->defaultShader);
+    LightPole4->name = "LightPole4";
+    LightPole4->transform.SetPosition(glm::vec3(-76.07, 6.44, 58.10));
+    LightPole4->transform.SetRotation(glm::vec3(0, 13.60, 0));
+    LightPole4->transform.SetScale(glm::vec3(0.012));
+    LightPole4->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* LightPole5 = new PhysXObject();
+    LightPole5->LoadModel(*LightPole);
+    LightPole5->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole5->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole5, application->defaultShader);
+    LightPole5->name = "LightPole5";
+    LightPole5->transform.SetPosition(glm::vec3(-58.39, 7.81, 55.23));
+    LightPole5->transform.SetRotation(glm::vec3(0, -3.50, 0));
+    LightPole5->transform.SetScale(glm::vec3(0.012));
+    LightPole5->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* LightPole6 = new PhysXObject();
+    LightPole6->LoadModel(*LightPole);
+    LightPole6->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole6->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole6, application->defaultShader);
+    LightPole6->name = "LightPole6";
+    LightPole6->transform.SetPosition(glm::vec3(-43.02, 4.92, 51.53));
+    LightPole6->transform.SetRotation(glm::vec3(0, -14.80, 0));
+    LightPole6->transform.SetScale(glm::vec3(0.012));
+    LightPole6->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* LightPole7 = new PhysXObject();
+    LightPole7->LoadModel(*LightPole);
+    LightPole7->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole7->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole7, application->defaultShader);
+    LightPole7->name = "LightPole7";
+    LightPole7->transform.SetPosition(glm::vec3(-26.97, 3.59, 59.99));
+    LightPole7->transform.SetRotation(glm::vec3(0, -76.30, 0));
+    LightPole7->transform.SetScale(glm::vec3(0.012));
+    LightPole7->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* LightPole8 = new PhysXObject();
+    LightPole8->LoadModel(*LightPole);
+    LightPole8->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole8->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole8, application->defaultShader);
+    LightPole8->name = "LightPole8";
+    LightPole8->transform.SetPosition(glm::vec3(-21.21, 2.98, 74.60));
+    LightPole8->transform.SetRotation(glm::vec3(0, -129.30, 0));
+    LightPole8->transform.SetScale(glm::vec3(0.012));
+    LightPole8->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* LightPole9 = new PhysXObject();
+    LightPole9->LoadModel(*LightPole);
+    LightPole9->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole9->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole9, application->defaultShader);
+    LightPole9->name = "LightPole9";
+    LightPole9->transform.SetPosition(glm::vec3(-58.94, 7.38, 81.62));
+    LightPole9->transform.SetRotation(glm::vec3(0, -152.40, 0));
+    LightPole9->transform.SetScale(glm::vec3(0.012));
+    LightPole9->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+    PhysXObject* LightPole10 = new PhysXObject();
+    LightPole10->LoadModel(*LightPole);
+    LightPole10->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    LightPole10->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(LightPole10, application->defaultShader);
+    LightPole10->name = "LightPole10";
+    LightPole10->transform.SetPosition(glm::vec3(-70.74, 6.37, 79.11));
+    LightPole10->transform.SetRotation(glm::vec3(0, -183.90, 0));
+    LightPole10->transform.SetScale(glm::vec3(0.012));
+    LightPole10->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+
+
+    PhysXObject* Coffin = new PhysXObject();
+    Coffin->LoadModel("Models/Graveyard/Coffin.fbx");
+    Coffin->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(Coffin, application->defaultShader);
+    Coffin->name = "Coffin";
+    Coffin->transform.SetPosition(glm::vec3(-55.10, 8.19, 75.05));
+    Coffin->transform.SetRotation(glm::vec3(0, -90.00, 0));
+    Coffin->transform.SetScale(glm::vec3(0.02));
+    Coffin->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* Gibbet = new PhysXObject();
+    Gibbet->LoadModel("Models/Graveyard/Gibbet.fbx");
+    Gibbet->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(Gibbet, application->defaultShader);
+    Gibbet->name = "Gibbet";
+    Gibbet->transform.SetPosition(glm::vec3(-60.03, 8.19, 75.05));
+    Gibbet->transform.SetRotation(glm::vec3(0, -90.00, 0));
+    Gibbet->transform.SetScale(glm::vec3(0.018));
+    Gibbet->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* Guillotine = new PhysXObject();
+    Guillotine->LoadModel("Models/Graveyard/Guillotine.fbx");
+    Guillotine->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    GraphicsRender::GetInstance().AddModelAndShader(Guillotine, application->defaultShader);
+    Guillotine->name = "Guillotine";
+    Guillotine->transform.SetPosition(glm::vec3(-60.03, 8.19, 75.05));
+    Guillotine->transform.SetRotation(glm::vec3(0, -90.00, 0));
+    Guillotine->transform.SetScale(glm::vec3(0.018));
+    Guillotine->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* Brazier = new PhysXObject();
+    Brazier->LoadModel("Models/Graveyard/Brazier.fbx");
+    Brazier->meshes[0]->meshMaterial->material()->diffuseTexture = body;
+    GraphicsRender::GetInstance().AddModelAndShader(Brazier, application->defaultShader);
+    Brazier->name = "Brazier";
+    Brazier->transform.SetPosition(glm::vec3(-60.03, 8.19, 68.34));
+    Brazier->transform.SetRotation(glm::vec3(0, -90.00, 0));
+    Brazier->transform.SetScale(glm::vec3(0.018));
+    Brazier->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+
+    MeshInstance* instanceGrass = new MeshInstance();
+    instanceGrass->LoadModel("Models/Graveyard/Fences/Grass.fbx");
+    instanceGrass->name = "InstanceGrass";
+    instanceGrass->meshes[0]->meshMaterial->material()->diffuseTexture = diffFoilage;
+    instanceGrass->AddTransformData(glm::vec3(-71.29, 3.12, 100.90), glm::vec3(0, 25, 0), glm::vec3(0.015));
+    instanceGrass->AddTransformData(glm::vec3(-71.76, 3.12, 100.26), glm::vec3(0, 60, 0), glm::vec3(0.015));
+    instanceGrass->AddTransformData(glm::vec3(-71.76, 3.12, 101.13), glm::vec3(0, 15, 0), glm::vec3(0.015));
+    instanceGrass->AddTransformData(glm::vec3(-71.76, 2.8, 98.50), glm::vec3(0, 25, 0), glm::vec3(0.015));
+    instanceGrass->AddTransformData(glm::vec3(-72.10, 2.8, 98.02), glm::vec3(0, 60, 0), glm::vec3(0.015));
+    instanceGrass->AddTransformData(glm::vec3(-71.64, 2.8, 97.69), glm::vec3(0, 15, 0), glm::vec3(0.015));
+    instanceGrass->AddTransformData(glm::vec3(-83.72, 2.93, 96.51), glm::vec3(0, 25, 0), glm::vec3(0.015));
+    instanceGrass->AddTransformData(glm::vec3(-83.72, 2.93, 95.83), glm::vec3(0, 60, 0), glm::vec3(0.015));
+    instanceGrass->AddTransformData(glm::vec3(-85.07, 3.21, 90.20), glm::vec3(0, 15, 0), glm::vec3(0.015));
+
+
+
+    GraphicsRender::GetInstance().AddModelAndShader(instanceGrass, application->defaultInstanceShader);
+
+    Model* dummy = new Model();
+    dummy->LoadModel("Models/Graveyard/Fences/Grass.fbx");
+    dummy->name = "dummy";
+    dummy->transform.SetPosition(glm::vec3(-71.76, 3.12, 101.13));
     dummy->transform.SetRotation(glm::vec3(0));
     dummy->transform.SetScale(glm::vec3(0.015));
     GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);
 
-    OcculsionManager::GetInstance().InitializeOcculusion();
+    //OcculsionManager::GetInstance().InitializeOcculusion();
 }
 
 //TreeThree
