@@ -233,15 +233,15 @@ void ApplicationRenderer::InitializeSkybox()
 void ApplicationRenderer::Start()
 {
 
-    BaseScene* sceneOne = new SceneOne("SceneOne");
-    BaseScene* sceneTwo = new SceneTwo("SceneTwo");
-    BaseScene* sceneThree = new SceneThree("SceneThree");
-    BaseScene* sceneFour = new SceneFour("SceneFour");
-    BaseScene* sceneFive = new SceneFive("SceneFive");
-    BaseScene* sceneSix = new SceneSix("SceneSix");
+    BaseScene* sceneOne = new SceneOne("PlayerTest");
+    BaseScene* sceneTwo = new SceneTwo("MeshInstance");
+    BaseScene* sceneThree = new SceneThree("LOD_Test");
+    BaseScene* sceneFour = new SceneFour("GrassMeshInstance");
+    BaseScene* sceneFive = new SceneFive("MainGame");
+    BaseScene* sceneSix = new SceneSix("AI_Scene");
     BaseScene* sceneSeven = new SceneSeven("occlusion");
 
-    SceneManager::GetInstance().OnChangeScene("SceneOne");
+    SceneManager::GetInstance().OnChangeScene("MainGame");
 
     FPS* fps = new FPS();
 
