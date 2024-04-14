@@ -32,21 +32,18 @@ public:
 	virtual void OnCollisionExit(PhysXObject* otherObject) {};
 
 	void SetEffectState(eEffectType type, bool state);
-
 	void AddCubeEffects(eEffectType type);
 	
 protected:
 
+	void EnablePostProccesing(bool enable);
+	void DisableAllEffects();
+
 	eVolumeType volumeType = eVolumeType::CUBE;
+
 	Camera* camera = nullptr;
-	PostProcessing* postProcessing;
+	PostProcessing* postProcessing = nullptr;
 
 	std::vector<eEffectType> effectList;
-
-	void EnablePostProccesing(bool enable);
-
-	void SetDefaultEffects();
-
-
 };
 

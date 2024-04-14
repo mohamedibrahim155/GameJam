@@ -62,6 +62,7 @@ void PostProcessing::ApplyPostprocessing(FrameBuffer* framebuffer)
 void PostProcessing::AddEffect(BaseEffect* effect)
 {
 	listOfeffects.push_back(effect);
+	effect->isEnabled = false;
 }
 
 void PostProcessing::RemoveEffect(BaseEffect* effect)

@@ -19,7 +19,7 @@ void BaseVolume::Intialize(Camera* camera)
 
 	postProcessing = this->camera->postprocessing;
 
-	SetDefaultEffects();
+	DisableAllEffects();
 
 	collider->SetTriggerState(true);
 }
@@ -54,7 +54,7 @@ void BaseVolume::EnablePostProccesing(bool enable)
 	camera->isPostprocessing = enable;
 }
 
-void BaseVolume::SetDefaultEffects()
+void BaseVolume::DisableAllEffects()
 {
 	SetEffectState(eEffectType::CHROMATIC, false);
 	SetEffectState(eEffectType::PIXELIZATION, false);

@@ -47,7 +47,7 @@ void CubeVolume::OnTriggerExit(PhysXObject* otherObject)
 	{
 		EnablePostProccesing(false);
 
-		SetDefaultEffects();
+		DisableAllEffects();
 	}
 }
 
