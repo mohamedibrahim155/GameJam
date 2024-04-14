@@ -39,6 +39,14 @@ struct LODGroup
     std::vector<LODElement> meshElements;
 };
 
+enum class eOcculsionState
+{
+    STATIC = 0,
+    DYNAMIC = 1,
+    NO_OCCULSION = 3, 
+
+};
+
 class Model : public Entity
 {
 public:
@@ -54,7 +62,7 @@ public:
     Texture* alphaMask;
     Shader* modelShader = nullptr;
 
-
+    eOcculsionState occulsionState = eOcculsionState::STATIC;
     int offset;
     float size;
 
@@ -63,6 +71,7 @@ public:
     bool isVisible = true;
     bool useLOD = false;
     bool isLoadTexture;
+    bool isOccluded = false;
 
     Model();
     Model(const Model& copyModel, bool isDebugModel = false);
@@ -98,7 +107,7 @@ protected:
 
     LODGroup mLODGroup;
 
-    const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Opacity_Default.png";
+    const std::string alphaTextureDefaultPath = "Textures/DefaultTextures/Default_Opacity.png";
 
 private:
 

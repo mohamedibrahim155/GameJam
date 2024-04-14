@@ -14,6 +14,7 @@ extern glm::vec3 PxVec3ToGLM(const PxVec3& value);
 extern PxVec3 GLMToPxVec3(const glm::vec3& value);
 extern glm::quat PxQuatToGLM(const PxQuat& value);
 extern PxQuat GLMToPxQuat(const glm::quat& value);
+extern PxMat44 GLMToPxMat4(const glm::mat4& glmMat);
 
 extern PxBounds3 CalculateAABB(std::vector<Vertex> vertices);
 

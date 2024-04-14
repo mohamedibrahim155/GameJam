@@ -52,7 +52,7 @@ public:
 
 	void SortObject();
 	
-	std::vector<Model*> GetModelList();
+	std::vector<Model*> GetModelList() const;
 
 	void InitializeGraphics();
 	void Draw();

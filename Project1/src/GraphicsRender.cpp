@@ -74,19 +74,29 @@ void GraphicsRender::SortObject()
 
 }
 
-std::vector<Model*> GraphicsRender::GetModelList()
+std::vector<Model*> GraphicsRender::GetModelList() const
 {
 	std::vector<ModelAndShader*> list = modelAndShaderList;
 	std::vector<Model*> modelList;
-	modelList.reserve(list.size());
+
+	modelList.reserve(modelAndShaderList.size() + transparentmodelAndShaderList.size());
 	
-	for (size_t i = 0; i < list.size(); i++)
+	for (unsigned int i = 0; i < list.size(); i++)
 	{
 		modelList.push_back(list[i]->model);
 	}
 
+	list = transparentmodelAndShaderList;
+
+	for (unsigned int i = 0; i < list.size(); i++)
+	{
+		modelList.push_back(list[i]->model);
+	}
+
+
 	return modelList;
 }
+
 
 
 

@@ -6,6 +6,7 @@
 #include "SceneManager/Scenes/SceneFour.h"
 #include "SceneManager/Scenes/SceneFive.h"
 #include "SceneManager/Scenes/SceneSix.h"
+#include "SceneManager/Scenes/SceneSeven.h"
 ApplicationRenderer::ApplicationRenderer()
 {
     sceneViewcamera = new Camera();
@@ -135,7 +136,7 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     GraphicsRender::GetInstance().SetCamera(sceneViewcamera);
 
     sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
-    sceneViewcamera->transform.position = glm::vec3(-75.91, 5.82, 105.85);
+    sceneViewcamera->transform.position = glm::vec3(0, 1, 10);
     sceneViewcamera->transform.SetRotation(glm::vec3(0, -361.50,0));
 
     gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
@@ -238,10 +239,14 @@ void ApplicationRenderer::Start()
     BaseScene* sceneFour = new SceneFour("SceneFour");
     BaseScene* sceneFive = new SceneFive("SceneFive");
     BaseScene* sceneSix = new SceneSix("SceneSix");
+    BaseScene* sceneSeven = new SceneSeven("occlusion");
 
     SceneManager::GetInstance().OnChangeScene("SceneFive");
 
     FPS* fps = new FPS();
+
+
+
 
 }
 
@@ -453,6 +458,8 @@ void ApplicationRenderer::PostRender()
         PhysXEngine::GetInstance().InitializePhysXObjects();
         PhysXEngine::GetInstance().Update(Time::GetInstance().deltaTime);
     }
+
+    OcculsionManager::GetInstance().UpdateOcculsion();
 }
 
 void ApplicationRenderer::Clear()

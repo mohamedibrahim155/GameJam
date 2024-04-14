@@ -113,7 +113,7 @@ void Camera::InitializeCamera(CameraType cameraType, float fov, float nearPlane,
 
     SetCameraWidthAndHeight(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-    SetCameraType(CameraType::PERSPECTIVE);
+    SetCameraType(cameraType);
 
 
     SetProjection();

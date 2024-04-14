@@ -32,6 +32,7 @@
 #include "PhysX/PhysXEngine.h"
 #include "Cursor.h"
 #include "ParticleSystem/ParticleAssets/Fire.h"
+#include "PhysX/Occulsion/OcculsionManager.h"
 #include "FPS/FPS.h"
 class ApplicationRenderer
 {
@@ -87,6 +88,8 @@ public:
 
 	eCursorState currentCursorState = eCursorState::VISIBLE;
 
+	OcculsionManager* occlusionManager;
+
 	bool isPlayMode = false;
 	bool isMaximizePressed = false;
 	bool isDepth = false;
@@ -108,6 +111,7 @@ private:
 	glm::vec2 lastMousePos{ 0 };
 
 	 int selectedModelCount = 0;
+
 
 	 float lastX;
 	 float lastY;

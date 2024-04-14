@@ -17,7 +17,7 @@ Model::Model(const Model& copyModel, bool isDebugModel)
     isWireFrame = copyModel.isWireFrame;
     modelPath = copyModel.modelPath;
     isLoadTexture = copyModel.isLoadTexture;
-
+    
     SetModelName();
     if (isDebugModel) return;
 
@@ -62,6 +62,10 @@ void Model::Draw(Shader& shader)
         return;
     }
 
+    if (isOccluded)
+    {
+        return;
+    }
     if (useLOD)
     {
         Camera* camera = CameraManager::GetInstance().GetMainCamera();
@@ -105,6 +109,11 @@ void Model::Draw(Shader* shader)
 {
 
     if (!isVisible)
+    {
+        return;
+    }
+
+    if (isOccluded)
     {
         return;
     }
@@ -571,6 +580,15 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
  void Model::DrawProperties()
  {
      Entity::DrawProperties();
+
+     if (!ImGui::TreeNodeEx("Model Properties"))
+     {
+         return;
+     }
+
+     DrawBoolImGui("isOccluded", isOccluded, 250);
+
+     ImGui::TreePop();
  }
 
  void Model::SceneDraw()

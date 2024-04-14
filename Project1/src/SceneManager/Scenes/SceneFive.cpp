@@ -27,6 +27,7 @@ void SceneFive::Start()
     player->transform.SetPosition(glm::vec3(-75.91, 5.82, 105.85));
 
     PhysXObject* terrain = new PhysXObject();
+    terrain->occulsionState = eOcculsionState::NO_OCCULSION;
     terrain->LoadModel("Models/Terrain/Terrain2.fbx");
     GraphicsRender::GetInstance().AddModelAndShader(terrain, application->defaultShader);
     terrain->name = "Terrain";
@@ -469,6 +470,7 @@ void SceneFive::Start()
     dummy->transform.SetScale(glm::vec3(0.015));
     GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);
 
+    OcculsionManager::GetInstance().InitializeOcculusion();
 }
 
 //TreeThree

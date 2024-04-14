@@ -21,6 +21,34 @@ PxQuat GLMToPxQuat(const glm::quat& glmQuat)
 	return PxQuat(glmQuat.x, glmQuat.y, glmQuat.z, glmQuat.w);
 }
 
+PxMat44 GLMToPxMat4(const glm::mat4& glmMat) 
+{
+	
+	PxMat44 pxMat;
+
+	pxMat[0][0] = glmMat[0][0];
+	pxMat[0][1] = glmMat[0][1];
+	pxMat[0][2] = glmMat[0][2];
+	pxMat[0][3] = glmMat[0][3];
+
+	pxMat[1][0] = glmMat[1][0];
+	pxMat[1][1] = glmMat[1][1];
+	pxMat[1][2] = glmMat[1][2];
+	pxMat[1][3] = glmMat[1][3];
+
+	pxMat[2][0] = glmMat[2][0];
+	pxMat[2][1] = glmMat[2][1];
+	pxMat[2][2] = glmMat[2][2];
+	pxMat[2][3] = glmMat[2][3];
+
+	pxMat[3][0] = glmMat[3][0];
+	pxMat[3][1] = glmMat[3][1];
+	pxMat[3][2] = glmMat[3][2];
+	pxMat[3][3] = glmMat[3][3];
+
+	return pxMat;
+}
+
 PxBounds3 CalculateAABB(std::vector<Vertex> vertices)
 {
     if (vertices.size() == 0)

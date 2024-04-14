@@ -14,6 +14,7 @@ Light::Light()
 	SetColor(1, 1, 1, 1);
 	SetInnerAndOuterCutoffAngle(12.5f, 15);
 
+	occulsionState = eOcculsionState::NO_OCCULSION;
 }
 
 void Light::Initialize(const LightType& type)
@@ -48,7 +49,6 @@ void Light::Initialize(const LightType& type, const float& intensity)
 	SetInnerAndOuterCutoffAngle(12.5f, 15);
 
 	LoadModel(*DebugModels::GetInstance().defaultSphere, true);
-
 	transform.SetScale(glm::vec3(this->lightTransformScale));
 
 	SetNameBaseOnType();

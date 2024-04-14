@@ -93,9 +93,6 @@
     <ClCompile Include="src\GraphicsRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\BaseMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -246,9 +243,6 @@
     <ClCompile Include="src\Utilities\LookAt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShadowFBO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Player\States\RunState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -357,6 +351,36 @@
     <ClCompile Include="src\SceneManager\Scenes\SceneFive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\SceneManager\Scenes\SceneSix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\State\BaseEnemyState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\State\EnemyFaceState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\State\EnemyIdleState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\State\EnemyPatrolState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\State\PursueEnemyState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FPS\FPS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysX\Occulsion\OcculsionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager\Scenes\SceneSeven.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -447,9 +471,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Triangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\BaseMaterial.h">
@@ -617,9 +638,6 @@
     <ClInclude Include="src\Utilities\LookAt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShadowFBO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Player\States\RunState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -741,6 +759,39 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\SceneManager\Scenes\SceneFive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager\Scenes\SceneSix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\State\BaseEnemyState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\State\eEnemyState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\State\EnemyFaceState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\State\EnemyIdleState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\State\EnemyPatrolState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AI\State\PursueEnemyState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FPS\FPS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysX\Occulsion\OcculsionManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager\Scenes\SceneSeven.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
