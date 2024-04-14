@@ -31,6 +31,12 @@ void PostProcessing::InitializePostProcessing()
 	pixelization = new PixelizationEffect(cameraWidthAndHeight.x, cameraWidthAndHeight.y);
 	pixelization->finalShader = finalShader;
 	AddEffect(pixelization);
+
+	dessertHeatwave = new DessertHeatwave(cameraWidthAndHeight.x, cameraWidthAndHeight.y);
+
+	dessertHeatwave->finalShader = finalShader;
+	AddEffect(dessertHeatwave);
+
 }
 
 void PostProcessing::ApplyPostprocessing(FrameBuffer* framebuffer)

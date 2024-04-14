@@ -381,6 +381,12 @@
     <ClCompile Include="src\SceneManager\Scenes\SceneSeven.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ParticleSystem\Properties\Noise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PostProcessing\DessertHeatwave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -794,6 +800,12 @@
     <ClInclude Include="src\SceneManager\Scenes\SceneSeven.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ParticleSystem\Properties\Noise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PostProcessing\DessertHeatwave.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.frag" />
@@ -828,5 +840,7 @@
     <None Include="Shaders\ParticleShader.vert" />
     <None Include="Shaders\AnimationShader.frag" />
     <None Include="Shaders\AnimationShader.vert" />
+    <None Include="Shaders\PostProcessing\DessertHeatwave.frag" />
+    <None Include="Shaders\PostProcessing\DessertHeatwave.vert" />
   </ItemGroup>
 </Project>
