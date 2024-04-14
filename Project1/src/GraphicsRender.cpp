@@ -277,6 +277,8 @@ void GraphicsRender::CleanUpData()
 
 	for (ModelAndShader* modelAndShader : transparentmodelAndShaderList)
 	{
+		modelAndShader->model = nullptr;
+		modelAndShader->shader = nullptr;
 		delete modelAndShader->model;
 		delete modelAndShader->shader;
 		delete modelAndShader;

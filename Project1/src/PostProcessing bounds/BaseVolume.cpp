@@ -16,6 +16,11 @@ void BaseVolume::Intialize(Camera* camera)
 		break;
 	}
 
+
+	postProcessing = this->camera->postprocessing;
+
+	SetDefaultEffects();
+
 	collider->SetTriggerState(true);
 }
 
@@ -34,7 +39,24 @@ void BaseVolume::Render()
 	PhysXObject::Render();
 }
 
+void BaseVolume::SetEffectState(eEffectType type, bool state)
+{
+	postProcessing->GetEffect(type)->isEnabled = state;
+}
+
+void BaseVolume::AddCubeEffects(eEffectType type)
+{
+	effectList.push_back(type);
+}
+
 void BaseVolume::EnablePostProccesing(bool enable)
 {
 	camera->isPostprocessing = enable;
+}
+
+void BaseVolume::SetDefaultEffects()
+{
+	SetEffectState(eEffectType::CHROMATIC, false);
+	SetEffectState(eEffectType::PIXELIZATION, false);
+	SetEffectState(eEffectType::DESSERTWAVE, false);
 }

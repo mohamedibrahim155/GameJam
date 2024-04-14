@@ -241,7 +241,7 @@ void ApplicationRenderer::Start()
     BaseScene* sceneSix = new SceneSix("SceneSix");
     BaseScene* sceneSeven = new SceneSeven("occlusion");
 
-    SceneManager::GetInstance().OnChangeScene("SceneFive");
+    SceneManager::GetInstance().OnChangeScene("SceneOne");
 
     FPS* fps = new FPS();
 

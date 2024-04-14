@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\Player\States\MagicState.cpp" />
     <ClCompile Include="src\PostProcessing\DessertHeatwave.cpp" />
     <ClCompile Include="src\ParticleSystem\Properties\Noise.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneSeven.cpp" />
@@ -266,6 +267,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\Player\States\MagicState.h" />
     <ClInclude Include="src\PostProcessing\DessertHeatwave.h" />
     <ClInclude Include="src\ParticleSystem\Properties\Noise.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneSeven.h" />

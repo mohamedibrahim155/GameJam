@@ -2,6 +2,7 @@
 #include "../GraphicsRender.h"
 #include "States/IdleState.h"
 #include "States/RunState.h"
+#include "States/MagicState.h"
 #include "CameraController.h"
 #include "../ApplicationRenderer.h"
 PlayerController::PlayerController()
@@ -53,7 +54,9 @@ PlayerController::PlayerController(ApplicationRenderer* application)
 
     LoadAnimation("Models/Character/Player/Idle.fbx", "Idle");
     LoadAnimation("Models/Character/Player/Run.fbx", "Run");
+    LoadAnimation("Models/Character/Player/Magic.fbx", "Magic", false);
 
+ 
     transform.SetRotation(glm::vec3(0, 180, 0));
 
     std::string diffuseTexture = "Models/Character/Textures/Player.png";
@@ -76,10 +79,20 @@ PlayerController::PlayerController(ApplicationRenderer* application)
 
     AddState(ePlayerState::IDLE, new IdleState());
     AddState(ePlayerState::RUN, new RunState());
+    AddState(ePlayerState::MAGIC, new MagicState());
+
+    
+    GetState(ePlayerState::MAGIC)->AsMagicState()->SetEventTrigger(
+        [this]()
+        {
+            TriggerSandStrorm();
+        });
 
     frameSpeed = 30;
 
     cameraController = new CameraController(this);
+
+    InputManager::GetInstance().AddObserver(this);
 }
 
 PlayerController::~PlayerController()
@@ -224,5 +237,37 @@ void PlayerController::DrawPlayerControllerProperties()
     ImGui::TreePop();
 
 }
+
+void PlayerController::OnKeyPressed(const int& key)
+{
+    if (key == GLFW_KEY_M)
+    {
+        isMagicState = !isMagicState;
+
+        OnStateChange(ePlayerState::MAGIC);
+    }
+}
+
+
+
+void PlayerController::TriggerSandStrorm()
+{
+    printf("Sand strom Triggered");
+
+    cameraController->GetCamera()->isPostprocessing = isMagicState;
+    SetEffect(eEffectType::DESSERTWAVE, isMagicState);
+    SetEffect(eEffectType::CHROMATIC, false);
+    SetEffect(eEffectType::PIXELIZATION, false);
+    OnStateChange(ePlayerState::IDLE);
+    
+}
+
+void PlayerController::SetEffect(eEffectType type, bool state)
+{
+    cameraController->GetCamera()->postprocessing->GetEffect(type)->isEnabled = state;
+}
+
+
+
 
 

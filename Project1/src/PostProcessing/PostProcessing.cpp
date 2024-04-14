@@ -28,14 +28,22 @@ void PostProcessing::InitializePostProcessing()
 	chromatic->finalShader = finalShader;
 	AddEffect(chromatic);
 
+	mapForEffects[eEffectType::CHROMATIC] = chromatic;
+
 	pixelization = new PixelizationEffect(cameraWidthAndHeight.x, cameraWidthAndHeight.y);
 	pixelization->finalShader = finalShader;
 	AddEffect(pixelization);
+
+	mapForEffects[eEffectType::PIXELIZATION] = pixelization;
 
 	dessertHeatwave = new DessertHeatwave(cameraWidthAndHeight.x, cameraWidthAndHeight.y);
 
 	dessertHeatwave->finalShader = finalShader;
 	AddEffect(dessertHeatwave);
+
+	mapForEffects[eEffectType::DESSERTWAVE] = dessertHeatwave;
+
+
 
 }
 
@@ -83,4 +91,9 @@ void PostProcessing::DrawProperties()
 
 void PostProcessing::SceneDraw()
 {
+}
+
+BaseEffect* PostProcessing::GetEffect(eEffectType name)
+{
+	return mapForEffects[name];
 }

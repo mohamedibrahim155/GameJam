@@ -4,10 +4,13 @@
 #include "States/BaseState.h"
 #include <unordered_map>
 
-
+class CubeVolume;
 class CameraController;
 class ApplicationRenderer;
-class PlayerController : public PhysicsSkinMeshRenderer
+
+ enum class eEffectType;
+
+class PlayerController : public PhysicsSkinMeshRenderer, public iInputObserver
 {
 public:
 	PlayerController();
@@ -37,21 +40,33 @@ public:
 	 void RmoveState(ePlayerState playerstate);
 	 void SetPlayerState(ePlayerState state);
 
-	 float playerMoveSpeed = 2.5f;
 
 	 BaseState* GetCurrentState() const;
 	 BaseState* GetState(ePlayerState state);
 
 	 CameraController* cameraController = nullptr;
+	 float playerMoveSpeed = 2.5f;
 
 private:
 	void DrawPlayerControllerProperties();
 
 	int currentStateIndex = 0;
+	bool isMagicState = false;
 	ePlayerState playerState = ePlayerState::IDLE;
 	BaseState* currentState;
 	std::unordered_map<ePlayerState, BaseState*> listOfPlayerStates;
 
 	ApplicationRenderer* application;
+
+	// Inherited via iInputObserver
+	void OnKeyPressed(const int& key) override;
+	void OnKeyReleased(const int& key) override {};
+	void OnKeyHold(const int& key) override {};
+	void OnMouseButtonPressed(const int& mouseButton) override {};
+	void OnMouseButtonReleased(const int& mouseButton) override {};
+	void OnMouseMouseMove(float& moveX, float& moveY) override {};
+
+	void TriggerSandStrorm();
+	void SetEffect(eEffectType type, bool state);
 };
 

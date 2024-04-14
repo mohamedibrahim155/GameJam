@@ -6,6 +6,7 @@ CubeVolume::CubeVolume()
 {
 	LoadModel("Models/DefaultCube/DefaultCube.fbx");
 	name = "Cube Volume";
+	meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 1.f, 0, 0.5f));
 	GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().alphaBlendShader);
 	
 	volumeType = eVolumeType::CUBE;
@@ -30,6 +31,13 @@ void CubeVolume::OnTriggerEnter(PhysXObject* otherObject)
 	if (otherObject->tag == "Player")
 	{
 		EnablePostProccesing(true);
+
+
+		for (eEffectType& type : effectList)
+		{
+			SetEffectState(type, true);
+		}
+	
 	}
 }
 
@@ -38,6 +46,8 @@ void CubeVolume::OnTriggerExit(PhysXObject* otherObject)
 	if (otherObject->tag == "Player")
 	{
 		EnablePostProccesing(false);
+
+		SetDefaultEffects();
 	}
 }
 

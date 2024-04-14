@@ -7,12 +7,6 @@ enum class eVolumeType
 	SPHERE
 };
 
-struct PostProccsingData
-{
-	bool isChromaticEnabled = false;
-	bool isPixelizationEnabled = false;
-
-};
 
 class BaseVolume : public PhysXObject
 {
@@ -21,9 +15,9 @@ public:
 
 	virtual void DrawVolume()= 0;
 
-	 void DrawProperties()override ;
-	 void SceneDraw()override;
-	 void Render()override;
+	 void DrawProperties() override ;
+	 virtual void SceneDraw() override;
+	 virtual void Render()override;
 
 	virtual void Start()  override {};
 	virtual void Update(float deltaTime) override {};
@@ -36,13 +30,23 @@ public:
 	virtual void OnCollisionEnter(PhysXObject* otherObject, CollisionInfo& collisionInfo) {};
 	virtual void OnCollisionStay(PhysXObject* otherObject) {};
 	virtual void OnCollisionExit(PhysXObject* otherObject) {};
+
+	void SetEffectState(eEffectType type, bool state);
+
+	void AddCubeEffects(eEffectType type);
+	
 protected:
 
 	eVolumeType volumeType = eVolumeType::CUBE;
 	Camera* camera = nullptr;
 	PostProcessing* postProcessing;
 
+	std::vector<eEffectType> effectList;
+
 	void EnablePostProccesing(bool enable);
+
+	void SetDefaultEffects();
+
 
 };
 

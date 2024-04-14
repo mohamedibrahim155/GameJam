@@ -3,6 +3,15 @@
 #include "ChromaticEffect.h"
 #include "PixelizationEffect.h"
 #include "DessertHeatwave.h"
+#include <unordered_map>
+
+enum class eEffectType
+{
+	CHROMATIC = 0,
+	PIXELIZATION = 1,
+	DESSERTWAVE = 2, 
+};
+
 class PostProcessing : public Object
 {
 public:
@@ -24,6 +33,7 @@ public:
 
 	 void SceneDraw() override;
 
+	 BaseEffect* GetEffect(eEffectType name);
 private:
 
 	std::vector<BaseEffect*> listOfeffects;
@@ -35,6 +45,8 @@ private:
 	Shader* finalShader;
 	
 	glm::vec2 cameraWidthAndHeight;
+
+	std::unordered_map <eEffectType, BaseEffect*> mapForEffects;
 
 
 };

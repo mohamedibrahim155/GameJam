@@ -21,7 +21,7 @@ void SceneOne::Start()
     directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
 
     PlayerController* player = new PlayerController(application);
-    player->transform.SetPosition(glm::vec3(-40.53, 23.10, 75.10));
+    player->transform.SetPosition(glm::vec3(0, 0, 0));
 
 
 
@@ -29,12 +29,14 @@ void SceneOne::Start()
     /*std::string difPath = "Models/Terrain/Terrain.png";
     Texture* dif = new Texture(difPath);*/
 
-    terrain->LoadModel("Models/Terrain/Terrain2.fbx");
+   // terrain->LoadModel("Models/Terrain/Terrain2.fbx");
+    terrain->LoadModel("Models/Terrain/Terrain.fbx");
    // terrain->meshes[0]->meshMaterial->material()->diffuseTexture = dif;
     GraphicsRender::GetInstance().AddModelAndShader(terrain, application->defaultShader);
     terrain->name = "Terrain";
     terrain->transform.SetPosition(glm::vec3(0, -2, 0));
-    terrain->transform.SetRotation(glm::vec3(0, 0, 0));
+    //terrain->transform.SetRotation(glm::vec3(0, 0, 0));
+    terrain->transform.SetRotation(glm::vec3(-90, 0, 0));
     terrain->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
 
 
@@ -42,7 +44,16 @@ void SceneOne::Start()
     cube->transform.SetPosition(glm::vec3(0, -1, 5));
     cube->transform.SetScale(glm::vec3(0.5f));
     cube->Intialize(application->gameScenecamera);
+    cube->AddCubeEffects(eEffectType::CHROMATIC);
+    cube->AddCubeEffects(eEffectType::PIXELIZATION);
 
+    CubeVolume* cube2 = new CubeVolume();
+    cube2->transform.SetPosition(glm::vec3(0, -1, 7));
+    cube2->transform.SetScale(glm::vec3(0.5f));
+    cube2->Intialize(application->gameScenecamera);
+    cube2->AddCubeEffects(eEffectType::PIXELIZATION);
+
+ 
     //PhysXObject* cathedral = new PhysXObject();
   
     /*cathedral->LoadModel("Models/Cathedral/Cath.fbx");
@@ -53,8 +64,8 @@ void SceneOne::Start()
     cathedral->transform.SetScale(glm::vec3(0.01, 0.01, 0.01));
     cathedral->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);*/
 
-    Model* tree = new Model("Models/Tree/NewTree.fbx");
-    GraphicsRender::GetInstance().AddModelAndShader(tree, application->defaultShader);
+    //Model* tree = new Model("Models/Tree/NewTree.fbx");
+    //GraphicsRender::GetInstance().AddModelAndShader(tree, application->defaultShader);
 
 }
 

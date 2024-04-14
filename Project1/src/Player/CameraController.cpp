@@ -9,8 +9,13 @@ using namespace MathUtils;
 CameraController::CameraController(PlayerController* playerController)
 {
 	this->playerController = playerController;
+
 	gameCamera = CameraManager::GetInstance().GetMainCamera();
 
+	gameCamera->postprocessing->GetEffect(eEffectType::CHROMATIC)->isEnabled = false;
+	gameCamera->postprocessing->GetEffect(eEffectType::PIXELIZATION)->isEnabled = false;
+	gameCamera->postprocessing->GetEffect(eEffectType::DESSERTWAVE)->isEnabled = false;
+	
 	name = "Camera Controller";
 
 	InitializeEntity(this);
