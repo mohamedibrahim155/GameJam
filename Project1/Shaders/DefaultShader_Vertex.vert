@@ -16,7 +16,7 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform float time = 0;
 
-uniform bool isScrollingTexture = true;
+uniform bool isScrollingTexture = false;
 uniform mat4 lightSpaceMatrix;
 
 // function prototypes

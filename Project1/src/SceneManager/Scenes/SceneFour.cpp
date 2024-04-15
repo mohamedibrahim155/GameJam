@@ -31,16 +31,16 @@ void SceneFour::Start()
     float radius = 5;
    
 
-    for (size_t i = 0; i < 10; i++)
+    for (size_t i = 0; i < 1; i++)
     {
-        for (size_t j = 0; j < 5; j++)
+        for (size_t j = 0; j < 1; j++)
         {
-            grassMeshInstance->AddTransformData(glm::vec3(j, center.y, i), glm::vec3(0), glm::vec3(0.015f));
 
         }
 
     }
-      
+    grassMeshInstance->AddTransformData(glm::vec3(0, center.y, 0), glm::vec3(0), glm::vec3(0.015f));
+
 
 
 

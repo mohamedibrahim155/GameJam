@@ -2,6 +2,8 @@
 #include "../../ApplicationRenderer.h"
 #include "../../Player/PlayerController.h"
 #include "../../PostProcessing bounds/CubeVolume.h"
+#include "../../Grass/GrassMesh.h"
+
 SceneFive::SceneFive(const std::string& sceneName) : BaseScene::BaseScene(sceneName)
 {
 	
@@ -14,6 +16,14 @@ void SceneFive::Start()
 
     std::string diffuseFoilage = "Models/Graveyard/Fences/foliage-a.png";
     Texture* diffFoilage = new Texture(diffuseFoilage);
+
+    std::string diffuseTerPath2x = "Models/Terrain/2k_diffuse_2x.png";
+    Texture* diffTerrain2x = new Texture(diffuseTerPath2x);
+
+    std::string diffuseTerPath4x = "Models/Terrain/2k_diffuse_4x_.png";
+    Texture* diffTerrain4x = new Texture(diffuseTerPath4x);
+
+    
 
     Light* directionLight = new Light();
     directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
@@ -32,6 +42,7 @@ void SceneFive::Start()
     PhysXObject* terrain = new PhysXObject();
     terrain->occulsionState = eOcculsionState::NO_OCCULSION;
     terrain->LoadModel("Models/Terrain/Terrain2.fbx");
+    terrain->meshes[0]->meshMaterial->material()->diffuseTexture = diffTerrain4x;
     GraphicsRender::GetInstance().AddModelAndShader(terrain, application->defaultShader);
     terrain->name = "Terrain";
     terrain->transform.SetPosition(glm::vec3(0, -2, 0));
@@ -773,9 +784,9 @@ void SceneFive::Start()
     Guillotine->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
     GraphicsRender::GetInstance().AddModelAndShader(Guillotine, application->defaultShader);
     Guillotine->name = "Guillotine";
-    Guillotine->transform.SetPosition(glm::vec3(-60.03, 8.19, 75.05));
-    Guillotine->transform.SetRotation(glm::vec3(0, -90.00, 0));
-    Guillotine->transform.SetScale(glm::vec3(0.018));
+    Guillotine->transform.SetPosition(glm::vec3(-42.45, 6.61, 73.41));
+    Guillotine->transform.SetRotation(glm::vec3(0, -130.90, 0));
+    Guillotine->transform.SetScale(glm::vec3(0.012));
     Guillotine->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
 
     PhysXObject* Brazier = new PhysXObject();
@@ -783,37 +794,83 @@ void SceneFive::Start()
     Brazier->meshes[0]->meshMaterial->material()->diffuseTexture = body;
     GraphicsRender::GetInstance().AddModelAndShader(Brazier, application->defaultShader);
     Brazier->name = "Brazier";
-    Brazier->transform.SetPosition(glm::vec3(-60.03, 8.19, 68.34));
+    Brazier->transform.SetPosition(glm::vec3(-76.42, 3.16, 86.84));
     Brazier->transform.SetRotation(glm::vec3(0, -90.00, 0));
-    Brazier->transform.SetScale(glm::vec3(0.018));
+    Brazier->transform.SetScale(glm::vec3(0.013));
     Brazier->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
 
+    PhysXObject* Brazier2 = new PhysXObject();
+    Brazier2->LoadModel(*Brazier);
+    Brazier2->meshes[0]->meshMaterial->material()->diffuseTexture = body;
+    GraphicsRender::GetInstance().AddModelAndShader(Brazier2, application->defaultShader);
+    Brazier2->name = "Brazier1";
+    Brazier2->transform.SetPosition(glm::vec3(-76.42, 5.88, 76.65));
+    Brazier2->transform.SetRotation(glm::vec3(0, -90.00, 0));
+    Brazier2->transform.SetScale(glm::vec3(0.013));
+    Brazier2->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
 
-    MeshInstance* instanceGrass = new MeshInstance();
-    instanceGrass->LoadModel("Models/Graveyard/Fences/Grass.fbx");
-    instanceGrass->name = "InstanceGrass";
-    instanceGrass->meshes[0]->meshMaterial->material()->diffuseTexture = diffFoilage;
-    instanceGrass->AddTransformData(glm::vec3(-71.29, 3.12, 100.90), glm::vec3(0, 25, 0), glm::vec3(0.015));
-    instanceGrass->AddTransformData(glm::vec3(-71.76, 3.12, 100.26), glm::vec3(0, 60, 0), glm::vec3(0.015));
-    instanceGrass->AddTransformData(glm::vec3(-71.76, 3.12, 101.13), glm::vec3(0, 15, 0), glm::vec3(0.015));
-    instanceGrass->AddTransformData(glm::vec3(-71.76, 2.8, 98.50), glm::vec3(0, 25, 0), glm::vec3(0.015));
-    instanceGrass->AddTransformData(glm::vec3(-72.10, 2.8, 98.02), glm::vec3(0, 60, 0), glm::vec3(0.015));
-    instanceGrass->AddTransformData(glm::vec3(-71.64, 2.8, 97.69), glm::vec3(0, 15, 0), glm::vec3(0.015));
-    instanceGrass->AddTransformData(glm::vec3(-83.72, 2.93, 96.51), glm::vec3(0, 25, 0), glm::vec3(0.015));
-    instanceGrass->AddTransformData(glm::vec3(-83.72, 2.93, 95.83), glm::vec3(0, 60, 0), glm::vec3(0.015));
-    instanceGrass->AddTransformData(glm::vec3(-85.07, 3.21, 90.20), glm::vec3(0, 15, 0), glm::vec3(0.015));
+    PhysXObject* Brazier3 = new PhysXObject();
+    Brazier3->LoadModel(*Brazier);
+    Brazier3->meshes[0]->meshMaterial->material()->diffuseTexture = body;
+    GraphicsRender::GetInstance().AddModelAndShader(Brazier3, application->defaultShader);
+    Brazier3->name = "Brazier3";
+    Brazier3->transform.SetPosition(glm::vec3(-53.16, 7.31, 78.43));
+    Brazier3->transform.SetRotation(glm::vec3(0, 0, 0));
+    Brazier3->transform.SetScale(glm::vec3(0.013));
+    Brazier3->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* Brazier4 = new PhysXObject();
+    Brazier4->LoadModel(*Brazier);
+    Brazier4->meshes[0]->meshMaterial->material()->diffuseTexture = body;
+    GraphicsRender::GetInstance().AddModelAndShader(Brazier4, application->defaultShader);
+    Brazier4->name = "Brazier4";
+    Brazier4->transform.SetPosition(glm::vec3(-23.66, 2.75, 67.31));
+    Brazier4->transform.SetRotation(glm::vec3(0, 0, 0));
+    Brazier4->transform.SetScale(glm::vec3(0.013));
+    Brazier4->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+
+    PhysXObject* Brazier5 = new PhysXObject();
+    Brazier5->LoadModel(*Brazier);
+    Brazier5->meshes[0]->meshMaterial->material()->diffuseTexture = body;
+    GraphicsRender::GetInstance().AddModelAndShader(Brazier5, application->defaultShader);
+    Brazier5->name = "Brazier5";
+    Brazier5->transform.SetPosition(glm::vec3(-37.87, 4.33, 54.30));
+    Brazier5->transform.SetRotation(glm::vec3(0, 0, 0));
+    Brazier5->transform.SetScale(glm::vec3(0.013));
+    Brazier5->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
 
 
 
-    GraphicsRender::GetInstance().AddModelAndShader(instanceGrass, application->defaultInstanceShader);
+    GrassMesh* grassMeshInstance = new GrassMesh();
+    grassMeshInstance->AddTransformData(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(0.015f));
+    grassMeshInstance->name = "InstanceGrass";
+    grassMeshInstance->AddTransformData(glm::vec3(-71.29, 3.12, 100.90), glm::vec3(0, 25, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-71.76, 3.12, 100.26), glm::vec3(0, 60, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-71.76, 3.12, 101.13), glm::vec3(0, 15, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-71.76, 2.8, 98.50), glm::vec3(0, 25, 0),   glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-72.10, 2.8, 98.02), glm::vec3(0, 60, 0),   glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-71.64, 2.8, 97.69), glm::vec3(0, 15, 0),   glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-83.72, 2.93, 96.51), glm::vec3(0, 25, 0),  glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-83.72, 2.93, 95.83), glm::vec3(0, 60, 0),  glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-85.07, 3.21, 90.20), glm::vec3(0, 15, 0),  glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-85.22, 3.12, 89.68), glm::vec3(0, 15, 0),  glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-84.94, 3.12, 89.91), glm::vec3(0, 15, 0),  glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-77.85, 3.21, 85.94), glm::vec3(0, 15, 0),  glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-77.32, 3.21, 86.02), glm::vec3(0, 15, 0),  glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-77.79, 3.21, 86.40), glm::vec3(0, 15, 0),  glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-83.76, 2.65, 102.05), glm::vec3(0, 15, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-83.76, 2.65, 101.58), glm::vec3(0, 15, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-83.25, 2.65, 101.94), glm::vec3(0, 15, 0), glm::vec3(0.012));
 
-    Model* dummy = new Model();
+    GraphicsRender::GetInstance().AddModelAndShader(grassMeshInstance, application->grassInstanceShader);
+
+ /*   Model* dummy = new Model();
     dummy->LoadModel("Models/Graveyard/Fences/Grass.fbx");
     dummy->name = "dummy";
     dummy->transform.SetPosition(glm::vec3(-71.76, 3.12, 101.13));
     dummy->transform.SetRotation(glm::vec3(0));
     dummy->transform.SetScale(glm::vec3(0.015));
-    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);
+    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);*/
 
     //OcculsionManager::GetInstance().InitializeOcculusion();
 }

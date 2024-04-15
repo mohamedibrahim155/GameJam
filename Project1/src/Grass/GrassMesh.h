@@ -18,11 +18,11 @@ public:
 	 void OnDestroy() override {};
 
 private:
-	  std::string diffuseTexurePath = "Models/Grass/diffuse.png";
-	  std::string alphaTexurePath = "Models/Grass/alphaMask.png";
+	  std::string diffuseTexurePath = "Models/Grass/GrassThree.png";
+	  std::string alphaTexurePath = "Models/Grass/alpha3.png";
 	  Shader* grassShader = nullptr;
 	  float time = 10;
-	  float windStrength = 0.8f;
+	  float windStrength = 1.5f;
 	  float windDensity = 0.8f;
 	  float grassHeight = 0.35f;
 

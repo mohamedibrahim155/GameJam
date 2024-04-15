@@ -45,7 +45,7 @@ public:
 	 BaseState* GetState(ePlayerState state);
 
 	 CameraController* cameraController = nullptr;
-	 float playerMoveSpeed = 2.5f;
+	 float playerMoveSpeed = 12.5f;
 
 private:
 	void DrawPlayerControllerProperties();

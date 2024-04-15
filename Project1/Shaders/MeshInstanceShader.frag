@@ -83,7 +83,7 @@ uniform float fogDensity = 0.66;
 uniform float fogStart = 8.0;
 uniform float fogEnd = 40;
 uniform vec3 fogColor = vec3(0.59,0.59,0.59);
-uniform bool fogActive = false;
+uniform bool fogActive = true;
 float CalcFog();
 float CalcLinearFog();
 float CalcExpoFog();
