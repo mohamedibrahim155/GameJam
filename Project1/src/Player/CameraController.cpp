@@ -4,6 +4,7 @@
 #include "../Math.h"
 #include "../Time.h"
 #include "../GraphicsRender.h"
+#include "../PhysX/PhysXUtils.h"
 using namespace MathUtils;
 
 CameraController::CameraController(PlayerController* playerController)
@@ -31,6 +32,11 @@ void CameraController::Start()
 {
 	intialCameraPosition = GetCamera()->transform.position;
 	intialCameraRotation = GetCamera()->transform.rotation;
+
+	playerPosition = playerController->transform.position;
+	glm::vec3 cameraPosition = playerPosition +  -GetCamera()->transform.GetForward() * distance;
+
+	GetCamera()->transform.SetPosition(cameraPosition);
 }
 
 void CameraController::Update(float deltaTime)
@@ -105,12 +111,34 @@ void CameraController::Update(float deltaTime)
 
 
 
+		//glm::vec3 cameraPosition = glm::vec3(0);
 	glm::vec3 cameraPosition = playerPosition + glm::normalize(direction) * distance;
 
 
 	glm::vec3 currentPosition = GetCamera()->transform.position;
 
+	RayCastHitInfo hitInfo;
+	if (Physics::rayCast(cameraPosition, glm::normalize(playerPosition - cameraPosition), distance, hitInfo, {Layer::DEFAULT,Layer::PLAYER}))
+	{
+		if (hitInfo.physObject!=nullptr)
+		{
+			if (hitInfo.physObject->tag != playerController->tag)
+			{
+				cameraPosition = playerPosition + glm::normalize(direction) * cameraClampDistance;
+
+			}
+			
+		}
+	}
+	else
+	{
+		cameraPosition = playerPosition + glm::normalize(direction) * distance;
+
+	}
+
+
 	glm::vec3 newPosition =Math::LerpVec3(currentPosition, cameraPosition, (float)Time::GetInstance().deltaTime * moveSpeed);
+
 
 	GetCamera()->transform.SetPosition(newPosition);
 

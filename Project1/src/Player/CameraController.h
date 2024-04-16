@@ -26,6 +26,7 @@ private:
 	Camera* gameCamera = nullptr;
 
 	float distance = 3;
+	float cameraClampDistance = 1.5f;
 	float minVerticalAngle = -89;
 	float maxVerticalAngle = 89;
 	float minYAngle = -360;

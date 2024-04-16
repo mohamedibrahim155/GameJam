@@ -74,8 +74,12 @@ PlayerController::PlayerController(ApplicationRenderer* application)
 
     PhysicsMaterial playermaterial;
     playermaterial.dynamicFriction = 5;
+    playermaterial.bounciness = 0;
     playermaterial.staticFriction = 5;
+    playermaterial.frictionCombine = PhysicsMaterial::CombineMode::MAXIMUM;
     collider->SetPhysicsMaterial(playermaterial);
+
+    rigidBody->SetMass(50);
 
     AddState(ePlayerState::IDLE, new IdleState());
     AddState(ePlayerState::RUN, new RunState());

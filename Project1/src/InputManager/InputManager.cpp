@@ -180,8 +180,25 @@ void InputManager::SetJoystickConnected(bool state)
 
 void InputManager::SetJoysitckLeftAxis(float horizontal, float vertical)
 {
-	joystickLeftAxis[0] = horizontal;
-	joystickLeftAxis[1] = vertical;
+	if (glm::length(horizontal) > 0.1f)
+	{
+		joystickLeftAxis[0] = horizontal;
+
+	}
+	else
+	{
+		joystickLeftAxis[0] = 0;
+	}
+
+	if (glm::length(vertical) > 0.1f)
+	{
+		joystickLeftAxis[1] = vertical;
+
+	}
+	else
+	{
+		joystickLeftAxis[1] = 0;
+	}
 }
 
 void InputManager::SetJoysitckRightAxis(float horizontal, float vertical)
