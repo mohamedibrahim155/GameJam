@@ -2,6 +2,7 @@
 #include "../../ApplicationRenderer.h"
 #include "../../Player/PlayerController.h"
 #include "../../PostProcessing bounds/CubeVolume.h"
+#include"../../AI/Enemy.h"
 #include "../../Grass/GrassMesh.h"
 
 SceneFive::SceneFive(const std::string& sceneName) : BaseScene::BaseScene(sceneName)
@@ -26,21 +27,50 @@ void SceneFive::Start()
     std::string diffuseTexStatuePath = "Models/Graveyard/angelStatue.png";
     Texture* diffuseTexStatue = new Texture(diffuseTexStatuePath);
 
-    
+#pragma region Lights
 
     Light* directionLight = new Light();
     directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
-    directionLight->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+    directionLight->SetAmbientColor(glm::vec4(.15f, .15f, .15f, 1.0f));
 
-    directionLight->SetColor(glm::vec4(1, 1, 1, 1.0f));
+    directionLight->SetColor(glm::vec4(.05f));
     directionLight->SetAttenuation(1, 1, 0.01f);
     directionLight->SetInnerAndOuterCutoffAngle(11, 12);
 
     directionLight->transform.SetRotation(glm::vec3(0, 90.00, 90.00));
     directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
 
+
+    Light* pointLight = new Light();
+    pointLight->Initialize(LightType::POINT_LIGHT, 1);
+    pointLight->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+
+    pointLight->SetColor(glm::vec4(0.81, 0.51, 0.24,1.0));
+    pointLight->SetIntensity(8);
+    pointLight->SetAttenuation(1, 1, 0.01f);
+    pointLight->SetInnerAndOuterCutoffAngle(11, 12);
+    pointLight->transform.SetRotation(glm::vec3(0));
+    pointLight->transform.SetPosition(glm::vec3(-76.42, 4.16, 86.84));
+
+#pragma endregion
+
+
+ 
+
+
+
     PlayerController* player = new PlayerController(application);
     player->transform.SetPosition(glm::vec3(-75.91, 5.82, 105.85));
+
+    Model* playerDummy = new Model("Models/Character/Player/Player2.fbx");
+    playerDummy->name = "playerDummy";
+
+    std::string diffuseTexturept = "Models/Character/Textures/Player.png";
+    Texture* texture = new Texture(diffuseTexturept);
+    playerDummy->meshes[0]->meshMaterial->material()->diffuseTexture = texture;
+    playerDummy->transform.SetPosition(glm::vec3(-75.91, 5.82, 105.85));
+
+    GraphicsRender::GetInstance().AddModelAndShader(playerDummy, application->defaultShader);
 
     PhysXObject* terrain = new PhysXObject();
     terrain->occulsionState = eOcculsionState::NO_OCCULSION;
@@ -499,6 +529,7 @@ void SceneFive::Start()
     MeshInstance* instanceMesh = new MeshInstance();
     instanceMesh->LoadModel("Models/Graveyard/TreeThree.fbx");
     instanceMesh->name = "InstancedTree";
+    instanceMesh->isVisible = false;
     instanceMesh->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.7, 0, 1));
     instanceMesh->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.5, 0, 1));
     instanceMesh->AddTransformData(glm::vec3(-98.32, 1.77, 101.94), glm::vec3(0, 90, 0), glm::vec3(0.015));
@@ -803,8 +834,8 @@ void SceneFive::Start()
     LightPole5->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
     GraphicsRender::GetInstance().AddModelAndShader(LightPole5, application->defaultShader);
     LightPole5->name = "LightPole5";
-    LightPole5->transform.SetPosition(glm::vec3(-58.39, 7.81, 55.23));
-    LightPole5->transform.SetRotation(glm::vec3(0, -3.50, 0));
+    LightPole5->transform.SetPosition(glm::vec3(-51.82, 7.11, 61.23));
+    LightPole5->transform.SetRotation(glm::vec3(0, -144.70, 0));
     LightPole5->transform.SetScale(glm::vec3(0.012));
     LightPole5->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
 
@@ -870,6 +901,7 @@ void SceneFive::Start()
     PhysXObject* Coffin = new PhysXObject();
     Coffin->LoadModel("Models/Graveyard/Coffin.fbx");
     Coffin->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    Coffin->occulsionState = eOcculsionState::DYNAMIC;
     GraphicsRender::GetInstance().AddModelAndShader(Coffin, application->defaultShader);
     Coffin->name = "Coffin";
     Coffin->transform.SetPosition(glm::vec3(-55.12, 7.76, 64.84));
@@ -879,6 +911,7 @@ void SceneFive::Start()
 
     PhysXObject* Coffin2 = new PhysXObject();
     Coffin2->LoadModel(*Coffin);
+    Coffin2->occulsionState = eOcculsionState::DYNAMIC;
     GraphicsRender::GetInstance().AddModelAndShader(Coffin2, application->defaultShader);
     Coffin2->name = "Coffin2";
     Coffin2->transform.SetPosition(glm::vec3(-48.47, 6.68, 68.96));
@@ -888,6 +921,7 @@ void SceneFive::Start()
 
     PhysXObject* Coffin3 = new PhysXObject();
     Coffin3->LoadModel(*Coffin);
+    Coffin3->occulsionState = eOcculsionState::DYNAMIC;
     GraphicsRender::GetInstance().AddModelAndShader(Coffin3, application->defaultShader);
     Coffin3->name = "Coffin3";
     Coffin3->transform.SetPosition(glm::vec3(-54.40, 7.76, 65.86));
@@ -897,6 +931,7 @@ void SceneFive::Start()
 
     PhysXObject* Coffin4 = new PhysXObject();
     Coffin4->LoadModel(*Coffin);
+    Coffin4->occulsionState = eOcculsionState::DYNAMIC;
     GraphicsRender::GetInstance().AddModelAndShader(Coffin4, application->defaultShader);
     Coffin4->name = "Coffin4";
     Coffin4->transform.SetPosition(glm::vec3(-53.67, 7.76, 66.90));
@@ -907,13 +942,13 @@ void SceneFive::Start()
 
     PhysXObject* Coffin5 = new PhysXObject();
     Coffin5->LoadModel(*Coffin);
+    Coffin5->occulsionState = eOcculsionState::DYNAMIC;
     GraphicsRender::GetInstance().AddModelAndShader(Coffin5, application->defaultShader);
     Coffin5->name = "Coffin5";
     Coffin5->transform.SetPosition(glm::vec3(-52.99, 7.76, 67.88));
     Coffin5->transform.SetRotation(glm::vec3(0, -54.99, 0));
     Coffin5->transform.SetScale(glm::vec3(0.012));
-    Coffin5->Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::BOX);
-   
+    Coffin5->Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::BOX);   
     Coffin5->collider->AsBoxCollider()->SetPhysicsMaterial(coffinPhy);
 
 
@@ -1020,16 +1055,58 @@ void SceneFive::Start()
     grassMeshInstance->AddTransformData(glm::vec3(-83.76, 2.65, 102.05), glm::vec3(0, 15, 0), glm::vec3(0.012));
     grassMeshInstance->AddTransformData(glm::vec3(-83.76, 2.65, 101.58), glm::vec3(0, 15, 0), glm::vec3(0.012));
     grassMeshInstance->AddTransformData(glm::vec3(-83.25, 2.65, 101.94), glm::vec3(0, 15, 0), glm::vec3(0.012));
-
+    grassMeshInstance->AddTransformData(glm::vec3(-80.88, 2.91, 103.54), glm::vec3(0, 15, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-81.37, 2.91, 102.80), glm::vec3(0, -36.60, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-85.75, 3.71, 85.64), glm::vec3(0, -36.60, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-86.03, 3.71, 85.37), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-91.04, 3.54, 82.60), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-90.36, 3.54, 81.96), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-77.46, 5.60, 76.60), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-87.71, 5.67, 65.60), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-88.87, 5.67, 65.60), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-75.98, 6.09, 58.92), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-76.95, 6.09, 58.21), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-70.94, 6.09, 78.42), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-70.94, 6.09, 78.42), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-59.58, 7.27, 80.89), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-50.61, 7.27, 74.06), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-54.20, 7.27, 78.88), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-54.20, 7.27, 81.72), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-54.20, 7.27, 82.43), glm::vec3(0, -68.60, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-54.15, 7.27, 83.13), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-48.02, 7.02, 67.09), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-46.08, 7.02, 69.30), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-45.13, 7.02, 69.50), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-45.82, 6.65, 65.65), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-43.39, 4.65, 52.26), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-37.61, 4.14, 55.83), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-33.93, 3.87, 58.40), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-28.29, 3.57, 59.90), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-27.24, 3.48, 60.75), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-25.53, 2.95, 70.72), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-24.55, 2.95, 73.00), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-21.62, 2.83, 73.85), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-17.67, 2.62, 78.85), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-17.67, 2.62, 79.83), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-29.84, 4.45, 79.06), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-29.84, 3.80, 76.79), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-26.58, 3.40, 76.79), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-34.69, 5.13, 76.86), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-36.32, 6.64, 81.29), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-22.33, 3.46, 83.29), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-26.36, 4.40, 83.29), glm::vec3(0, 0, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-39.47, 4.20, 62.33), glm::vec3(0, -49.80, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-41.47, 4.20, 61.57), glm::vec3(0, -49.80, 0), glm::vec3(0.012));
+        
     GraphicsRender::GetInstance().AddModelAndShader(grassMeshInstance, application->grassInstanceShader);
 
-    Model* dummy = new Model();
+    /*Model* dummy = new Model();
     dummy->LoadModel("Models/Graveyard/Fences/Grass.fbx");
     dummy->name = "dummy";
     dummy->transform.SetPosition(glm::vec3(-71.76, 3.12, 101.13));
     dummy->transform.SetRotation(glm::vec3(0));
     dummy->transform.SetScale(glm::vec3(0.015));
-    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);
+    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);*/
 
     PhysXObject* Scythe = new PhysXObject();
     Scythe->LoadModel("Models/Graveyard/Scythe.fbx");
@@ -1050,18 +1127,39 @@ void SceneFive::Start()
     PumpkinInstance->LoadModel("Models/Graveyard/Pumpkin.fbx");
     PumpkinInstance->name = "PumpkinInstance";
     PumpkinInstance->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    PumpkinInstance->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
 
-    PumpkinInstance->AddTransformData(glm::vec3(-76.70, 3.16, 88.61), glm::vec3(0, 0, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-72.67, 2.77, 95.57), glm::vec3(0, -75, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-72.57, 2.77, 96.73), glm::vec3(0, -50, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-73.04, 2.77, 96.17), glm::vec3(0, -31.50, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-74.97, 3.21, 87.43), glm::vec3(0, -27.40, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-74.30, 3.21, 87.77), glm::vec3(0, -51.90, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-77.84, 6.13, 80.32), glm::vec3(0, 0, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-69.89, 7.23, 56.58), glm::vec3(0, -40.50, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-69.25, 7.23, 57.13), glm::vec3(0, -68.40, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-60.52, 7.28, 81.15), glm::vec3(0, -115.70, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-85.70, 6.32, 63.22), glm::vec3(0, 0, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-85.70, 6.32, 63.22), glm::vec3(0, 0, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-88.99, 11.04, 57.34), glm::vec3(0, 0, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-35.02, 7.08, 78.02), glm::vec3(0, -161.80, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-35.02, 7.08, 78.02), glm::vec3(0, -161.80, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-20.86, 2.83, 81.10), glm::vec3(0, -161.80, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-30.37, 3.63, 59.23), glm::vec3(0, -52.40, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-52.50, 7.00, 61.03), glm::vec3(0, -95.60, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-43.91, 4.83, 52.10), glm::vec3(0, -45.40, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-45.31, 14.43, 69.47), glm::vec3(0, -93.60, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-92.47, 4.79, 74.34), glm::vec3(0, 42.20, 0), glm::vec3(0.015));
+    PumpkinInstance->AddTransformData(glm::vec3(-91.36, 4.58, 74.34), glm::vec3(0, 19.00, 0), glm::vec3(0.015));
     GraphicsRender::GetInstance().AddModelAndShader(PumpkinInstance, application->defaultInstanceShader);
 
 
-    /*Model* dummy = new Model();
+    Model* dummy = new Model();
     dummy->LoadModel("Models/Graveyard/Pumpkin.fbx");
     dummy->name = "dummy";
     dummy->transform.SetPosition(glm::vec3(-98.32, 1.77, 101.94));
     dummy->transform.SetRotation(glm::vec3(0));
     dummy->transform.SetScale(glm::vec3(0.015));
-    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);*/
+    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);
 
     PhysXObject* Angel = new PhysXObject();
     Angel->LoadModel("Models/Graveyard/Angle.fbx");
@@ -1133,10 +1231,31 @@ void SceneFive::Start()
     cubeVolume->AddCubeEffects(eEffectType::CHROMATIC);
     cubeVolume->AddCubeEffects(eEffectType::PIXELIZATION);
    // cubeVolume->isVisible = false;
-  
+
+    PhysXObject* PumpkinPhy = new PhysXObject();
+    PumpkinPhy->LoadModel("Models/Graveyard/Pumpkin.fbx");
+    PumpkinPhy->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
+    PumpkinPhy->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    GraphicsRender::GetInstance().AddModelAndShader(PumpkinPhy, application->defaultShader);
+    PumpkinPhy->name = "Pumpkin";
+    PumpkinPhy->transform.SetPosition(glm::vec3(-49.43, 8.41, 74.47));
+    PumpkinPhy->transform.SetRotation(glm::vec3(0, -202.40, -15.50));
+    PumpkinPhy->transform.SetScale(glm::vec3(0.013));
+    PumpkinPhy->Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::SPHERE);
+    PhysicsMaterial pumpkinMat;
+    pumpkinMat.staticFriction = 10;
+    pumpkinMat.dynamicFriction = 10;
+    PumpkinPhy->collider->AsBoxCollider()->SetPhysicsMaterial(pumpkinMat);
+
+    Enemy* enemyOne = new Enemy(player);
+
+    enemyOne->name = "Enemy 1";
+    enemyOne->transform.SetPosition(glm::vec3(-34.87, 4.07, 58.27));
+    enemyOne->AddRoamingPoints(-34.87, 4.07, 58.27);
+    enemyOne->AddRoamingPoints(-29.51, 4.07, 78.80);
 
 
-    OcculsionManager::GetInstance().InitializeOcculusion();
+   // OcculsionManager::GetInstance().InitializeOcculusion();
 }
 
 //TreeThree

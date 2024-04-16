@@ -6,18 +6,21 @@
 #include "State/PursueEnemyState.h"
 Enemy::Enemy(PlayerController* player)
 {
-	LoadModel("Models/Zombie/Zombie.fbx");
+	LoadModel("Models/Character/Demon/Demon.fbx");
 
-    LoadAnimation("Models/Zombie/Idle.fbx", "Idle");
-    LoadAnimation("Models/Zombie/Walking.fbx", "Walk");
-    LoadAnimation("Models/Zombie/Run.fbx", "Run");
-    LoadAnimation("Models/Zombie/Scream.fbx", "Scream");
-    LoadAnimation("Models/Zombie/Attack.fbx", "Attack");
+    LoadAnimation("Models/Character/Demon/Idle.fbx", "Idle");
+    LoadAnimation("Models/Character/Demon/Walk.fbx", "Walk");
+    LoadAnimation("Models/Character/Demon/Run.fbx", "Run");
+    LoadAnimation("Models/Character/Demon/Scream.fbx", "Scream");
+    LoadAnimation("Models/Character/Demon/Attack.fbx", "Attack");
 
     transform.SetPosition(glm::vec3(2, 0, 0));
     transform.SetRotation(glm::vec3(0, 0, 0));
-    transform.SetScale(glm::vec3(0.01f));
-
+    transform.SetScale(glm::vec3(0.00025f));
+    
+    std::string diffuseTexture = "Models/Character/Demon/PolygonDarkFantasy_Texture_01_A.png";
+    Texture* texture = new Texture(diffuseTexture);
+    meshes[0]->meshMaterial->material()->diffuseTexture = texture;
     GraphicsRender::GetInstance().AddModelAndShader(this, GraphicsRender::GetInstance().boneAnimationShader);
 
 

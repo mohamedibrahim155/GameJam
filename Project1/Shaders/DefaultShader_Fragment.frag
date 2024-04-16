@@ -89,7 +89,7 @@ uniform float fogDensity = 0.66;
 uniform float fogStart = 8.0;
 uniform float fogEnd = 40;
 uniform vec3 fogColor = vec3(0.59,0.59,0.59);
-uniform bool fogActive = true;
+uniform bool fogActive;
 float CalcFog();
 float CalcLinearFog();
 float CalcExpoFog();
@@ -117,7 +117,6 @@ void main()
      //float maskSample = texture(material.alphaMask, TextureCoordinates).r;
 
      //vec4 finalColor = vec4(result, isCutout ? 1.0f : maskSample);
-
      
 
      if(ShaderBlend ==1)
@@ -163,7 +162,7 @@ void main()
                result = mix(vec4(fogColor,1.0),result,fogFactor);
 
              }
-          FragColor = result;
+             FragColor = result;
 
 
       }
@@ -295,7 +294,12 @@ vec4 CalculateLight(vec3 norm, vec3 viewDir,float shadowCalc)
          else
          {
              vec4 finalValueforDir =( ambientColor + ((1.0 - shadowCalc) * ( diffuse )) );
+
+             
+
               result += finalValueforDir;
+
+              
 
          }
 

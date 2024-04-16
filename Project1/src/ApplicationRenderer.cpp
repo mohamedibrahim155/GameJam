@@ -148,8 +148,8 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     sceneViewcamera->transform.SetRotation(glm::vec3(-41.70, -31.50,0));
 
     gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
-    gameScenecamera->transform.position = glm::vec3(0, 1.00, 5);
-    gameScenecamera->transform.SetRotation(glm::vec3(0));
+    gameScenecamera->transform.position = glm::vec3(-85.88, 9.03, 115.62);
+    gameScenecamera->transform.SetRotation(glm::vec3(-6.10, -20.50,0));
 
     renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     renderTextureCamera->transform.position = glm::vec3(0, 0, -1.0f);
@@ -184,7 +184,6 @@ void ApplicationRenderer::InitializeShaders()
     skyboxShader->modelUniform = false;
 
     boneAnimationShader = new Shader("Shaders/AnimationShader.vert", "Shaders/AnimationShader.frag");
-    boneAnimationShader->blendMode = OPAQUE;
 
     defaultInstanceShader = new Shader("Shaders/MeshInstanceShader.vert", "Shaders/MeshInstanceShader.frag");
     defaultInstanceShader->blendMode = OPAQUE;
@@ -368,7 +367,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     boneAnimationShader->Bind();
     boneAnimationShader->setMat4("projection", projection);
     boneAnimationShader->setMat4("view", view);
-    boneAnimationShader->setVec3("viewPos", sceneViewcamera->transform.position.x, sceneViewcamera->transform.position.y, sceneViewcamera->transform.position.z);
+    boneAnimationShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     boneAnimationShader->setBool("isDepthBuffer", isDepth);
 
 
@@ -409,6 +408,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     grassInstanceShader->setMat4("projection", projection);
     grassInstanceShader->setMat4("view", view);
     grassInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
+    grassInstanceShader->setBool("fogActive", isFog);
 
     particleShader->Bind();
     particleShader->setMat4("projection", projection);
