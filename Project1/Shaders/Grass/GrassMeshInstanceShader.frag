@@ -17,6 +17,7 @@ struct Material
 uniform sampler2D diffuse_Texture;
 uniform  sampler2D specular_Texture;  
 uniform sampler2D opacity_Texture;
+ //in vec2 gradient;
 
 struct sLight
 {
@@ -147,6 +148,7 @@ void main()
 
             }
           FragColor = result;
+          //FragColor = vec4(gradient.y,gradient.y,gradient.y,1);
       }
 
 

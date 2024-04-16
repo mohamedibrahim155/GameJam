@@ -9,6 +9,7 @@ layout (location = 3) in vec4 aColor;
  out vec3 Normal;
  out vec2 TextureCoordinates;
  out vec4 meshColour;
+ out vec2 gradient;
 
 uniform mat4 view;
 uniform mat4 projection;
@@ -77,92 +78,91 @@ vec2 ApplyTilingAndOffset(vec2 uv, vec2 tiling, vec2 offset)
 
 
 
-//void main()
-//{
-//
-//   
-//     mat4 instanceModelID = instanceModel[gl_InstanceID]; 
-//
-//   
-//    
-//
-//	vec2 windSide = windDirection * time;
-//
-//    vec2 outValue;
-//
-//    //Unity_TilingAndOffset_float(vec2(aPos),vec2(1,1),windSide,outValue);
-//
-//      outValue =  vec2(aPos) * vec2(1,1) ;
-//      outValue+=windSide;
-//
-//     float outGradient =  unity_gradientNoise(outValue * windDensity) + 0.5f;
-//
-//      //outGradient-= 0.5f;
-//
-//      outGradient *=   windStrength;
-//
-//
-//      vec3 currentPosition = aPos;
-//
-//      if(currentPosition.y > grassHeight)
-//        {
-//         currentPosition.x += outGradient;
-//        }
-//      vec3 combinedValue = currentPosition;
-//
-//
-//
-//      vec3 lerpedValue = mix(aPos, currentPosition,time );
-//
-//
-//
-//     vec3 finalPosition =  lerpedValue;
-//
-//     vec3 instancedPos = vec3(instanceModelID * vec4(finalPosition, 1.0));
-//
-//      Normal =  mat3(transpose(inverse(instanceModelID))) * aNormal;
-//
-//	 meshColour = aColor;
-//
-//     TextureCoordinates = aTexCoords;
-//
-//     FragPosition = instancedPos;
-//
-//	  gl_Position = projection * view * vec4(instancedPos, 1.0);
-//}
-//
-
-
 void main()
 {
-    mat4 instanceModelID = instanceModel[gl_InstanceID]; 
 
-    // Calculate wind effect based on wind direction and strength
-    vec2 windEffect = windDirection * windStrength * time;
+   
+     mat4 instanceModelID = instanceModel[gl_InstanceID]; 
 
-    vec3 currentPosition = aPos;
+   
+    
 
-    // Apply wind effect only if the grass is above a certain height
-    if (currentPosition.y > grassHeight)
-    {
-        currentPosition.x += unity_gradientNoise(vec2(aPos.xz) * windDensity + windEffect) * 0.1 * windStrength;
-    }
+	vec2 windSide = time *  windDirection ;
 
-    vec3 lerpedValue = mix(aPos, currentPosition, time);
+    vec2 outValue;
 
-    vec3 finalPosition = lerpedValue;
+    Unity_TilingAndOffset_float(vec2(aTexCoords),vec2(1,1),windSide,outValue);
 
-    // Transform position based on instance model
-    vec3 instancedPos = vec3(instanceModelID * vec4(finalPosition, 1.0));
+      //outValue =  vec2(aPos) ;
+     // outValue+=time;
+      //outValue+=windSide;
 
-    // Transform normal based on instance model
-    Normal = mat3(transpose(inverse(instanceModelID))) * aNormal;
+     float outGradient =  unity_gradientNoise(outValue * windDensity) + 0.5f;
 
-    // Pass color, texture coordinates, and position to fragment shader
-    meshColour = aColor;
-    TextureCoordinates = aTexCoords;
-    FragPosition = instancedPos;
+      outGradient-= 0.5f;
 
-    // Calculate final position for rendering
-    gl_Position = projection * view * vec4(instancedPos, 1.0);
+      outGradient *=   windStrength;
+
+      gradient =  vec2(aTexCoords.x,   1-aTexCoords.y);
+
+
+
+      vec3 currentPosition = aPos;
+        {
+         currentPosition.x += outGradient ;
+        }
+      vec3 combinedValue = currentPosition;
+
+
+
+      vec3 lerpedValue = mix(aPos, currentPosition,gradient.y );
+
+
+
+     vec3 finalPosition =  lerpedValue;
+
+     vec3 instancedPos = vec3(instanceModelID * vec4(finalPosition, 1.0));
+
+      Normal =  mat3(transpose(inverse(instanceModelID))) * aNormal;
+
+	 meshColour = aColor;
+
+    // TextureCoordinates = aTexCoords;
+     TextureCoordinates = aTexCoords;
+
+
+     FragPosition = instancedPos;
+
+	  gl_Position = projection * view * vec4(instancedPos, 1.0);
 }
+
+
+
+//void main()
+//{
+//    mat4 instanceModelID = instanceModel[gl_InstanceID]; 
+//
+//
+//    vec2 windEffect = windDirection * windStrength * time;
+//
+//    vec3 currentPosition = aPos;
+//
+//    if (currentPosition.y > grassHeight)
+//    {
+//        currentPosition.x += unity_gradientNoise(vec2(aPos.xz) * windDensity + windEffect) * 0.1 * windStrength;
+//    }
+//
+//    vec3 lerpedValue = mix(aPos, currentPosition, time);
+//
+//    vec3 finalPosition = lerpedValue;
+//
+//    vec3 instancedPos = vec3(instanceModelID * vec4(finalPosition, 1.0));
+//
+//    Normal = mat3(transpose(inverse(instanceModelID))) * aNormal;
+//
+//    meshColour = aColor;
+//    TextureCoordinates = aTexCoords;
+//    FragPosition = instancedPos;
+//
+//    gl_Position = projection * view * vec4(instancedPos, 1.0);
+//}

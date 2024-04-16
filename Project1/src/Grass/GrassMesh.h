@@ -22,11 +22,11 @@ private:
 	  std::string alphaTexurePath = "Models/Grass/alpha3.png";
 	  Shader* grassShader = nullptr;
 	  float time = 10;
-	  float windStrength = 1.5f;
-	  float windDensity = 0.8f;
+	  float windStrength = 40.0f;
+	  float windDensity = 0.60f;
 	  float grassHeight = 0.35f;
 
-	  glm::vec2 windDirection = glm::vec2(0.4f, 0);
+	  glm::vec2 windDirection = glm::vec2(0.40f, 0);
 
 };
 
