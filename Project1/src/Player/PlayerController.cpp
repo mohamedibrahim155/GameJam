@@ -33,7 +33,6 @@ PlayerController::PlayerController()
     AddState(ePlayerState::RUN, new RunState());
 
     frameSpeed = 30;
-
     cameraController = new CameraController(this);
 }
 
@@ -73,8 +72,8 @@ PlayerController::PlayerController(ApplicationRenderer* application)
     collider->AsCapsuleCollider()->SetHalfLength(0.7f);
 
     PhysicsMaterial playermaterial;
-    playermaterial.dynamicFriction = 5;
-    playermaterial.staticFriction = 5;
+    playermaterial.dynamicFriction = 15;
+    playermaterial.staticFriction = 15;
     collider->SetPhysicsMaterial(playermaterial);
 
     AddState(ePlayerState::IDLE, new IdleState());

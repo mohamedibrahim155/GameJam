@@ -1,7 +1,7 @@
 #pragma once
 #include "../ParticleSystem.h"
 
-class FireFly
+class FireFly : public ParticleSystem
 {
 public:
 	FireFly();
