@@ -14,6 +14,8 @@ public:
 	void SceneDraw() override;
 	void UpdateParticle(glm::vec3& pos, glm::vec3& dir) override;
 	void Render() override;
+	bool isDebug = false;
+
 
 private :
 

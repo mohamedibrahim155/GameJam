@@ -29,7 +29,7 @@ EmmitFrom ConeEmitter::GetEmifrom()
 
 void ConeEmitter::DrawProperties()
 {
-
+	DrawBoolImGui("IsDebug", isDebug);
 	DrawFloatImGui("Angle", angle);
 	DrawFloatImGui("Radius", radius);
 	
@@ -86,14 +86,18 @@ void ConeEmitter::UpdateParticle(glm::vec3& pos, glm::vec3& dir)
 
 void ConeEmitter::Render()
 {
+	if (isDebug)
+	{
+		glm::vec3 center = position;
+		glm::vec3 end = endPos;
 
-	glm::vec3 center = position;
-	glm::vec3 end =  endPos;
+		topRadius = GetRadius(height);
 
-	topRadius = GetRadius(height);
+		GraphicsRender::GetInstance().DrawSphere(center, radius, bottomColor, true);
+		GraphicsRender::GetInstance().DrawSphere(end, topRadius, topColor, true);
+	}
 
-	GraphicsRender::GetInstance().DrawSphere(center, radius, bottomColor, true);
-	GraphicsRender::GetInstance().DrawSphere(end , topRadius, topColor, true);
+	
 }
 
 float ConeEmitter::GetRadius(float& heightValue)

@@ -1,8 +1,9 @@
 #include "Fire.h"
 #include "../ConeEmitter.h"
 
-Fire::Fire()
+Fire::Fire(float radius, glm::vec3 position)
 {
+	
 	
 	//std::string difPath = "Textures/Particles/Fire2.png";
 	name = "Fire";
@@ -19,7 +20,7 @@ Fire::Fire()
 	particleEmission.rateOverTime = 150;
 	
 	sizeOverLifetime.isEnabled = true;
-	sizeOverLifetime.startScale = glm::vec3(1);
+	sizeOverLifetime.startScale = glm::vec3(0.30);
 	sizeOverLifetime.endScale = glm::vec3(0);
 	//shapeManager.SetEmitterShape(EmitterShape::)
 
@@ -40,8 +41,13 @@ Fire::Fire()
 
 	shapeManager.SetEmitterShape(EmitterShape::CONE);
 	shapeManager.asConeEmitter()->angle = 10.0f;
-	shapeManager.asConeEmitter()->radius = 0.3f;
-	shapeManager.asConeEmitter()->position = glm::vec3(0, 2, 15);
+
+
+	/*shapeManager.asConeEmitter()->radius = 0.10f;
+	shapeManager.asConeEmitter()->position = glm::vec3(-76.43, 3.60, 86.83);*/
+
+	shapeManager.asConeEmitter()->radius = radius;
+	shapeManager.asConeEmitter()->position = position;
 
 	InitializeParticles();
 }

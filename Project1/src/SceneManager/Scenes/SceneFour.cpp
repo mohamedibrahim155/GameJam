@@ -1,6 +1,7 @@
 #include "SceneFour.h"
 #include "../../ApplicationRenderer.h"
 #include "../../Grass/GrassMesh.h"
+#include "../../ParticleSystem/ParticleAssets/Fog.h"
 SceneFour::SceneFour(const std::string& sceneName) : BaseScene::BaseScene(sceneName)
 {
 }
@@ -66,8 +67,8 @@ void SceneFour::Start()
     Plane2->transform.SetScale(glm::vec3(10));
     GraphicsRender::GetInstance().AddModelAndShader(Plane2, application->defaultShader);
 
-    Fire* fire = new Fire();
-
+    Fog* fog = new Fog();
+  //  Fire* fire = new Fire(0.2, { 0, 0 ,0 });
 }
 
 void SceneFour::Update()

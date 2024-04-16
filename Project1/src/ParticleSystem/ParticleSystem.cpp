@@ -53,7 +53,7 @@ void ParticleSystem::UpdateSystem(float deltaTime)
 
 void ParticleSystem::RenderParticles()
 {
-	if (!isVisible)
+	if (!isVisible )
 	{
 		return;
 	}

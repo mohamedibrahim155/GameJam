@@ -387,6 +387,12 @@
     <ClCompile Include="src\PostProcessing\DessertHeatwave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Player\States\MagicState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ParticleSystem\ParticleAssets\FireFly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -804,6 +810,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\PostProcessing\DessertHeatwave.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\States\MagicState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ParticleSystem\ParticleAssets\FireFly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

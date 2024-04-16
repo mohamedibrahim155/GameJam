@@ -13,6 +13,7 @@ BoxEmitter::BoxEmitter()
 void BoxEmitter::DrawProperties()
 {
     float width = 150;
+    DrawBoolImGui("IsDebug", isDebug);
 
     DrawTransformVector3ImGui("Emitter Position ", position, 0, width);
 	DrawTransformVector3ImGui("Emitter Direction ", particleDir, 0, width);
@@ -36,9 +37,13 @@ void BoxEmitter::UpdateParticle(glm::vec3& pos, glm::vec3& dir)
 
 void BoxEmitter::Render()
 {
-	glm::vec3 centre = position;
+    if (isDebug)
+    {
+	  glm::vec3 centre = position;
 
-	GraphicsRender::GetInstance().DrawBox(centre, scale, boxColor,true);
+	  GraphicsRender::GetInstance().DrawBox(centre, scale, boxColor,true);
+
+    }
 }
 
 glm::vec3 BoxEmitter::FindPointInsideBox(glm::vec3 center, glm::vec3 scale)

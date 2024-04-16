@@ -13,6 +13,7 @@ SphereEmitter::SphereEmitter()
 
 void SphereEmitter::DrawProperties()
 {
+	DrawBoolImGui("IsDebug", isDebug);
 
 	DrawFloatImGui("Radius", radius);
 	DrawDragFloatImGui("Radius Thickness", radiusThickness, 0.01f, 0, 1);
@@ -40,19 +41,23 @@ void SphereEmitter::UpdateParticle(glm::vec3& pos, glm::vec3& dir)
 
 void SphereEmitter::Render()
 {
-
-	glm::vec3 center =  position;
-
-	if (radiusThickness == 0)
+	if (isDebug)
 	{
-		GraphicsRender::GetInstance().DrawSphere(center, radius - (radius * radiusThickness), radiusThicknessCol,true);
-		return;
+		glm::vec3 center = position;
+
+		if (radiusThickness == 0)
+		{
+			GraphicsRender::GetInstance().DrawSphere(center, radius - (radius * radiusThickness), radiusThicknessCol, true);
+			return;
+		}
+		else
+		{
+			GraphicsRender::GetInstance().DrawSphere(center, radius, sphereRadiusCol, true);
+			GraphicsRender::GetInstance().DrawSphere(center, radius - (radius * radiusThickness), radiusThicknessCol, true);
+		}
+
 	}
-	else
-	{
-		GraphicsRender::GetInstance().DrawSphere(center, radius, sphereRadiusCol, true);
-		GraphicsRender::GetInstance().DrawSphere(center, radius - (radius * radiusThickness), radiusThicknessCol, true);
-	}
+	
 }
 
 glm::vec3 SphereEmitter::GetRandomPointInSphere(glm::vec3 minDir, glm::vec3 maxDir)

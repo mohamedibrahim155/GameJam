@@ -3,6 +3,7 @@
 #include "../model.h"
 #include <vector>
 #include "../ParticleMaterial.h"
+#include "../EntityManager/EntityManager.h"
 
 struct Burst
 {
@@ -39,8 +40,7 @@ public:
 			Texture* diffuse = new Texture(difPath);
 			particleModel->meshes[0]->meshMaterial = new ParticleMaterial();
 			particleModel->meshes[0]->meshMaterial->particleMaterial()->diffuseTexture = diffuse;
-
-
+			EntityManager::GetInstance().RemoveEntity(particleModel);
 		}
 
 
