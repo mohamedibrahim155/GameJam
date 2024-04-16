@@ -20,16 +20,11 @@ uniform mat4 projection;
 uniform bool isBones;
 uniform mat4 BoneMatrices[MAX_BONES];
 
-// function prototypes
 
 void main()
 {
-   
-
-  //  FragPosition = vec3(model * vec4(aPos, 1.0));
-    FragPosition = aPos;
-
-	vec4 totalPosition = vec4(FragPosition,1);
+ 
+	vec4 totalPosition = vec4(aPos,1);
     if (isBones)
 	{
 		//ex_BoneId = in_BoneIds;
@@ -38,16 +33,16 @@ void main()
 		boneTransform += BoneMatrices[int(aBoneID[2])] * aBoneWeight[2];
 		boneTransform += BoneMatrices[int(aBoneID[3])] * aBoneWeight[3];
 
-		totalPosition = boneTransform * vec4(FragPosition,1.0f);
+		totalPosition = boneTransform * vec4(aPos,1.0f);
 	}
     Normal =  mat3(transpose(inverse(model))) * aNormal;
 	
+	TextureCoordinates = aTexCoords;
 	
-	  TextureCoordinates = aTexCoords;
-	
-	 meshColour = aColor;
-	//gl_Position = projection * view * model;
-		gl_Position = projection * view * model * totalPosition;
+	meshColour = aColor;
+	FragPosition = vec3(model * totalPosition);
+
+	gl_Position = projection * view * model * totalPosition;
 }
 
 
