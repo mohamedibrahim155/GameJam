@@ -55,7 +55,6 @@ private:
     Material material;
 
     glm::vec4 ambient;
-
     glm::vec4 color;
     
 
@@ -70,6 +69,16 @@ private:
     float outerCutOffAngle;
 
     float lightTransformScale = 0.25f;
+
+    float columnWidth = 250;
+
+
+
+    void DrawLightProperties();
+
+    void AttenuationProperties();
+
+
 };
 
 

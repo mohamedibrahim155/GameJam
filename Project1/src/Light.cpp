@@ -80,6 +80,7 @@ void Light::SetAttenuation(const float& constant, const float& linear, const flo
 	this->constant = constant;
 	this->linear = linear;
 	this->quadratic = quadratic;
+
 }
 
 void Light::SetIntensity(const float& intensity)
@@ -157,6 +158,8 @@ glm::vec2& Light::GetInnerAndOuterAngle()
 void Light::DrawProperties()
 {
 	Model::DrawProperties();
+
+	DrawLightProperties();
 }
 
 void Light::SceneDraw()
@@ -192,6 +195,54 @@ void Light::OnDestroy()
 
 void Light::Render()
 {
+}
+
+void Light::DrawLightProperties()
+{
+	if (!ImGui::TreeNodeEx("Light Properties", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		return;
+	}
+
+
+	const char* items[] = { "Direction", "Point", "Spot" };
+
+	int selectedItem = (LightType)lightType;
+
+	if (DrawDropDownImGui("LightType", selectedItem, items, 3, columnWidth))
+	{
+		lightType = (LightType)selectedItem;
+	}
+
+	DrawTransformVector4ImGui("Color", color,0.5f, columnWidth);
+	DrawTransformVector4ImGui("ambient", ambient,0.5f, columnWidth);
+	DrawDragFloatImGui("InnerCutOffAngle", cutOffAngle, 0.1f,0,360.0f, columnWidth);
+	DrawDragFloatImGui("OuterCutOffAngle", outerCutOffAngle, 0.1f,0, 360.0f, columnWidth);
+	DrawDragFloatImGui("Intensity", intensity, 0.01f, 0.5f, 100, columnWidth);
+
+	AttenuationProperties();
+
+	ImGui::TreePop();
+
+
+}
+
+void Light::AttenuationProperties()
+{
+	if (!ImGui::TreeNodeEx("Attenuation"))
+	{
+		return;
+	}
+
+	DrawDragFloatImGui("Constant", constant, 0.01f, 0.5f, 100, columnWidth);
+	DrawDragFloatImGui("Linear", linear, 0.01f, 0.5f, 100, columnWidth);
+	DrawDragFloatImGui("Quadratic", quadratic, 0.01f, 0.5f, 100, columnWidth);
+
+
+
+
+	ImGui::TreePop();
+
 }
 
 
