@@ -33,6 +33,12 @@ void RunState::HandleTranslation()
 	float horizontal = InputManager::GetInstance().GetHorizontalAxis();
 	float vertical = InputManager::GetInstance().GetVerticalAxis();
 
+	if (InputManager::GetInstance().IsJoyStickConnected())
+	{
+		horizontal = InputManager::GetInstance().GetJoystickHorizontal(eJoystickAxis::LEFT_AXIS);
+		vertical = InputManager::GetInstance().GetJoystickVertical(eJoystickAxis::LEFT_AXIS);
+	}
+
 	glm::vec3 forward = playerController->transform.GetForward();
 	glm::vec3 right = playerController->transform.GetRight();
 	glm::vec3 camForward = playerController->cameraController->GetCamera()->transform.GetForward();
@@ -75,6 +81,13 @@ bool RunState::HandleInput()
 {
 	float horizontal = InputManager::GetInstance().GetHorizontalAxis();
 	float vertical = InputManager::GetInstance().GetVerticalAxis();
+
+
+	if (InputManager::GetInstance().IsJoyStickConnected())
+	{
+		horizontal = InputManager::GetInstance().GetJoystickHorizontal(eJoystickAxis::LEFT_AXIS);
+		vertical = InputManager::GetInstance().GetJoystickVertical(eJoystickAxis::LEFT_AXIS);
+	}
 
 	glm::vec3 moveDirection = glm::vec3(vertical, 0, horizontal);
 

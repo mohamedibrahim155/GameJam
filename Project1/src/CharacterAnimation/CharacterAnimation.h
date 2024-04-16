@@ -35,5 +35,13 @@ public:
 	 // Inherited via iInputObserver
 	 void OnMouseMouseMove(float& moveX, float& moveY) override;
 
+
+	 // Inherited via iInputObserver
+	 void OnJoystickButtonPressed(eJoystickButton button) override;
+
+	 void OnJoystickButtonReleased(eJoystickButton button) override;
+
+	 void OnJoystickButtonHold(eJoystickButton button) override;
+
 };
 

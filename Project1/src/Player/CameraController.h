@@ -43,6 +43,7 @@ private:
 	glm::vec3 playerPosition;
 
 	float mouseSensitivity = 0.1f;
+	float joystickSensitivity = 0.5f;
 	float moveSpeed = 5;
 	float rotationSpeed = 10;
 
@@ -50,16 +51,16 @@ private:
 	float mouseY;
 	// Inherited via iInputObserver
 	void OnKeyPressed(const int& key) override;
-
 	void OnKeyReleased(const int& key) override;
-
 	void OnKeyHold(const int& key) override;
 
 	void OnMouseButtonPressed(const int& mouseButton) override;
-
 	void OnMouseButtonReleased(const int& mouseButton) override;
-
 	void OnMouseMouseMove(float& moveX, float& moveY) override;
+
+	void OnJoystickButtonPressed(eJoystickButton button) override {};
+	void OnJoystickButtonReleased(eJoystickButton button) override {};
+	void OnJoystickButtonHold(eJoystickButton button) override {};
 
 };
 

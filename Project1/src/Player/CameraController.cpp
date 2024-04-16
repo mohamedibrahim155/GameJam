@@ -68,9 +68,21 @@ void CameraController::Update(float deltaTime)
 
 #pragma endregion
 
+	float mouseX = 0;
+	float mouseY = 0;
 
-	float mouseX = InputManager::GetInstance().GetMouseX() * mouseSensitivity;
-	float mouseY = InputManager::GetInstance().GetMouseY() * mouseSensitivity;
+	if (InputManager::GetInstance().IsJoyStickConnected())
+	{
+		mouseX = InputManager::GetInstance().GetJoystickHorizontal(eJoystickAxis::RIGHT_AXIS) * joystickSensitivity;
+		mouseY = InputManager::GetInstance().GetJoystickVertical(eJoystickAxis::RIGHT_AXIS) * joystickSensitivity;
+	}
+	else
+	{
+		mouseX = InputManager::GetInstance().GetMouseX() * mouseSensitivity;
+		mouseY = InputManager::GetInstance().GetMouseY() * mouseSensitivity;
+	}
+
+
 
 	yaw += mouseX ;
 	//yaw = glm::clamp(yaw, -360.0f, 360.0f);
@@ -98,7 +110,7 @@ void CameraController::Update(float deltaTime)
 
 	glm::vec3 currentPosition = GetCamera()->transform.position;
 
-	glm::vec3 newPosition =Math::LerpVec3(currentPosition, cameraPosition, deltaTime * moveSpeed);
+	glm::vec3 newPosition =Math::LerpVec3(currentPosition, cameraPosition, (float)Time::GetInstance().deltaTime * moveSpeed);
 
 	GetCamera()->transform.SetPosition(newPosition);
 
@@ -106,7 +118,7 @@ void CameraController::Update(float deltaTime)
 	glm::quat lookAtRotation = glm::quatLookAt(lookAtDirection, glm::vec3(0, 1, 0));
 
 	
-	GetCamera()->transform.SetQuatRotation(glm::slerp(GetCamera()->transform.quaternionRotation, lookAtRotation, deltaTime * rotationSpeed));
+	GetCamera()->transform.SetQuatRotation(glm::slerp(GetCamera()->transform.quaternionRotation, lookAtRotation, (float)Time::GetInstance().deltaTime * rotationSpeed));
 }
 
 void CameraController::OnDestroy()
@@ -204,3 +216,4 @@ void CameraController::OnMouseMouseMove(float& moveX, float& moveY)
 	//GetCamera()->transform.SetRotation(GetCamera()->transform.rotation);
 
 }
+

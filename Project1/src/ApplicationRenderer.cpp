@@ -74,7 +74,15 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
         {
             static_cast<ApplicationRenderer*>(glfwGetWindowUserPointer(window))->MouseScroll(window, xoffset, yoffset);
         });
+  
+    glfwSetJoystickCallback([](int jid, int event)
+        {
+            static_cast<ApplicationRenderer*>(glfwGetJoystickUserPointer(jid))->Joystick_callback(jid, event);
+        }
+    );
    
+
+
    
 
     IMGUI_CHECKVERSION();
@@ -245,9 +253,6 @@ void ApplicationRenderer::Start()
 
     FPS* fps = new FPS();
 
-
-
-
 }
 
 
@@ -297,7 +302,7 @@ void ApplicationRenderer::EngineGraphicsRender()
 
     if (!isMaximizePressed)
     {
-        RenderForCamera(sceneViewcamera, sceneViewframeBuffer);
+        RenderForCamera(sceneViewcamera, sceneViewframeBuffer, true);
     }
 
     for (Camera* camera :  CameraManager::GetInstance().GetCameras())
@@ -321,6 +326,7 @@ void ApplicationRenderer::EngineGraphicsRender()
 void ApplicationRenderer::EngineGameLoop()
 {
     MouseInputUpdate();
+    JoyStickInputs();
     ProcessInput(window);
 
     if (isPlayMode)
@@ -333,7 +339,7 @@ void ApplicationRenderer::EngineGameLoop()
 
     PostRender();
 }
-void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuffer)
+void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuffer, bool isSceneView)
 {
 
     framebuffer->Bind();
@@ -419,11 +425,11 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
     glDepthFunc(GL_LESS);
 
-
-    EntityManager::GetInstance().Render();
-
-    SceneManager::GetInstance().Render();
-
+    if (isSceneView)
+    {
+        EntityManager::GetInstance().Render();
+        SceneManager::GetInstance().Render();
+    }
     GraphicsRender::GetInstance().Draw();
 
     ParticleSystemManager::GetInstance().Render();
@@ -595,6 +601,59 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
  void ApplicationRenderer::MouseScroll(GLFWwindow* window, double xoffset, double yoffset)
  {
      sceneViewcamera->ProcessMouseScroll(static_cast<float>(yoffset));
+ }
+
+ void ApplicationRenderer::Joystick_callback(int jid, int event)
+ {
+     if (event == GLFW_CONNECTED)
+     {
+         // The joystick was connected
+         printf("JoyStick Connected \n");
+         InputManager::GetInstance().SetJoystickConnected(true);
+     }
+     else if (event == GLFW_DISCONNECTED)
+     {
+         printf("JoyStick Disconnected \n");
+         InputManager::GetInstance().SetJoystickConnected(false);
+     }
+
+ }
+
+ void ApplicationRenderer::JoyStickInputs()
+ {
+
+     InputManager::GetInstance().SetJoystickConnected(glfwJoystickPresent(GLFW_JOYSTICK_1));
+
+     if (!InputManager::GetInstance().IsJoyStickConnected()) return;
+  
+     GLFWgamepadstate state;
+     if (glfwGetGamepadState(GLFW_JOYSTICK_1, &state))
+     {
+         const unsigned int GAMEPAD_BUTTONS = 15;
+
+         for (unsigned int i = 0; i < GAMEPAD_BUTTONS; i++)
+         {
+             bool isPressed = state.buttons[i] == GLFW_PRESS;
+
+             if (isPressed)
+             {
+                 InputManager::GetInstance().OnJoystickButtonPressed((eJoystickButton)i);
+
+                 InputManager::GetInstance().OnJoystickButtonHold((eJoystickButton)i);
+             }
+             else
+             {
+                 InputManager::GetInstance().OnJoystickButtonReleased((eJoystickButton)i);
+             }
+         }
+
+         InputManager::GetInstance().SetJoysitckLeftAxis(state.axes[GLFW_GAMEPAD_AXIS_LEFT_X], state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]);
+         InputManager::GetInstance().SetJoysitckRightAxis(state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X],state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y]);
+         InputManager::GetInstance().SetJoysitckTrigger(state.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER],state.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER]);
+     }
+     
+
+
  }
 
  void ApplicationRenderer::MouseInputUpdate()

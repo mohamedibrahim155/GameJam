@@ -18,14 +18,19 @@ public:
 
 	// Inherited via iInputObserver
 	void OnKeyPressed(const int& key) override;
-	void OnKeyReleased(const int& key) override;
-	void OnKeyHold(const int& key) override;
+	void OnKeyReleased(const int& key) override {};
+	void OnKeyHold(const int& key) override {};
 
 	// Inherited via iInputObserver
-	void OnMouseButtonPressed(const int& mouseButton) override;
-	void OnMouseButtonReleased(const int& mouseButton) override;
+	void OnMouseButtonPressed(const int& mouseButton) override {};
+	void OnMouseButtonReleased(const int& mouseButton) override {};
 
 	// Inherited via iInputObserver
-	void OnMouseMouseMove(float& moveX, float& moveY) override;
+	void OnMouseMouseMove(float& moveX, float& moveY) override {};
+
+	// Inherited via iInputObserver
+	void OnJoystickButtonPressed(eJoystickButton button) override {};
+	void OnJoystickButtonReleased(eJoystickButton button) override {};
+	void OnJoystickButtonHold(eJoystickButton button) override {};
 };
 

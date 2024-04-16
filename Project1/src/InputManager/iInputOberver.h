@@ -1,5 +1,5 @@
 #pragma once
-
+#include "eJoyStickStates.h"
 class iInputObserver
 {
 public:
@@ -12,5 +12,9 @@ public:
 	virtual void OnMouseButtonPressed(const int& mouseButton) = 0;
 	virtual void OnMouseButtonReleased(const int& mouseButton) = 0;
 	virtual void OnMouseMouseMove(float& moveX, float& moveY) = 0;
+
+	virtual void OnJoystickButtonPressed(eJoystickButton button) = 0;
+	virtual void OnJoystickButtonReleased(eJoystickButton button) = 0;
+	virtual void OnJoystickButtonHold(eJoystickButton button) = 0;
 
 };

@@ -45,7 +45,7 @@ public:
 	 BaseState* GetState(ePlayerState state);
 
 	 CameraController* cameraController = nullptr;
-	 float playerMoveSpeed = 12.5f;
+	 float playerMoveSpeed = 4.5f;
 
 private:
 	void DrawPlayerControllerProperties();
@@ -68,5 +68,10 @@ private:
 
 	void TriggerSandStrorm();
 	void SetEffect(eEffectType type, bool state);
+
+	// Inherited via iInputObserver
+	void OnJoystickButtonPressed(eJoystickButton button) override;
+	void OnJoystickButtonReleased(eJoystickButton button) override {};
+	void OnJoystickButtonHold(eJoystickButton button) override {};
 };
 

@@ -267,6 +267,18 @@ void PlayerController::SetEffect(eEffectType type, bool state)
     cameraController->GetCamera()->postprocessing->GetEffect(type)->isEnabled = state;
 }
 
+void PlayerController::OnJoystickButtonPressed(eJoystickButton button)
+{
+    if (button == eJoystickButton::JOYSTICK_BUTTON_A)
+    {
+        isMagicState = !isMagicState;
+
+        OnStateChange(ePlayerState::MAGIC);
+    }
+}
+
+
+
 
 
 

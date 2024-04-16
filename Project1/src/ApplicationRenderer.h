@@ -45,6 +45,8 @@ public:
 	void MouseCallBack(GLFWwindow* window, double xposIn, double yposIn);
 	void MouseHeldCallBack(GLFWwindow* window, int& button, int& action, int& mods);
 	void MouseScroll(GLFWwindow* window, double xoffset, double yoffset);
+	void Joystick_callback(int jid, int event);
+	void JoyStickInputs();
 	
 	void WindowInitialize(int width, int height,  std::string windowName ="Window");
 	void InitializeShaders();
@@ -60,7 +62,7 @@ public:
 
 	void EngineGraphicsRender();
 	void EngineGameLoop();
-	void RenderForCamera(Camera* camera, FrameBuffer* framebuffer);
+	void RenderForCamera(Camera* camera, FrameBuffer* framebuffer, bool isSceneView = false);
 	void ChangeCursorState(eCursorState state);
 	
 	FrameBufferSpecification specification;

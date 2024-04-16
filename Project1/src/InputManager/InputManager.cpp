@@ -173,6 +173,69 @@ void InputManager::InputAxis()
 
 }
 
+void InputManager::SetJoystickConnected(bool state)
+{
+	isJoystickConnected = state;
+}
+
+void InputManager::SetJoysitckLeftAxis(float horizontal, float vertical)
+{
+	joystickLeftAxis[0] = horizontal;
+	joystickLeftAxis[1] = vertical;
+}
+
+void InputManager::SetJoysitckRightAxis(float horizontal, float vertical)
+{
+	joystickRightAxis[0] = horizontal;
+	joystickRightAxis[1] = vertical;
+}
+
+void InputManager::SetJoysitckTrigger(float left, float right)
+{
+	joystickLeftTrigger = left;
+	joystickRightTrigger = right;
+}
+
+void InputManager::OnJoystickButtonPressed(eJoystickButton key)
+{
+	if (!joystickButtonStates[key])
+	{
+		for (iInputObserver* observer : observersList)
+		{
+			observer->OnJoystickButtonPressed(key);
+		}
+
+	}
+	joystickButtonStates[key] = true;
+
+}
+
+void InputManager::OnJoystickButtonReleased(eJoystickButton key)
+{
+
+	if (joystickButtonStates[key])
+	{
+		for (iInputObserver* observer : observersList)
+		{
+			observer->OnJoystickButtonReleased(key);
+		}
+	}
+	joystickButtonStates[key] = false;
+
+
+}
+
+void InputManager::OnJoystickButtonHold(eJoystickButton key)
+{
+	if (joystickButtonStates[key])
+	{
+		for (iInputObserver* observer : observersList)
+		{
+			observer->OnJoystickButtonHold(key);
+		}
+	}
+}
+
 void InputManager::ClearObservers()
 {
 	for (iInputObserver* observers  : observersList)
@@ -215,12 +278,61 @@ float InputManager::GetVerticalAxis()
 	return vertical;
 }
 
+
+float InputManager::GetJoystickHorizontal(eJoystickAxis axis)
+{
+	switch (axis)
+	{
+	case eJoystickAxis::LEFT_AXIS:
+		return joystickLeftAxis[0];
+		break;
+	case eJoystickAxis::RIGHT_AXIS:
+		return joystickRightAxis[0];
+		break;
+	}
+	
+	return 0;
+}
+
+float InputManager::GetJoystickVertical(eJoystickAxis axis)
+{
+	switch (axis)
+	{
+	case eJoystickAxis::LEFT_AXIS:
+		return joystickLeftAxis[1] * -1.0f;
+		break;
+	case eJoystickAxis::RIGHT_AXIS:
+		return joystickRightAxis[1] * -1.0f;
+		break;
+	}
+
+	return 0;
+}
+
+float InputManager::GetJoystickLeftTrigger()
+{
+	return joystickLeftTrigger;
+}
+
+float InputManager::GetJoystickRightTrigger()
+{
+	return joystickRightTrigger;
+}
+
+
+
+
 float InputManager::GetInputAxis(const std::string& axis)
 {
 	if (axis == "Horizontal") return GetHorizontalAxis();
 	if (axis == "Vertical") return GetVerticalAxis();
 
 	return 0.0f;
+}
+
+bool InputManager::IsJoyStickConnected()
+{
+	return isJoystickConnected;
 }
 
 

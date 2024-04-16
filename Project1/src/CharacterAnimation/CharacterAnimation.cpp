@@ -109,3 +109,15 @@ void CharacterAnimation::OnMouseButtonReleased(const int& mouseButton)
 void CharacterAnimation::OnMouseMouseMove(float& moveX, float& moveY)
 {
 }
+
+void CharacterAnimation::OnJoystickButtonPressed(eJoystickButton button)
+{
+}
+
+void CharacterAnimation::OnJoystickButtonReleased(eJoystickButton button)
+{
+}
+
+void CharacterAnimation::OnJoystickButtonHold(eJoystickButton button)
+{
+}

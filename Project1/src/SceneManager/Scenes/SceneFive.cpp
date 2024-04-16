@@ -1136,7 +1136,7 @@ void SceneFive::Start()
   
 
 
-    //OcculsionManager::GetInstance().InitializeOcculusion();
+    OcculsionManager::GetInstance().InitializeOcculusion();
 }
 
 //TreeThree
