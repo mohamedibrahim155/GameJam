@@ -164,21 +164,7 @@ void Light::DrawProperties()
 
 void Light::SceneDraw()
 {
-	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_NoTreePushOnOpen;
-	node_flags |= ImGuiTreeNodeFlags_SpanFullWidth;
-	node_flags |= ImGuiTreeNodeFlags_Leaf;
-
-	if (isSelected)
-	{
-		node_flags |= ImGuiTreeNodeFlags_Selected;
-	}
-
-	bool node_open = ImGui::TreeNodeEx(name.c_str(), node_flags);
-
-	if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
-	{
-		EditorLayout::GetInstance().SetSelectedObjects({ this });
-	}
+	Model::SceneDraw();
 }
 
 void Light::Start()
