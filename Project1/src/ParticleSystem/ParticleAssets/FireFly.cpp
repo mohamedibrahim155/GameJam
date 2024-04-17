@@ -1,6 +1,7 @@
 #include "FireFly.h"
+#include "../SphereEmitter.h"
 
-FireFly::FireFly()
+FireFly::FireFly(float raidus, glm::vec3 position)
 {
 	std::string difPath = "Textures/Particles/FireFly.png";
 	Texture* diffuse = new Texture(difPath);
@@ -46,6 +47,8 @@ FireFly::FireFly()
 
 	shapeManager.SetEmitterShape(EmitterShape::SPHERE);
 	//shapeManager.GetEmitterShape()->scale = glm::vec3(7, 2, 7);
+	shapeManager.asSphereEmitter()->radius = raidus;
+	shapeManager.asSphereEmitter()->position = position;
 
 	InitializeParticles();
 

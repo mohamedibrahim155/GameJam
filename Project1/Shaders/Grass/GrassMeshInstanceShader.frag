@@ -80,10 +80,10 @@ uniform bool isDepthBuffer;
 uniform samplerCube skybox;
 
 //Fog
-uniform float fogDensity = 0.66;
-uniform float fogStart = 8.0;
-uniform float fogEnd = 40;
-uniform vec3 fogColor = vec3(0.59,0.59,0.59);
+uniform float fogDensity;
+uniform float fogStart;
+uniform float fogEnd;
+uniform vec3 fogColor;
 uniform bool fogActive;
 float CalcFog();
 float CalcLinearFog();
@@ -143,7 +143,7 @@ void main()
       {
          if(fogColor != vec3(0) && fogActive)
             {
-               float fogFactor = CalcLinearFog();
+               float fogFactor = CalcExpoFog();
                result = mix(vec4(fogColor,1.0),result,fogFactor);
 
             }

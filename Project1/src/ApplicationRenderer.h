@@ -34,6 +34,7 @@
 #include "ParticleSystem/ParticleAssets/Fire.h"
 #include "PhysX/Occulsion/OcculsionManager.h"
 #include "FPS/FPS.h"
+#include "FogSystem.h"
 class ApplicationRenderer
 {
 public:
@@ -91,6 +92,7 @@ public:
 	eCursorState currentCursorState = eCursorState::VISIBLE;
 
 	OcculsionManager* occlusionManager;
+	FogSystem* fogSystem;
 
 	bool isPlayMode = false;
 	bool isMaximizePressed = false;

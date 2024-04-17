@@ -4,6 +4,7 @@
 #include "../../PostProcessing bounds/CubeVolume.h"
 #include"../../AI/Enemy.h"
 #include "../../Grass/GrassMesh.h"
+#include "../../ParticleSystem/ParticleAssets/FireFly.h"
 
 SceneFive::SceneFive(const std::string& sceneName) : BaseScene::BaseScene(sceneName)
 {
@@ -31,26 +32,71 @@ void SceneFive::Start()
 
     Light* directionLight = new Light();
     directionLight->Initialize(LightType::DIRECTION_LIGHT, 1);
-    directionLight->SetAmbientColor(glm::vec4(.15f, .15f, .15f, 1.0f));
-
-    directionLight->SetColor(glm::vec4(.05f));
-    directionLight->SetAttenuation(1, 1, 0.01f);
+    directionLight->SetAmbientColor(glm::vec4(0.01, 0.01, 0.06,1));
+    directionLight->SetColor(glm::vec4(0.01, 0.01, 0.06, 1));
+    directionLight->SetAttenuation(0.1, 0.1, 0.01f);
     directionLight->SetInnerAndOuterCutoffAngle(11, 12);
-
     directionLight->transform.SetRotation(glm::vec3(0, 90.00, 90.00));
     directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
 
+    
 
     Light* pointLight = new Light();
     pointLight->Initialize(LightType::POINT_LIGHT, 1);
     pointLight->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-
     pointLight->SetColor(glm::vec4(0.81, 0.51, 0.24,1.0));
-    pointLight->SetIntensity(8);
-    pointLight->SetAttenuation(1, 1, 0.01f);
-    pointLight->SetInnerAndOuterCutoffAngle(11, 12);
+    pointLight->SetIntensity(1);
+    pointLight->SetAttenuation(0.1, 0.1, 0.01f);
     pointLight->transform.SetRotation(glm::vec3(0));
     pointLight->transform.SetPosition(glm::vec3(-76.42, 4.16, 86.84));
+
+    Light* pointLight2 = new Light();
+    pointLight2->Initialize(LightType::POINT_LIGHT, 1);
+    pointLight2->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+    pointLight2->SetColor(glm::vec4(0.81, 0.51, 0.24, 1.0));
+    pointLight2->SetIntensity(1);
+    pointLight2->SetAttenuation(0.1, 0.1, 0.01f);
+    pointLight2->transform.SetRotation(glm::vec3(0));
+    pointLight2->transform.SetPosition(glm::vec3(-76.42, 6.85, 76.63));
+
+    Light* pointLight3 = new Light();
+    pointLight3->Initialize(LightType::POINT_LIGHT, 1);
+    pointLight3->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+    pointLight3->SetColor(glm::vec4(0.81, 0.51, 0.24, 1.0));
+    pointLight3->SetIntensity(1);
+    pointLight3->SetAttenuation(0.1, 0.1, 0.01f);
+    pointLight3->transform.SetRotation(glm::vec3(0));
+    pointLight3->transform.SetPosition(glm::vec3(-53.22, 8.27, 78.41));
+
+    Light* pointLight4 = new Light();
+    pointLight4->Initialize(LightType::POINT_LIGHT, 1);
+    pointLight4->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+    pointLight4->SetColor(glm::vec4(0.81, 0.51, 0.24, 1.0));
+    pointLight4->SetIntensity(1);
+    pointLight4->SetAttenuation(0.1, 0.1, 0.01f);
+    pointLight4->transform.SetRotation(glm::vec3(0));
+    pointLight4->transform.SetPosition(glm::vec3(-37.86, 5.37, 54.31));
+
+    Light* pointLight5 = new Light();
+    pointLight5->Initialize(LightType::POINT_LIGHT, 1);
+    pointLight5->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+    pointLight5->SetColor(glm::vec4(0.81, 0.51, 0.24, 1.0));
+    pointLight5->SetIntensity(1);
+    pointLight5->SetAttenuation(0.1,0.1, 0.01f);
+    pointLight5->transform.SetRotation(glm::vec3(0));
+    pointLight5->transform.SetPosition(glm::vec3(-23.69, 3.73, 67.31));
+
+    Light* moonLight = new Light();
+    moonLight->Initialize(LightType::POINT_LIGHT, 1);
+    moonLight->SetAmbientColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+    moonLight->SetColor(glm::vec4(5));
+    moonLight->SetIntensity(100);
+    moonLight->SetAttenuation(0.1, 0.1, 0.01f);
+    moonLight->transform.SetRotation(glm::vec3(0));
+    moonLight->transform.SetPosition(glm::vec3(10.11, 93.11, -116.19));
+    moonLight->name = "Moon Light";
+
+    
 
 #pragma endregion
 
@@ -530,6 +576,8 @@ void SceneFive::Start()
     instanceMesh->LoadModel("Models/Graveyard/TreeThree.fbx");
     instanceMesh->name = "InstancedTree";
     instanceMesh->isVisible = false;
+    instanceMesh->meshes[0]->meshMaterial->material()->specular = 0;
+    instanceMesh->meshes[1]->meshMaterial->material()->specular = 0;
     instanceMesh->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.7, 0, 1));
     instanceMesh->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.5, 0, 1));
     instanceMesh->AddTransformData(glm::vec3(-98.32, 1.77, 101.94), glm::vec3(0, 90, 0), glm::vec3(0.015));
@@ -1038,6 +1086,7 @@ void SceneFive::Start()
     GrassMesh* grassMeshInstance = new GrassMesh();
     grassMeshInstance->AddTransformData(glm::vec3(0, 0, 0), glm::vec3(0), glm::vec3(0.015f));
     grassMeshInstance->name = "InstanceGrass";
+    grassMeshInstance->meshes[0]->meshMaterial->material()->specular = 0;
     grassMeshInstance->AddTransformData(glm::vec3(-71.29, 3.12, 100.90), glm::vec3(0, 25, 0), glm::vec3(0.012));
     grassMeshInstance->AddTransformData(glm::vec3(-71.76, 3.12, 100.26), glm::vec3(0, 60, 0), glm::vec3(0.012));
     grassMeshInstance->AddTransformData(glm::vec3(-71.76, 3.12, 101.13), glm::vec3(0, 15, 0), glm::vec3(0.012));
@@ -1181,6 +1230,9 @@ void SceneFive::Start()
     Fire* fire4 = new Fire(0.1f, { -37.88, 4.70, 54.33 });
     Fire* fire5 = new Fire(0.1f, { -23.68, 3.10, 67.33 });
 
+
+    FireFly* fireFly = new FireFly(1.0f, glm::vec3(-71.90 ,3.10 ,98.10));
+
     Model* FoilageStone = new Model();
     FoilageStone->LoadModel("Models/Graveyard/FoilageStones.fbx");
     FoilageStone->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
@@ -1253,6 +1305,16 @@ void SceneFive::Start()
     enemyOne->transform.SetPosition(glm::vec3(-34.87, 4.07, 58.27));
     enemyOne->AddRoamingPoints(-34.87, 4.07, 58.27);
     enemyOne->AddRoamingPoints(-29.51, 4.07, 78.80);
+
+
+    Model* moon = new Model();
+   moon->LoadModel("Models/DefaultSphere/DefaultSphere.fbx");
+   moon->name = "Moon";
+   moon->transform.SetPosition(glm::vec3(10.11, 93.11, -116.19));
+   moon->transform.SetRotation(glm::vec3(0, 14.90, -6.50));
+   moon->transform.SetScale(glm::vec3(10));
+   moon->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(100, 100, 100, 1));
+   GraphicsRender::GetInstance().AddModelAndShader(moon, application->defaultShader);
 
 
    // OcculsionManager::GetInstance().InitializeOcculusion();

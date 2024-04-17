@@ -67,7 +67,7 @@ void SceneFour::Start()
     Plane2->transform.SetScale(glm::vec3(10));
     GraphicsRender::GetInstance().AddModelAndShader(Plane2, application->defaultShader);
 
-    FireFly* fireFly = new FireFly();
+   // FireFly* fireFly = new FireFly();
   //  Fire* fire = new Fire(0.2, { 0, 0 ,0 });
 }
 

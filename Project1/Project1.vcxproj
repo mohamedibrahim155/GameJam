@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\FogSystem.cpp" />
     <ClCompile Include="src\ParticleSystem\ParticleAssets\FireFly.cpp" />
     <ClCompile Include="src\Player\States\MagicState.cpp" />
     <ClCompile Include="src\PostProcessing\DessertHeatwave.cpp" />
@@ -268,6 +269,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\FogSystem.h" />
     <ClInclude Include="src\ParticleSystem\ParticleAssets\FireFly.h" />
     <ClInclude Include="src\Player\States\MagicState.h" />
     <ClInclude Include="src\PostProcessing\DessertHeatwave.h" />

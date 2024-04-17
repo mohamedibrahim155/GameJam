@@ -4,6 +4,6 @@
 class FireFly : public ParticleSystem
 {
 public:
-	FireFly();
+	FireFly(float raidus, glm::vec3 position);
 };
 

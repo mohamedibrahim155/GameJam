@@ -11,11 +11,11 @@ uniform vec3 viewPos;
 float CalcLinearFog();
 float CalcExpoFog();
 //Fog
-uniform float fogDensity = 0.66;
-uniform float fogStart = 8.0;
-uniform float fogEnd = 40;
-uniform vec3 fogColor = vec3(0.59,0.59,0.59);
-uniform bool fogActive = true;
+uniform float fogDensity;
+uniform float fogStart;
+uniform float fogEnd;
+uniform vec3 fogColor;
+uniform bool fogActive;
 void main()
 {    
       vec4 dif = texture(skybox, s_TexCoords);

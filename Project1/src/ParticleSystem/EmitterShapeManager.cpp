@@ -78,6 +78,11 @@ ConeEmitter* EmitterShapeManager::asConeEmitter()
 	return (ConeEmitter*)GetEmitterShape();
 }
 
+SphereEmitter* EmitterShapeManager::asSphereEmitter()
+{
+	return (SphereEmitter*)GetEmitterShape();
+}
+
 BaseEmitterShape* EmitterShapeManager::GetEmitterShape()
 {
 	return m_ListOfShapes[m_EmitterShape];

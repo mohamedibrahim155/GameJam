@@ -141,7 +141,6 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
     InitializeSkybox();
 
-    GraphicsRender::GetInstance().SetCamera(sceneViewcamera);
 
     sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     sceneViewcamera->transform.position = glm::vec3(-79.46, 11.76, 107.19);
@@ -222,12 +221,12 @@ void ApplicationRenderer::InitializeSkybox()
 
     std::vector<std::string> faces
     {
-       ("Textures/skybox/right.jpg"),
-       ("Textures/skybox/left.jpg"),
-       ("Textures/skybox/top.jpg"),
-       ("Textures/skybox/bottom.jpg"),
-       ("Textures/skybox/front.jpg"),
-       ("Textures/skybox/back.jpg")
+       ("Textures/skybox/right.png"),
+       ("Textures/skybox/left.png"),
+       ("Textures/skybox/top.png"),
+       ("Textures/skybox/bottom.png"),
+       ("Textures/skybox/front.png"),
+       ("Textures/skybox/back.png")
     };
 
     skyBoxMaterial->skyBoxTexture->LoadTexture(faces);
@@ -251,6 +250,7 @@ void ApplicationRenderer::Start()
     SceneManager::GetInstance().OnChangeScene("MainGame");
 
     FPS* fps = new FPS();
+    fogSystem = new FogSystem();
 
 }
 
@@ -360,7 +360,13 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     defaultShader->setFloat("time", scrollTime);
     defaultShader->setBool("isDepthBuffer", isDepth);
-    defaultShader->setBool("fogActive", isFog);
+
+    defaultShader->setFloat("fogDensity", fogSystem->fogDensity);
+    defaultShader->setFloat("fogStart", fogSystem->fogStart);
+    defaultShader->setFloat("fogEnd", fogSystem->fogEnd);
+    defaultShader->setVec3("fogColor", fogSystem->fogColor);
+    defaultShader->setBool("fogActive", fogSystem->fogActive);
+
     defaultShader->setBool("isCellShading", isCellShade);
 
 
@@ -401,14 +407,22 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     defaultInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     defaultInstanceShader->setFloat("time", scrollTime);
     defaultInstanceShader->setBool("isDepthBuffer", false);
-    defaultInstanceShader->setBool("fogActive", isFog);
+    defaultInstanceShader->setFloat("fogDensity", fogSystem->fogDensity);
+    defaultInstanceShader->setFloat("fogStart", fogSystem->fogStart);
+    defaultInstanceShader->setFloat("fogEnd", fogSystem->fogEnd);
+    defaultInstanceShader->setVec3("fogColor", fogSystem->fogColor);
+    defaultInstanceShader->setBool("fogActive", fogSystem->fogActive);
 
 
     grassInstanceShader->Bind();
     grassInstanceShader->setMat4("projection", projection);
     grassInstanceShader->setMat4("view", view);
     grassInstanceShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
-    grassInstanceShader->setBool("fogActive", isFog);
+    grassInstanceShader->setFloat("fogDensity", fogSystem->fogDensity);
+    grassInstanceShader->setFloat("fogStart", fogSystem->fogStart);
+    grassInstanceShader->setFloat("fogEnd", fogSystem->fogEnd);
+    grassInstanceShader->setVec3("fogColor", fogSystem->fogColor);
+    grassInstanceShader->setBool("fogActive", fogSystem->fogActive);
 
     particleShader->Bind();
     particleShader->setMat4("projection", projection);
@@ -419,8 +433,11 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     skyboxShader->setMat4("projection", projection);
     skyboxShader->setMat4("view", skyBoxView);
     skyboxShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
-    skyboxShader->setBool("fogActive", isFog);
-
+    skyboxShader->setFloat("fogDensity", fogSystem->fogDensity);
+    skyboxShader->setFloat("fogStart", fogSystem->fogStart);
+    skyboxShader->setFloat("fogEnd", fogSystem->fogEnd);
+    skyboxShader->setVec3("fogColor", fogSystem->fogColor);
+    skyboxShader->setBool("fogActive", fogSystem->fogActive);
 
     GraphicsRender::GetInstance().SkyBoxModel->Draw(skyboxShader);
     glDepthFunc(GL_LESS);
@@ -431,6 +448,7 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
         SceneManager::GetInstance().Render();
     }
     GraphicsRender::GetInstance().Draw();
+    GraphicsRender::GetInstance().SetCamera(camera);
 
     ParticleSystemManager::GetInstance().Render();
 
@@ -547,7 +565,7 @@ void ApplicationRenderer::ProcessInput(GLFWwindow* window)
 
          if (key == GLFW_KEY_P && action == GLFW_PRESS)
          {
-             isFog = !isFog;
+             fogSystem->fogActive = !fogSystem->fogActive;
          }
          if (key == GLFW_KEY_L && action == GLFW_PRESS)
          {

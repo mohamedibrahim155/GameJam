@@ -35,6 +35,7 @@ public:
 
 	BoxEmitter* asBoxEmitter();
 	ConeEmitter* asConeEmitter();
+	SphereEmitter* asSphereEmitter();
 	BaseEmitterShape* GetEmitterShape();
 
 private :

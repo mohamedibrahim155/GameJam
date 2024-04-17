@@ -220,9 +220,9 @@ void Light::AttenuationProperties()
 		return;
 	}
 
-	DrawDragFloatImGui("Constant", constant, 0.01f, 0.5f, 100, columnWidth);
-	DrawDragFloatImGui("Linear", linear, 0.01f, 0.5f, 100, columnWidth);
-	DrawDragFloatImGui("Quadratic", quadratic, 0.01f, 0.5f, 100, columnWidth);
+	DrawDragFloatImGui("Constant", constant, 0.01f, -100, 100, columnWidth);
+	DrawDragFloatImGui("Linear", linear, 0.01f, -100, 100, columnWidth);
+	DrawDragFloatImGui("Quadratic", quadratic, 0.01f, -100, 100, columnWidth);
 
 
 

@@ -393,6 +393,9 @@
     <ClCompile Include="src\ParticleSystem\ParticleAssets\FireFly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\FogSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -816,6 +819,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ParticleSystem\ParticleAssets\FireFly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FogSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
