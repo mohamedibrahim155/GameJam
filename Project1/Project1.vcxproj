@@ -141,11 +141,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Dependencies\glad\src\glad.c" />
+    <ClCompile Include="src\Physics\PhysicsEngine.cpp" />
     <ClCompile Include="src\FogSystem.cpp" />
     <ClCompile Include="src\ParticleSystem\ParticleAssets\FireFly.cpp" />
+    <ClCompile Include="src\Physics\Softbody\SoftBody.cpp" />
     <ClCompile Include="src\Player\States\MagicState.cpp" />
     <ClCompile Include="src\PostProcessing\DessertHeatwave.cpp" />
     <ClCompile Include="src\ParticleSystem\Properties\Noise.cpp" />
+    <ClCompile Include="src\SceneManager\Scenes\SceneEight.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneSeven.cpp" />
     <ClCompile Include="src\PhysX\Occulsion\OcculsionManager.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneSix.cpp" />
@@ -269,11 +272,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\stb_image.h" />
+    <ClInclude Include="src\Physics\PhysicsEngine.h" />
     <ClInclude Include="src\FogSystem.h" />
     <ClInclude Include="src\ParticleSystem\ParticleAssets\FireFly.h" />
+    <ClInclude Include="src\Physics\Softbody\SoftBody.h" />
     <ClInclude Include="src\Player\States\MagicState.h" />
     <ClInclude Include="src\PostProcessing\DessertHeatwave.h" />
     <ClInclude Include="src\ParticleSystem\Properties\Noise.h" />
+    <ClInclude Include="src\SceneManager\Scenes\SceneEight.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneSeven.h" />
     <ClInclude Include="src\PhysX\Occulsion\OcculsionManager.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneSix.h" />
@@ -398,6 +404,9 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\SkyboxMaterial.h" />
     <ClInclude Include="src\Textures.h" />
+    <ClInclude Include="src\Threading\MyThread.h" />
+    <ClInclude Include="src\Threading\SoftBodyThread.h" />
+    <ClInclude Include="src\Threading\ThreadStruct.h" />
     <ClInclude Include="src\Transform.h" />
     <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="src\Utilities\Lerp.h" />

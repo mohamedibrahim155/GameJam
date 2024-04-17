@@ -575,7 +575,7 @@ void SceneFive::Start()
     MeshInstance* instanceMesh = new MeshInstance();
     instanceMesh->LoadModel("Models/Graveyard/TreeThree.fbx");
     instanceMesh->name = "InstancedTree";
-    instanceMesh->isVisible = false;
+    //instanceMesh->isVisible = false;
     instanceMesh->meshes[0]->meshMaterial->material()->specular = 0;
     instanceMesh->meshes[1]->meshMaterial->material()->specular = 0;
     instanceMesh->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.7, 0, 1));

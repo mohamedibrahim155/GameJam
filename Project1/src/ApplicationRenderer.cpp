@@ -7,6 +7,8 @@
 #include "SceneManager/Scenes/SceneFive.h"
 #include "SceneManager/Scenes/SceneSix.h"
 #include "SceneManager/Scenes/SceneSeven.h"
+#include "SceneManager/Scenes/SceneEight.h"
+
 ApplicationRenderer::ApplicationRenderer()
 {
     sceneViewcamera = new Camera();
@@ -246,8 +248,9 @@ void ApplicationRenderer::Start()
     BaseScene* sceneFive = new SceneFive("MainGame");
     BaseScene* sceneSix = new SceneSix("AI_Scene");
     BaseScene* sceneSeven = new SceneSeven("occlusion");
+    BaseScene* sceneEight = new SceneEight("SoftBody");
 
-    SceneManager::GetInstance().OnChangeScene("MainGame");
+    SceneManager::GetInstance().OnChangeScene("SoftBody");
 
     FPS* fps = new FPS();
     fogSystem = new FogSystem();
@@ -334,6 +337,7 @@ void ApplicationRenderer::EngineGameLoop()
         InputManager::GetInstance().Update(Time::GetInstance().deltaTime);
         SceneManager::GetInstance().Update();
         ParticleSystemManager::GetInstance().Update(Time::GetInstance().deltaTime);
+        PhysicsEngine::GetInstance().PhysicsEngineUpdate(Time::GetInstance().deltaTime);
     }
 
     PostRender();
