@@ -152,6 +152,7 @@
     <ClCompile Include="src\Player\States\MagicState.cpp" />
     <ClCompile Include="src\PostProcessing\DessertHeatwave.cpp" />
     <ClCompile Include="src\ParticleSystem\Properties\Noise.cpp" />
+    <ClCompile Include="src\PostProcessing\NightVision.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneEight.cpp" />
     <ClCompile Include="src\SceneManager\Scenes\SceneSeven.cpp" />
     <ClCompile Include="src\PhysX\Occulsion\OcculsionManager.cpp" />
@@ -287,6 +288,7 @@
     <ClInclude Include="src\Player\States\MagicState.h" />
     <ClInclude Include="src\PostProcessing\DessertHeatwave.h" />
     <ClInclude Include="src\ParticleSystem\Properties\Noise.h" />
+    <ClInclude Include="src\PostProcessing\NightVision.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneEight.h" />
     <ClInclude Include="src\SceneManager\Scenes\SceneSeven.h" />
     <ClInclude Include="src\PhysX\Occulsion\OcculsionManager.h" />
@@ -450,6 +452,8 @@
     <None Include="Shaders\PostProcessing\DessertHeatwave.vert" />
     <None Include="Shaders\PostProcessing\FinalOutputShader.frag" />
     <None Include="Shaders\PostProcessing\FinalOutputShader.vert" />
+    <None Include="Shaders\PostProcessing\NightVision.frag" />
+    <None Include="Shaders\PostProcessing\NightVision.vert" />
     <None Include="Shaders\PostProcessing\Pixelization.frag" />
     <None Include="Shaders\PostProcessing\Pixelization.vert" />
     <None Include="Shaders\ScrollTexture.frag" />

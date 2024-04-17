@@ -250,7 +250,7 @@ void ApplicationRenderer::Start()
     BaseScene* sceneSeven = new SceneSeven("occlusion");
     BaseScene* sceneEight = new SceneEight("SoftBody");
 
-    SceneManager::GetInstance().OnChangeScene("SoftBody");
+    SceneManager::GetInstance().OnChangeScene("MainGame");
 
     FPS* fps = new FPS();
     fogSystem = new FogSystem();
@@ -379,6 +379,11 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
     boneAnimationShader->setMat4("view", view);
     boneAnimationShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
     boneAnimationShader->setBool("isDepthBuffer", isDepth);
+    boneAnimationShader->setFloat("fogDensity", fogSystem->fogDensity);
+    boneAnimationShader->setFloat("fogStart", fogSystem->fogStart);
+    boneAnimationShader->setFloat("fogEnd", fogSystem->fogEnd);
+    boneAnimationShader->setVec3("fogColor", fogSystem->fogColor);
+    boneAnimationShader->setBool("fogActive", fogSystem->fogActive);
 
 
     alphaBlendShader->Bind();

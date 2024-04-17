@@ -3,6 +3,7 @@
 #include "ChromaticEffect.h"
 #include "PixelizationEffect.h"
 #include "DessertHeatwave.h"
+#include "NightVision.h"
 #include <unordered_map>
 
 enum class eEffectType
@@ -10,6 +11,7 @@ enum class eEffectType
 	CHROMATIC = 0,
 	PIXELIZATION = 1,
 	DESSERTWAVE = 2, 
+	NIGHTVISION = 3
 };
 
 class PostProcessing : public Object
@@ -41,6 +43,7 @@ private:
 	ChromaticEffect* chromatic;
 	PixelizationEffect* pixelization;
 	DessertHeatwave* dessertHeatwave;
+	NightVision* nightVision;
 
 	Shader* finalShader;
 	

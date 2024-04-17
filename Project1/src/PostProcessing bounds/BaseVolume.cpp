@@ -59,4 +59,5 @@ void BaseVolume::DisableAllEffects()
 	SetEffectState(eEffectType::CHROMATIC, false);
 	SetEffectState(eEffectType::PIXELIZATION, false);
 	SetEffectState(eEffectType::DESSERTWAVE, false);
+	SetEffectState(eEffectType::NIGHTVISION, false);
 }

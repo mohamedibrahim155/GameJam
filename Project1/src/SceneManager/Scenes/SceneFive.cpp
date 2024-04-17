@@ -5,6 +5,12 @@
 #include"../../AI/Enemy.h"
 #include "../../Grass/GrassMesh.h"
 #include "../../ParticleSystem/ParticleAssets/FireFly.h"
+#include "../../Physics/Softbody/SoftBody.h"
+#include "../../Threading/SoftBodyThread.h"
+
+
+SoftBodyThread* sbThread = sbInfo;
+
 
 SceneFive::SceneFive(const std::string& sceneName) : BaseScene::BaseScene(sceneName)
 {
@@ -13,6 +19,8 @@ SceneFive::SceneFive(const std::string& sceneName) : BaseScene::BaseScene(sceneN
 
 void SceneFive::Start()
 {
+    StartThreadForSoftBody(0.01f);
+
     std::string diffuseTexturePath = "Models/Graveyard/Fences/atlas-universal-albedo-a.png";
     Texture* diffuseTexture = new Texture(diffuseTexturePath);
 
@@ -38,7 +46,7 @@ void SceneFive::Start()
     directionLight->SetInnerAndOuterCutoffAngle(11, 12);
     directionLight->transform.SetRotation(glm::vec3(0, 90.00, 90.00));
     directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
-
+    directionLight->isVisible = false;
     
 
     Light* pointLight = new Light();
@@ -49,6 +57,7 @@ void SceneFive::Start()
     pointLight->SetAttenuation(0.1, 0.1, 0.01f);
     pointLight->transform.SetRotation(glm::vec3(0));
     pointLight->transform.SetPosition(glm::vec3(-76.42, 4.16, 86.84));
+    pointLight->isVisible = false;
 
     Light* pointLight2 = new Light();
     pointLight2->Initialize(LightType::POINT_LIGHT, 1);
@@ -58,6 +67,7 @@ void SceneFive::Start()
     pointLight2->SetAttenuation(0.1, 0.1, 0.01f);
     pointLight2->transform.SetRotation(glm::vec3(0));
     pointLight2->transform.SetPosition(glm::vec3(-76.42, 6.85, 76.63));
+    pointLight2->isVisible = false;
 
     Light* pointLight3 = new Light();
     pointLight3->Initialize(LightType::POINT_LIGHT, 1);
@@ -67,6 +77,7 @@ void SceneFive::Start()
     pointLight3->SetAttenuation(0.1, 0.1, 0.01f);
     pointLight3->transform.SetRotation(glm::vec3(0));
     pointLight3->transform.SetPosition(glm::vec3(-53.22, 8.27, 78.41));
+    pointLight3->isVisible = false;
 
     Light* pointLight4 = new Light();
     pointLight4->Initialize(LightType::POINT_LIGHT, 1);
@@ -76,6 +87,7 @@ void SceneFive::Start()
     pointLight4->SetAttenuation(0.1, 0.1, 0.01f);
     pointLight4->transform.SetRotation(glm::vec3(0));
     pointLight4->transform.SetPosition(glm::vec3(-37.86, 5.37, 54.31));
+    pointLight4->isVisible = false;
 
     Light* pointLight5 = new Light();
     pointLight5->Initialize(LightType::POINT_LIGHT, 1);
@@ -85,6 +97,7 @@ void SceneFive::Start()
     pointLight5->SetAttenuation(0.1,0.1, 0.01f);
     pointLight5->transform.SetRotation(glm::vec3(0));
     pointLight5->transform.SetPosition(glm::vec3(-23.69, 3.73, 67.31));
+    pointLight5->isVisible = false;
 
     Light* moonLight = new Light();
     moonLight->Initialize(LightType::POINT_LIGHT, 1);
@@ -95,6 +108,7 @@ void SceneFive::Start()
     moonLight->transform.SetRotation(glm::vec3(0));
     moonLight->transform.SetPosition(glm::vec3(10.11, 93.11, -116.19));
     moonLight->name = "Moon Light";
+    moonLight->isVisible = false;
 
     
 
@@ -108,14 +122,14 @@ void SceneFive::Start()
     PlayerController* player = new PlayerController(application);
     player->transform.SetPosition(glm::vec3(-75.91, 5.82, 105.85));
 
-    Model* playerDummy = new Model("Models/Character/Player/Player2.fbx");
-    playerDummy->name = "playerDummy";
+    Model* playerDummy = new Model("Models/Character/Enemy/Orc.fbx");
+    playerDummy->name = "Orc";
 
     std::string diffuseTexturept = "Models/Character/Textures/Player.png";
     Texture* texture = new Texture(diffuseTexturept);
-    playerDummy->meshes[0]->meshMaterial->material()->diffuseTexture = texture;
+   // playerDummy->meshes[0]->meshMaterial->material()->diffuseTexture = texture;
     playerDummy->transform.SetPosition(glm::vec3(-75.91, 5.82, 105.85));
-
+    playerDummy->transform.SetScale(glm::vec3(0.01));
     GraphicsRender::GetInstance().AddModelAndShader(playerDummy, application->defaultShader);
 
     PhysXObject* terrain = new PhysXObject();
@@ -1146,16 +1160,18 @@ void SceneFive::Start()
     grassMeshInstance->AddTransformData(glm::vec3(-26.36, 4.40, 83.29), glm::vec3(0, 0, 0), glm::vec3(0.012));
     grassMeshInstance->AddTransformData(glm::vec3(-39.47, 4.20, 62.33), glm::vec3(0, -49.80, 0), glm::vec3(0.012));
     grassMeshInstance->AddTransformData(glm::vec3(-41.47, 4.20, 61.57), glm::vec3(0, -49.80, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-64.55, 6.73, 85.96), glm::vec3(0, -49.80, 0), glm::vec3(0.012));
+    grassMeshInstance->AddTransformData(glm::vec3(-64.30, 6.64, 86.42), glm::vec3(0, -49.80, 0), glm::vec3(0.012));
         
     GraphicsRender::GetInstance().AddModelAndShader(grassMeshInstance, application->grassInstanceShader);
 
-    /*Model* dummy = new Model();
+    Model* dummy = new Model();
     dummy->LoadModel("Models/Graveyard/Fences/Grass.fbx");
     dummy->name = "dummy";
     dummy->transform.SetPosition(glm::vec3(-71.76, 3.12, 101.13));
     dummy->transform.SetRotation(glm::vec3(0));
     dummy->transform.SetScale(glm::vec3(0.015));
-    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);*/
+    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);
 
     PhysXObject* Scythe = new PhysXObject();
     Scythe->LoadModel("Models/Graveyard/Scythe.fbx");
@@ -1202,13 +1218,13 @@ void SceneFive::Start()
     GraphicsRender::GetInstance().AddModelAndShader(PumpkinInstance, application->defaultInstanceShader);
 
 
-    Model* dummy = new Model();
+   /* Model* dummy = new Model();
     dummy->LoadModel("Models/Graveyard/Pumpkin.fbx");
     dummy->name = "dummy";
     dummy->transform.SetPosition(glm::vec3(-98.32, 1.77, 101.94));
     dummy->transform.SetRotation(glm::vec3(0));
     dummy->transform.SetScale(glm::vec3(0.015));
-    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);
+    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);*/
 
     PhysXObject* Angel = new PhysXObject();
     Angel->LoadModel("Models/Graveyard/Angle.fbx");
@@ -1231,7 +1247,9 @@ void SceneFive::Start()
     Fire* fire5 = new Fire(0.1f, { -23.68, 3.10, 67.33 });
 
 
-    FireFly* fireFly = new FireFly(1.0f, glm::vec3(-71.90 ,3.10 ,98.10));
+    FireFly* fireFly = new FireFly(1.20, glm::vec3(-66.40, 9.80, 53.30));
+    FireFly* fireFly2 = new FireFly(1.20, glm::vec3(-49.20, 7.40, 68.70));
+
 
     Model* FoilageStone = new Model();
     FoilageStone->LoadModel("Models/Graveyard/FoilageStones.fbx");
@@ -1280,9 +1298,8 @@ void SceneFive::Start()
     cubeVolume->transform.SetRotation(glm::vec3(0, -32.40, 0));
     cubeVolume->transform.SetScale(glm::vec3(2.00));
     cubeVolume->Intialize(application->gameScenecamera);
-    cubeVolume->AddCubeEffects(eEffectType::CHROMATIC);
-    cubeVolume->AddCubeEffects(eEffectType::PIXELIZATION);
-   // cubeVolume->isVisible = false;
+    cubeVolume->AddCubeEffects(eEffectType::NIGHTVISION);
+    cubeVolume->isVisible = false;
 
     PhysXObject* PumpkinPhy = new PhysXObject();
     PumpkinPhy->LoadModel("Models/Graveyard/Pumpkin.fbx");
@@ -1317,6 +1334,54 @@ void SceneFive::Start()
    GraphicsRender::GetInstance().AddModelAndShader(moon, application->defaultShader);
 
 
+
+#pragma region Flag
+
+
+   std::string textureFile = "Models/Plane/Flag1.png";
+   Texture* diffuse = new Texture(textureFile);
+
+   std::string textureFile2 = "Models/Plane/Flag.png";
+   Texture* diffuse2 = new Texture(textureFile2);
+
+   std::string alphaText = "Models/Plane/BW1.png";
+   Texture* modelAlpha = new Texture(alphaText);
+
+   SoftBodyObjs* FlagCloth = new SoftBodyObjs();
+   FlagCloth->LoadModel("Models/Plane/Flag.ply");
+   FlagCloth->name = "MY PLANE";
+   FlagCloth->meshes[0]->meshMaterial->material()->diffuseTexture = diffuse2;
+   FlagCloth->meshes[0]->meshMaterial->material()->specular = 0;
+   //softBodyTest1->meshes[0]->meshMaterial->material()->alphaTexture = modelAlpha;
+   FlagCloth->meshes[0]->meshMaterial->material()->useMaskTexture = true;
+   FlagCloth->transform.SetPosition(glm::vec3(-64.39, 9.85, 86.32));
+   FlagCloth->transform.SetRotation(glm::vec3(0, 30.60, 180.00));
+   FlagCloth->transform.SetScale(glm::vec3(6.00, 4.00, 3.00));
+   GraphicsRender::GetInstance().AddModelAndShader(FlagCloth, application->defaultShader);
+   FlagCloth->InitializeSoftBody();
+   FlagCloth->AddLockSphere(2400, 0.1);
+   FlagCloth->AddLockSphere(0, 0.01f);
+   FlagCloth->acceleration = { .2, -0.3, 1 };
+
+   Model* flagPole = new Model("Models/Plane/Pole.fbx");
+   flagPole->name = "Pole";
+   flagPole->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(1, .75, 0, 1));
+   flagPole->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(1, .75, 0, 1));
+   flagPole->meshes[2]->meshMaterial->material()->SetBaseColor(glm::vec4(1, .75, 0, 1));
+   flagPole->meshes[3]->meshMaterial->material()->SetBaseColor(glm::vec4(1, .75, 0, 1));
+   flagPole->meshes[4]->meshMaterial->material()->SetBaseColor(glm::vec4(1, .75, 0, 1));
+   flagPole->meshes[5]->meshMaterial->material()->SetBaseColor(glm::vec4(1, .75, 0, 1));
+   flagPole->meshes[6]->meshMaterial->material()->SetBaseColor(glm::vec4(1, .75, 0, 1));
+   flagPole->transform.SetPosition(glm::vec3(-64.41, 6.69, 86.30));
+   flagPole->transform.SetScale(glm::vec3(0.21));
+
+   GraphicsRender::GetInstance().AddModelAndShader(flagPole, application->defaultShader);
+
+
+#pragma endregion
+
+  
+
    // OcculsionManager::GetInstance().InitializeOcculusion();
 }
 
@@ -1324,6 +1389,19 @@ void SceneFive::Start()
 
 void SceneFive::Update()
 {
+    sbThread->bRun = application->isPlayMode ? true : false;
+
+    if (application->isPlayMode)
+    {
+        if (isPlaying)
+        {
+            //audio->PlayBGAudio();
+            isPlaying = false;
+        }
+
+    }
+   
+
 }
 
 void SceneFive::Render()

@@ -77,6 +77,17 @@ float LinearizeDepth(float depth)
 uniform bool isDepthBuffer;
 uniform samplerCube skybox;
 
+//Fog
+uniform float fogDensity;
+uniform float fogStart;
+uniform float fogEnd;
+uniform vec3 fogColor;
+uniform bool fogActive;
+float CalcFog();
+float CalcLinearFog();
+float CalcExpoFog();
+
+
 void main()
 {    
     // properties
@@ -128,8 +139,12 @@ void main()
       }
       else
       {
-          //float depth = LinearizeDepth(gl_FragCoord.z) / far;
-        //  FragColor = texture(specular_Texture, TextureCoordinates);
+         if(fogColor != vec3(0) && fogActive)
+             {
+               float fogFactor = CalcExpoFog();
+               result = mix(vec4(fogColor,1.0),result,fogFactor);
+
+             }
           FragColor = result;
       }
 
@@ -142,6 +157,46 @@ void main()
 
 }
 
+float CalcLinearFog()
+{
+
+   float camDist = length(FragPosition - viewPos);
+   float fogRange = fogEnd - fogStart;
+   float fogDist = fogEnd - camDist;
+   float fogFactor = fogDist /fogRange;
+   fogFactor  = clamp(fogFactor,0.0,1.0);
+   return fogFactor;
+
+}
+
+float CalcExpoFog()
+{
+   float camDist = length(FragPosition - viewPos);
+   float distRatio = 4.0 * camDist / fogEnd;
+   float fogFactor = exp(-distRatio * fogDensity * distRatio * fogDensity);
+
+   return fogFactor;
+ 
+}
+
+float CalcFog()
+{
+
+  float fogFac = 1;
+
+  if(fogStart >= 0)
+  {
+    fogFac = CalcLinearFog();
+  }
+  else
+  {
+     fogFac = CalcExpoFog();
+  
+  }
+
+
+  return fogFac;
+}
   
 
 

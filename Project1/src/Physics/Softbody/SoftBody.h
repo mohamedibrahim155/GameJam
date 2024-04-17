@@ -126,6 +126,7 @@ public:
 		 }
 
 	 };
+	 glm::vec3 acceleration = glm::vec3(0.0f, -1.0f, 0.0f);
 
 private:
 
@@ -142,7 +143,6 @@ private:
 	float lockRadius;
 	glm::vec3 lockSphereCenter;
 
-	glm::vec3 acceleration = glm::vec3(0.0f,-1.0f,0.0f);
 
 	std::vector<Triangle> m_ListOfTriangles;
 	std::vector<Point*> m_ListOfPoints;

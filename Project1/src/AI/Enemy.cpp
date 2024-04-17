@@ -16,7 +16,7 @@ Enemy::Enemy(PlayerController* player)
 
     transform.SetPosition(glm::vec3(2, 0, 0));
     transform.SetRotation(glm::vec3(0, 0, 0));
-    transform.SetScale(glm::vec3(0.00025f));
+    transform.SetScale(glm::vec3(0.025f));
     
     std::string diffuseTexture = "Models/Character/Demon/PolygonDarkFantasy_Texture_01_A.png";
     Texture* texture = new Texture(diffuseTexture);

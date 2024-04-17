@@ -22,7 +22,7 @@ void main()
        float fogFactor = 1;
       if(fogActive)
       {
-        fogFactor = CalcLinearFog();
+        fogFactor = CalcExpoFog();
 
       }
       else

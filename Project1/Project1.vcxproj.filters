@@ -417,6 +417,9 @@
     <ClCompile Include="src\Audio\AudioSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PostProcessing\NightVision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -875,6 +878,9 @@
     <ClInclude Include="src\Audio\AudioSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\PostProcessing\NightVision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.frag" />
@@ -911,5 +917,7 @@
     <None Include="Shaders\AnimationShader.vert" />
     <None Include="Shaders\PostProcessing\DessertHeatwave.frag" />
     <None Include="Shaders\PostProcessing\DessertHeatwave.vert" />
+    <None Include="Shaders\PostProcessing\NightVision.frag" />
+    <None Include="Shaders\PostProcessing\NightVision.vert" />
   </ItemGroup>
 </Project>
