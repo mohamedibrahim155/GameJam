@@ -6,6 +6,11 @@
 #include "../../PhysX/PhysXUtils.h"
 using namespace MathUtils;
 
+RunState::RunState()
+{
+	InputManager::GetInstance().AddObserver(this);
+}
+
 void RunState::Start()
 {
 	playerController->PlayBlendAnimation("Run",0.2f);
@@ -68,7 +73,9 @@ void RunState::HandleTranslation()
 
 		playerController->transform.SetRotation(desiredRotation);
 
-		glm::vec3  moveVelocity = moveDirection * playerController->playerMoveSpeed;
+		const float speed = isFastRun ? playerController->playerMoveSpeed * 2 : playerController->playerMoveSpeed;
+
+		glm::vec3  moveVelocity = moveDirection * speed;
 
 		velocity = glm::vec3(moveVelocity.x, playerController->GetVelocity().y, moveVelocity.z);
 		playerController->SetVelocity(velocity);
@@ -112,4 +119,23 @@ void RunState::DrawStateProperties()
 	DrawTransformVector3ImGui("Velocity", velocity, 0, columnWidth);
 
 	ImGui::TreePop();
+}
+
+void RunState::OnKeyPressed(const int& key)
+{
+	if (key ==GLFW_KEY_LEFT_SHIFT)
+	{
+		isFastRun = true;
+
+		playerController->PlayBlendAnimation("FastRun", 0.2f);
+	}
+}
+
+void RunState::OnKeyReleased(const int& key)
+{
+	if (key == GLFW_KEY_LEFT_SHIFT)
+	{
+		isFastRun = false;
+		playerController->PlayBlendAnimation("Run", 0.2f);
+	}
 }

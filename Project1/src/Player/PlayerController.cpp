@@ -54,6 +54,7 @@ PlayerController::PlayerController(ApplicationRenderer* application)
     LoadAnimation("Models/Character/Player/Idle.fbx", "Idle");
     LoadAnimation("Models/Character/Player/Run.fbx", "Run");
     LoadAnimation("Models/Character/Player/Magic.fbx", "Magic", false);
+    LoadAnimation("Models/Character/Player/Fast Run.fbx", "FastRun");
 
  
     transform.SetRotation(glm::vec3(0, 180, 0));
