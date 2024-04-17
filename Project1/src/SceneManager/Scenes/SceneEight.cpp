@@ -2,6 +2,7 @@
 #include "../../ApplicationRenderer.h"
 #include "../../Physics/Softbody/SoftBody.h"
 #include "../../Threading/SoftBodyThread.h"
+#include "../../Player/PlayerController.h"
 
 SoftBodyThread* sbThread = sbInfo;
 
@@ -52,6 +53,18 @@ void SceneEight::Start()
     
     softBodyTest1->InitializeSoftBody();
     softBodyTest1->AddLockSphere(0, 0.01f);
+
+    PlayerController* player = new PlayerController(application);
+
+    PhysXObject* plane = new PhysXObject();
+    plane->LoadModel("Models/Terrain/Terrain.fbx");
+    plane->transform.SetPosition(glm::vec3(0, -4.f, 0));
+    plane->transform.SetScale(glm::vec3(2, 1, 2));
+    plane->transform.SetRotation(glm::vec3(-90, 0, 0));
+    plane->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+    GraphicsRender::GetInstance().AddModelAndShader(plane, application->defaultShader);
+
+     audio->PlayBGAudio();
 }
 
 void SceneEight::Update()

@@ -405,6 +405,18 @@
     <ClCompile Include="src\SceneManager\Scenes\SceneEight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Audio\aRunAudio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\AudioManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\AudioUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\AudioSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -849,6 +861,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Threading\ThreadStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\aRunAudio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\AudioManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\AudioUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\AudioSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

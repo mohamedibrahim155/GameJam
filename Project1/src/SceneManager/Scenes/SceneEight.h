@@ -1,5 +1,6 @@
 #pragma once
 #include "../BaseScene.h"
+#include "../../Audio/AudioSystem.h"
 
 class SceneEight : public BaseScene
 {
@@ -11,6 +12,7 @@ public:
 	void Start() override;
 	void Update() override;
 	void Render() override;
+	AudioSystem* audio = new AudioSystem();
 
 private:
 
