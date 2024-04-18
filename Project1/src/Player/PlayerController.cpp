@@ -73,15 +73,19 @@ PlayerController::PlayerController(ApplicationRenderer* application)
     collider->AsCapsuleCollider()->SetHalfLength(0.7f);
 
     PhysicsMaterial playermaterial;
+    playermaterial.bounciness = 0;
     playermaterial.dynamicFriction = 15;
     playermaterial.staticFriction = 15;
+    playermaterial.frictionCombine = PhysicsMaterial::CombineMode::MAXIMUM;
+    playermaterial.bounceCombine = PhysicsMaterial::CombineMode::MINUMUM;
     collider->SetPhysicsMaterial(playermaterial);
 
     AddState(ePlayerState::IDLE, new IdleState());
     AddState(ePlayerState::RUN, new RunState());
     AddState(ePlayerState::MAGIC, new MagicState());
 
-    
+    rigidBody->SetMass(5);
+
     GetState(ePlayerState::MAGIC)->AsMagicState()->SetEventTrigger(
         [this]()
         {

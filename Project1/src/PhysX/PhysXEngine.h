@@ -17,6 +17,10 @@ using namespace physx;
 //static PxMaterial* gMaterial = NULL;
 //static PxPvd* physxDebbuggerDisplay = NULL;
 
+struct PhysicsEngineProperties
+{
+	glm::vec3 gravity = glm::vec3(0, -50.f, 0);
+};
 
 class PhysXEngine
 {
@@ -64,6 +68,8 @@ private:
 	static PxFilterFlags ContactReportFilterShader(PxFilterObjectAttributes attributes0, PxFilterData filterData0,
 		PxFilterObjectAttributes attributes1, PxFilterData filterData1,
 		PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize);
+
+	PhysicsEngineProperties physicsEngineProperties;
 	
 };
 

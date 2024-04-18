@@ -31,7 +31,8 @@ void PhysXEngine::InitializePhysX()
 
 
 	PxSceneDesc sceneDesc(physics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+	sceneDesc.gravity = PxVec3(physicsEngineProperties.gravity.x, physicsEngineProperties.gravity.y, physicsEngineProperties.gravity.z);
+	//sceneDesc.gravity = PxVec3(0.0f, -50.f, 0.0f);
 	dispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = dispatcher;
 	sceneDesc.filterShader = ContactReportFilterShader;
