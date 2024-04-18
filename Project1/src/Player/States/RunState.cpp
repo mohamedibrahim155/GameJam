@@ -42,7 +42,7 @@ void RunState::HandleTranslation()
 	{
 		horizontal = InputManager::GetInstance().GetJoystickHorizontal(eJoystickAxis::LEFT_AXIS);
 		vertical = InputManager::GetInstance().GetJoystickVertical(eJoystickAxis::LEFT_AXIS);
-	}
+		}
 
 	glm::vec3 forward = playerController->transform.GetForward();
 	glm::vec3 right = playerController->transform.GetRight();
@@ -75,7 +75,7 @@ void RunState::HandleTranslation()
 
 		const float speed = isFastRun ? playerController->playerMoveSpeed * 2 : playerController->playerMoveSpeed;
 
-		glm::vec3  moveVelocity = moveDirection * speed;
+		glm::vec3  moveVelocity = glm::normalize(moveDirection) * speed;
 
 		velocity = glm::vec3(moveVelocity.x, playerController->GetVelocity().y, moveVelocity.z);
 		playerController->SetVelocity(velocity);
@@ -123,19 +123,83 @@ void RunState::DrawStateProperties()
 
 void RunState::OnKeyPressed(const int& key)
 {
+	
+
 	if (key ==GLFW_KEY_LEFT_SHIFT)
 	{
 		isFastRun = true;
-
+		if (HandleInput())
 		playerController->PlayBlendAnimation("FastRun", 0.2f);
 	}
 }
 
 void RunState::OnKeyReleased(const int& key)
 {
+	
+
 	if (key == GLFW_KEY_LEFT_SHIFT)
 	{
 		isFastRun = false;
+
+		if (HandleInput())
 		playerController->PlayBlendAnimation("Run", 0.2f);
+	}
+}
+
+void RunState::OnKeyHold(const int& key)
+{
+	if (key == GLFW_KEY_LEFT_SHIFT)
+	{
+		isFastRun = true;
+
+		if (HandleInput())
+		{
+			if (playerController->GetCurrentAnimation() != playerController->GetAnimation("FastRun"))
+			{
+				playerController->PlayBlendAnimation("FastRun", 0.2f);
+			}
+		}
+
+	}
+}
+
+void RunState::OnJoystickButtonPressed(eJoystickButton button)
+{
+	
+	if (button == eJoystickButton::JOYSTICK_BUTTON_LEFT_BUMPER)
+	{
+		isFastRun = true;
+
+		if (HandleInput())
+		playerController->PlayBlendAnimation("FastRun", 0.2f);
+	}
+}
+
+void RunState::OnJoystickButtonReleased(eJoystickButton button)
+{
+
+	if (button == eJoystickButton::JOYSTICK_BUTTON_LEFT_BUMPER)
+	{
+		isFastRun = false;
+
+		if (HandleInput())
+		playerController->PlayBlendAnimation("Run", 0.2f);
+	}
+}
+
+void RunState::OnJoystickButtonHold(eJoystickButton button)
+{
+	if (button == eJoystickButton::JOYSTICK_BUTTON_LEFT_BUMPER)
+	{
+		isFastRun = true;
+
+		if (HandleInput())
+		{
+			if (playerController->GetCurrentAnimation() != playerController->GetAnimation("FastRun"))
+			{
+				playerController->PlayBlendAnimation("FastRun", 0.2f);
+			}
+		}
+			
 	}
 }

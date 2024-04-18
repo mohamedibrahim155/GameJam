@@ -8,6 +8,7 @@ void MagicState::Start()
 {
 	playerController->PlayBlendAnimation("Magic", 0.2f);
 	TriggerEvent = false;
+	animationTimer = 0;
 
 }
 
@@ -36,6 +37,8 @@ void MagicState::UpdateState(float deltaTime)
 void MagicState::EndState()
 {
 	TriggerEvent = false;
+	animationTimer = 0;
+
 }
 
 void MagicState::DrawStateProperties()
