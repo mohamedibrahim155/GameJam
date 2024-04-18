@@ -119,7 +119,7 @@ void SceneFive::Start()
 
 
     player = new PlayerController(application);
-    player->transform.SetPosition(glm::vec3(-75.91, 5.82, 105.85));
+    player->transform.SetPosition(glm::vec3(-75.64, 3.16, 105.30));
 
    
 
@@ -583,7 +583,7 @@ void SceneFive::Start()
     //instanceMesh->isVisible = false;
     instanceMesh->meshes[0]->meshMaterial->material()->specular = 0;
     instanceMesh->meshes[1]->meshMaterial->material()->specular = 0;
-    instanceMesh->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.2, 0, 1));
+    instanceMesh->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0.3, 0.2, 0.1, 1));
     instanceMesh->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.4, 0, 1));
     instanceMesh->AddTransformData(glm::vec3(-98.32, 1.77, 101.94), glm::vec3(0, 90, 0), glm::vec3(0.015));
     instanceMesh->AddTransformData(glm::vec3(-95.13, 0.77, 97.47), glm::vec3(0, 180, 0), glm::vec3(0.015));

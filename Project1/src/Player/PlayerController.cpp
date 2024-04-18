@@ -244,6 +244,28 @@ void PlayerController::DrawPlayerControllerProperties()
 
 void PlayerController::OnKeyPressed(const int& key)
 {
+
+    float horizontal = InputManager::GetInstance().GetHorizontalAxis();
+    float vertical = InputManager::GetInstance().GetVerticalAxis();
+
+
+    if (InputManager::GetInstance().IsJoyStickConnected())
+    {
+        horizontal = InputManager::GetInstance().GetJoystickHorizontal(eJoystickAxis::LEFT_AXIS);
+        vertical = InputManager::GetInstance().GetJoystickVertical(eJoystickAxis::LEFT_AXIS);
+    }
+
+    glm::vec3 moveDirection = glm::vec3(vertical, 0, horizontal);
+
+    float magnitude = glm::length(moveDirection);
+
+    if (magnitude >= 0.01f)
+    {
+        return;
+    }
+
+
+
     if (key == GLFW_KEY_M)
     {
         isMagicState = !isMagicState;
