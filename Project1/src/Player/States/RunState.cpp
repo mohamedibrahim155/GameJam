@@ -14,6 +14,13 @@ RunState::RunState()
 void RunState::Start()
 {
 	playerController->PlayBlendAnimation("Run",0.2f);
+	footStepsAudio = true;
+	runAudio = true;
+
+
+	playerController->playerAudio->StopAudio(3);
+	playerController->playerAudio->PlayAudio();
+	playerController->playerAudio->SetChannelVolume(1, 0.3f);
 }
 
 void RunState::UpdateState(float deltaTime)
@@ -25,10 +32,16 @@ void RunState::UpdateState(float deltaTime)
 	}
 
 	HandleTranslation();
+	
+	
+	
+	
 }
 
 void RunState::EndState()
 {
+	playerController->playerAudio->StopAudio(1);
+	playerController->playerAudio->StopAudio(3);
 }
 
 
@@ -42,7 +55,7 @@ void RunState::HandleTranslation()
 	{
 		horizontal = InputManager::GetInstance().GetJoystickHorizontal(eJoystickAxis::LEFT_AXIS);
 		vertical = InputManager::GetInstance().GetJoystickVertical(eJoystickAxis::LEFT_AXIS);
-		}
+	}
 
 	glm::vec3 forward = playerController->transform.GetForward();
 	glm::vec3 right = playerController->transform.GetRight();
@@ -61,17 +74,20 @@ void RunState::HandleTranslation()
 
 
 
-		glm::vec3 desiredRotation = glm::vec3(playerController->transform.rotation.x, angle, playerController->transform.rotation.z);
+		//glm::vec3 desiredRotation = glm::vec3(playerController->transform.rotation.x, angle, playerController->transform.rotation.z);
+		glm::vec3 desiredRotation = glm::vec3(0, angle, 0);
+
+		glm::quat targetQuatRot = glm::quat(glm::radians(desiredRotation));
 
 		//glm::quat currentQuatRot = glm::quat(glm::radians(desiredRotation));
 
-		//glm::quat lerpRotation = glm::slerp(playerController->transform.quaternionRotation,
-		//	currentQuatRot, rotationSpeed * (float)Time::GetInstance().deltaTime);
+		glm::quat lerpRotation = glm::slerp(playerController->transform.quaternionRotation,
+			targetQuatRot, rotationSpeed * (float)Time::GetInstance().deltaTime);
 
 		//glm::vec3 lerpRotationVec =Math::LerpVec3(playerController->transform.rotation,
 		//	desiredRotation, rotationSpeed * (float)Time::GetInstance().deltaTime);
 
-		playerController->transform.SetRotation(desiredRotation);
+		playerController->transform.SetQuatRotation(lerpRotation);
 
 		const float speed = isFastRun ? playerController->playerMoveSpeed * 2 : playerController->playerMoveSpeed;
 
@@ -129,7 +145,13 @@ void RunState::OnKeyPressed(const int& key)
 	{
 		isFastRun = true;
 		if (HandleInput())
-		playerController->PlayBlendAnimation("FastRun", 0.2f);
+		{
+		  playerController->playerAudio->StopAudio(1);
+		  playerController->playerAudio->PlayRunAudio();
+
+		  playerController->PlayBlendAnimation("FastRun", 0.2f);
+
+		}
 	}
 }
 
@@ -142,7 +164,15 @@ void RunState::OnKeyReleased(const int& key)
 		isFastRun = false;
 
 		if (HandleInput())
-		playerController->PlayBlendAnimation("Run", 0.2f);
+		{
+			playerController->playerAudio->StopAudio(3);
+			playerController->playerAudio->PlayAudio();
+			playerController->playerAudio->SetChannelVolume(1, 0.3f);
+
+			playerController->PlayBlendAnimation("Run", 0.2f);
+
+
+		}
 	}
 }
 
@@ -171,7 +201,12 @@ void RunState::OnJoystickButtonPressed(eJoystickButton button)
 		isFastRun = true;
 
 		if (HandleInput())
-		playerController->PlayBlendAnimation("FastRun", 0.2f);
+		{
+			playerController->playerAudio->StopAudio(1);
+			playerController->playerAudio->PlayRunAudio();
+			playerController->PlayBlendAnimation("FastRun", 0.2f);
+
+		}
 	}
 }
 
@@ -183,7 +218,13 @@ void RunState::OnJoystickButtonReleased(eJoystickButton button)
 		isFastRun = false;
 
 		if (HandleInput())
-		playerController->PlayBlendAnimation("Run", 0.2f);
+		{
+			playerController->playerAudio->StopAudio(3);
+			playerController->playerAudio->PlayAudio();
+			playerController->playerAudio->SetChannelVolume(1, 0.3f);
+			playerController->PlayBlendAnimation("Run", 0.2f);
+
+		} 
 	}
 }
 
@@ -197,6 +238,8 @@ void RunState::OnJoystickButtonHold(eJoystickButton button)
 		{
 			if (playerController->GetCurrentAnimation() != playerController->GetAnimation("FastRun"))
 			{
+				playerController->playerAudio->StopAudio(1);
+				playerController->playerAudio->PlayRunAudio();
 				playerController->PlayBlendAnimation("FastRun", 0.2f);
 			}
 		}

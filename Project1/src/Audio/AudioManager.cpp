@@ -129,7 +129,7 @@ int AudioManager::PlayAudio(const char* AudioName, int channelID)
 		printf("Audio not found!\n");
 		return channelID;	// Still want to return a valid channel id
 	}
-	printf("AudioFound!\n");
+	//printf("AudioFound!\n");
 
 	// Get the current channel id, and calculate the next one
 	
@@ -335,8 +335,8 @@ void AudioManager::Load3DAudio(const char* file)
 		return;
 	}
 	audioMap[file]->Audio->set3DMinMaxDistance(0.5f, 1000.f);
-	std::cout << "***********************" << std::endl;
-	printf("AudioManager::LoadAudio(%s): Loaded successful!\n", file);
+	//std::cout << "***********************" << std::endl;
+	//printf("AudioManager::LoadAudio(%s): Loaded successful!\n", file);
 }
 
 

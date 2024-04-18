@@ -3,6 +3,7 @@
 #include "../InputManager/InputManager.h"
 #include "States/BaseState.h"
 #include <unordered_map>
+#include "../Audio/AudioSystem.h"
 
 class CubeVolume;
 class CameraController;
@@ -25,7 +26,7 @@ public:
 	 void Render() override;
 	 void OnDestroy() override;
 
-
+	 AudioSystem* playerAudio = new AudioSystem();
 	 void OnTriggerEnter(PhysXObject* otherObject) override;
 	 void OnTriggerStay(PhysXObject* otherObject) override;
 	 void OnTriggerExit(PhysXObject* otherObject) override;

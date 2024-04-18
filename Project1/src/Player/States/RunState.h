@@ -42,6 +42,8 @@ private:
 	bool HandleInput();
 
 	bool isFastRun = false;
+	bool footStepsAudio = false;
+	bool runAudio = false;
 
 };
 
