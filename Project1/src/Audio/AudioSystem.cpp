@@ -14,7 +14,7 @@ AudioSystem::~AudioSystem()
 void AudioSystem::LoadAudio()
 {
 	audioManager->Load3DAudio("Audio/Footsteps.wav");
-	audioManager->Load3DAudio("Audio/assassins.mp3");
+	audioManager->Load3DAudio("Audio/BG.mp3");
 	
 }
 
@@ -25,7 +25,7 @@ void AudioSystem::PlayAudio()
 
 void AudioSystem::PlayBGAudio()
 {
-     audioManager->PlayAudio("Audio/assassins.mp3", 2);
+     audioManager->PlayAudio("Audio/BG.mp3", 2);
 }
 
 void AudioSystem::StopAudio(int channelId)

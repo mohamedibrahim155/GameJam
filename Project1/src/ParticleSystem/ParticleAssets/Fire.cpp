@@ -9,7 +9,7 @@ Fire::Fire(float radius, glm::vec3 position)
 	name = "Fire";
 	isVisible = true;
 
-	std::string difPath = "Textures/Particles/FogTexture1.png";
+	std::string difPath = "Textures/Particles/FirePart.png";
 	Texture* diffuse = new Texture(difPath);
 	particleEmission.m_ParticleModel->particleModel->meshes[0]->meshMaterial = new ParticleMaterial();
 	particleEmission.m_ParticleModel->particleModel->meshes[0]->meshMaterial->particleMaterial()->diffuseTexture = diffuse;
@@ -17,7 +17,7 @@ Fire::Fire(float radius, glm::vec3 position)
 	startLiftime = { 0,1 };
 	duration = 1;
 	startVelocity = { 1,3 };
-	particleEmission.rateOverTime = 150;
+	particleEmission.rateOverTime = 250;
 	
 	sizeOverLifetime.isEnabled = true;
 	sizeOverLifetime.startScale = glm::vec3(0.30);
@@ -34,7 +34,7 @@ Fire::Fire(float radius, glm::vec3 position)
 	
 	colorOverLifetime.AddColorKey({ glm::vec4(1,1,0,1),   0 });
 	colorOverLifetime.AddColorKey({ glm::vec4(1,1,0,0.8), 0.2 });
-	colorOverLifetime.AddColorKey({ glm::vec4(1,1,0,0.6), 0.4 });
+	colorOverLifetime.AddColorKey({ glm::vec4(2,0.3,0,0.6), 0.4 });
 	colorOverLifetime.AddColorKey({ glm::vec4(1,1,1,0.4), 0.6 });
 	colorOverLifetime.AddColorKey({ glm::vec4(1,1,1,0.2), 0.8 });
 	colorOverLifetime.AddColorKey({ glm::vec4(1,1,1,0),   1 });

@@ -420,6 +420,12 @@
     <ClCompile Include="src\PostProcessing\NightVision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\SceneManager\Scenes\SceneNine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\DepthTestPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h">
@@ -881,6 +887,12 @@
     <ClInclude Include="src\PostProcessing\NightVision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\SceneManager\Scenes\SceneNine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\DepthTestPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source.frag" />
@@ -919,5 +931,9 @@
     <None Include="Shaders\PostProcessing\DessertHeatwave.vert" />
     <None Include="Shaders\PostProcessing\NightVision.frag" />
     <None Include="Shaders\PostProcessing\NightVision.vert" />
+    <None Include="Shaders\Shadow\ShadowDepth.frag" />
+    <None Include="Shaders\Shadow\ShadowDepth.vert" />
+    <None Include="Shaders\Shadow\ShadowMapShader.frag" />
+    <None Include="Shaders\Shadow\ShadowMapShader.vert" />
   </ItemGroup>
 </Project>

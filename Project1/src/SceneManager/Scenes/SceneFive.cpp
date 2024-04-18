@@ -1,6 +1,5 @@
 #include "SceneFive.h"
 #include "../../ApplicationRenderer.h"
-#include "../../Player/PlayerController.h"
 #include "../../PostProcessing bounds/CubeVolume.h"
 #include"../../AI/Enemy.h"
 #include "../../Grass/GrassMesh.h"
@@ -119,18 +118,10 @@ void SceneFive::Start()
 
 
 
-    PlayerController* player = new PlayerController(application);
+    player = new PlayerController(application);
     player->transform.SetPosition(glm::vec3(-75.91, 5.82, 105.85));
 
-    Model* playerDummy = new Model("Models/Character/Enemy/Orc.fbx");
-    playerDummy->name = "Orc";
-
-    std::string diffuseTexturept = "Models/Character/Textures/Player.png";
-    Texture* texture = new Texture(diffuseTexturept);
-   // playerDummy->meshes[0]->meshMaterial->material()->diffuseTexture = texture;
-    playerDummy->transform.SetPosition(glm::vec3(-75.91, 5.82, 105.85));
-    playerDummy->transform.SetScale(glm::vec3(0.01));
-    GraphicsRender::GetInstance().AddModelAndShader(playerDummy, application->defaultShader);
+   
 
     PhysXObject* terrain = new PhysXObject();
     terrain->occulsionState = eOcculsionState::NO_OCCULSION;
@@ -592,8 +583,8 @@ void SceneFive::Start()
     //instanceMesh->isVisible = false;
     instanceMesh->meshes[0]->meshMaterial->material()->specular = 0;
     instanceMesh->meshes[1]->meshMaterial->material()->specular = 0;
-    instanceMesh->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.7, 0, 1));
-    instanceMesh->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.5, 0, 1));
+    instanceMesh->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.2, 0, 1));
+    instanceMesh->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(0, 0.4, 0, 1));
     instanceMesh->AddTransformData(glm::vec3(-98.32, 1.77, 101.94), glm::vec3(0, 90, 0), glm::vec3(0.015));
     instanceMesh->AddTransformData(glm::vec3(-95.13, 0.77, 97.47), glm::vec3(0, 180, 0), glm::vec3(0.015));
     instanceMesh->AddTransformData(glm::vec3(-95.13, 1.77, 102.73), glm::vec3(0, 270, 0), glm::vec3(0.015));
@@ -1020,7 +1011,7 @@ void SceneFive::Start()
     Gibbet->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
     GraphicsRender::GetInstance().AddModelAndShader(Gibbet, application->defaultShader);
     Gibbet->name = "Gibbet";
-    Gibbet->transform.SetPosition(glm::vec3(-66.52, 10.00, 53.89));
+    Gibbet->transform.SetPosition(glm::vec3(-66.52, 9.56, 53.89));
     Gibbet->transform.SetRotation(glm::vec3(0, -31.60, 0));
     Gibbet->transform.SetScale(glm::vec3(0.01));
     Gibbet->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
@@ -1165,17 +1156,18 @@ void SceneFive::Start()
         
     GraphicsRender::GetInstance().AddModelAndShader(grassMeshInstance, application->grassInstanceShader);
 
-    Model* dummy = new Model();
+   /* Model* dummy = new Model();
     dummy->LoadModel("Models/Graveyard/Fences/Grass.fbx");
     dummy->name = "dummy";
     dummy->transform.SetPosition(glm::vec3(-71.76, 3.12, 101.13));
     dummy->transform.SetRotation(glm::vec3(0));
     dummy->transform.SetScale(glm::vec3(0.015));
-    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);
+    GraphicsRender::GetInstance().AddModelAndShader(dummy, application->defaultShader);*/
 
     PhysXObject* Scythe = new PhysXObject();
     Scythe->LoadModel("Models/Graveyard/Scythe.fbx");
     Scythe->meshes[0]->meshMaterial->material()->diffuseTexture = body;
+    Scythe->occulsionState = eOcculsionState::DYNAMIC;
     GraphicsRender::GetInstance().AddModelAndShader(Scythe, application->defaultShader);
     Scythe->name = "Scythe";
     Scythe->transform.SetPosition(glm::vec3(-49.43, 8.41, 74.47));
@@ -1249,6 +1241,7 @@ void SceneFive::Start()
 
     FireFly* fireFly = new FireFly(1.20, glm::vec3(-66.40, 9.80, 53.30));
     FireFly* fireFly2 = new FireFly(1.20, glm::vec3(-49.20, 7.40, 68.70));
+    FireFly* fireFly3 = new FireFly(1.20, glm::vec3(-66.70, 7.50, 64.90));
 
 
     Model* FoilageStone = new Model();
@@ -1305,9 +1298,11 @@ void SceneFive::Start()
     PumpkinPhy->LoadModel("Models/Graveyard/Pumpkin.fbx");
     PumpkinPhy->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
     PumpkinPhy->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+    PumpkinPhy->occulsionState = eOcculsionState::DYNAMIC;
+
     GraphicsRender::GetInstance().AddModelAndShader(PumpkinPhy, application->defaultShader);
     PumpkinPhy->name = "Pumpkin";
-    PumpkinPhy->transform.SetPosition(glm::vec3(-49.43, 8.41, 74.47));
+    PumpkinPhy->transform.SetPosition(glm::vec3(-52.29, 9.20, 73.25));
     PumpkinPhy->transform.SetRotation(glm::vec3(0, -202.40, -15.50));
     PumpkinPhy->transform.SetScale(glm::vec3(0.013));
     PumpkinPhy->Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::SPHERE);
@@ -1382,7 +1377,108 @@ void SceneFive::Start()
 
   
 
-   // OcculsionManager::GetInstance().InitializeOcculusion();
+   PhysXObject* Sword = new PhysXObject();
+   Sword->LoadModel("Models/Sword/Sword.obj");  
+   GraphicsRender::GetInstance().AddModelAndShader(Sword, application->defaultShader);
+   Sword->name = "Sword";
+   Sword->transform.SetPosition(glm::vec3(-66.65, 7.53, 64.83));
+   Sword->transform.SetRotation(glm::vec3(-63.90, 69.70, 111.30));
+   Sword->transform.SetScale(glm::vec3(0.13));
+   Sword->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+   std::string baseColorPath = "Models/GOW/chaos_sword.png";
+   Texture* bladesDiffuse = new Texture(baseColorPath);
+
+
+   PhysXObject* Blades = new PhysXObject();
+   Blades->LoadModel("Models/GOW/Blades.fbx");
+   Blades->meshes[0]->meshMaterial->material()->diffuseTexture = bladesDiffuse;
+   Blades->occulsionState = eOcculsionState::DYNAMIC;
+   GraphicsRender::GetInstance().AddModelAndShader(Blades, application->defaultShader);
+   Blades->name = "Blades";
+   Blades->transform.SetPosition(glm::vec3(-60.08, 9.53, 68.82));
+   Blades->transform.SetRotation(glm::vec3(0, 0, 90.00));
+   Blades->transform.SetScale(glm::vec3(2.30));
+   Blades->Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::BOX);
+
+   PhysXObject* Blades2 = new PhysXObject();
+   Blades2->LoadModel(*Blades);
+   Blades2->occulsionState = eOcculsionState::DYNAMIC;
+
+   GraphicsRender::GetInstance().AddModelAndShader(Blades2, application->defaultShader);
+   Blades2->name = "Blades2";
+   Blades2->transform.SetPosition(glm::vec3(-60.61, 9.53, 70.88));
+   Blades2->transform.SetRotation(glm::vec3(180.00, 0, 90.00));
+   Blades2->transform.SetScale(glm::vec3(2.30));
+   Blades2->Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::BOX);
+
+   std::string baseColorPath_ = "Models/Borne/02___Default_Base_Color.png";
+   Texture* BorneDiffuse = new Texture(baseColorPath_);
+
+   PhysXObject* Borne = new PhysXObject();
+   Borne->LoadModel("Models/Borne/Borne.fbx");
+   Borne->meshes[0]->meshMaterial->material()->diffuseTexture = BorneDiffuse;
+   Borne->occulsionState = eOcculsionState::DYNAMIC;
+
+   GraphicsRender::GetInstance().AddModelAndShader(Borne, application->defaultShader);
+   Borne->name = "Borne";
+   Borne->transform.SetPosition(glm::vec3(-59.09, 9.53, 73.16));
+   Borne->transform.SetRotation(glm::vec3(0, 90.00, 0));
+   Borne->transform.SetScale(glm::vec3(0.01));
+   Borne->Initialize(RigidBody::RigidBodyType::DYNAMIC, BaseCollider::ColliderShape::BOX);
+
+   std::string mimicPath = "Models/Mimic/Mimic_4K_BaseColor.png";
+   Texture* mimicdiffuse = new Texture(mimicPath);
+
+   PhysXObject* Mimic = new PhysXObject();
+   Mimic->LoadModel("Models/Mimic/Mimic.fbx");
+   Mimic->meshes[0]->meshMaterial->material()->diffuseTexture = mimicdiffuse;
+   Mimic->occulsionState = eOcculsionState::DYNAMIC;
+   GraphicsRender::GetInstance().AddModelAndShader(Mimic, application->defaultShader);
+   Mimic->name = "Mimic";
+   Mimic->transform.SetPosition(glm::vec3(-45.76, 7.15, 78.76));
+   Mimic->transform.SetRotation(glm::vec3(-90.00, -36.60, 0));
+   Mimic->transform.SetScale(glm::vec3(2.00));
+   Mimic->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+   
+   std::string statuePath = "Models/Statue/gaurdianColor.png";
+   Texture* statueDiffuse = new Texture(statuePath);
+
+   PhysXObject* Statue = new PhysXObject();
+   Statue->LoadModel("Models/Statue/Statue.fbx");
+   Statue->meshes[0]->meshMaterial->material()->diffuseTexture = statueDiffuse;
+
+   GraphicsRender::GetInstance().AddModelAndShader(Statue, application->defaultShader);
+   Statue->name = "Statue";
+   Statue->transform.SetPosition(glm::vec3(-44.70, 7.33, 82.35));
+   Statue->transform.SetRotation(glm::vec3(0, -126.00, 0));
+   Statue->transform.SetScale(glm::vec3(0.01));
+   Statue->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+
+   Model* Death = new Model();
+   Death->LoadModel("Models/Death/Death.fbx");
+   Death->name = "Death";
+   Death->transform.SetPosition(glm::vec3(-50.19, 11.77, 78.40));
+   Death->transform.SetRotation(glm::vec3(-90.00, -125.60, 0.00));
+   Death->transform.SetScale(glm::vec3(0.08));
+   Death->meshes[0]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
+   GraphicsRender::GetInstance().AddModelAndShader(Death, application->defaultShader);
+
+   PhysXObject* wallFinal = new PhysXObject();
+   wallFinal->LoadModel("Models/DefaultCube/DefaultCube.fbx");
+   GraphicsRender::GetInstance().AddModelAndShader(wallFinal, application->defaultShader);
+   wallFinal->isVisible = false;
+   wallFinal->name = "wallFinal";
+   wallFinal->transform.SetPosition(glm::vec3(-75.83, 3.84, 106.88));
+   wallFinal->transform.SetRotation(glm::vec3(0, 8.40, 0));
+   wallFinal->transform.SetScale(glm::vec3(1.80, 1.60, 0.30));
+   wallFinal->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+  
+
+
+   
+    OcculsionManager::GetInstance().InitializeOcculusion();
 }
 
 //TreeThree
@@ -1395,7 +1491,7 @@ void SceneFive::Update()
     {
         if (isPlaying)
         {
-            //audio->PlayBGAudio();
+            audio->PlayBGAudio();
             isPlaying = false;
         }
 

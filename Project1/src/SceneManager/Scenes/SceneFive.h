@@ -1,6 +1,8 @@
 #pragma once
 #include "../BaseScene.h"
 #include "../../Audio/AudioSystem.h"
+#include "../../Player/PlayerController.h"
+
 
 class SceneFive : public BaseScene
 {
@@ -13,5 +15,6 @@ public:
 
 	AudioSystem* audio = new AudioSystem();
 	bool isPlaying = true;
+	PlayerController* player;
 };
 

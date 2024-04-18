@@ -19,7 +19,7 @@ using namespace physx;
 
 struct PhysicsEngineProperties
 {
-	glm::vec3 gravity = glm::vec3(0, -50.f, 0);
+	glm::vec3 gravity = glm::vec3(0, -40.f, 0);
 };
 
 class PhysXEngine
