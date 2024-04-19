@@ -119,7 +119,7 @@ void SceneFive::Start()
 
 
     player = new PlayerController(application);
-    player->transform.SetPosition(glm::vec3(-75.64, 3.16, 105.30));
+    player->transform.SetPosition(glm::vec3(-75.64, 3.27, 105.30));
 
    
 

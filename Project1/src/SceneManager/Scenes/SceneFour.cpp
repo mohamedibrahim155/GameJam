@@ -52,23 +52,19 @@ void SceneFour::Start()
 
     Model* Plane = new Model();
     Plane->LoadModel("Models/DefaultQuad/DefaultQuad.fbx");
-
-    //Plane->transform.SetPosition(glm::vec3(0, -1, 0));
     Plane->transform.SetRotation(glm::vec3(90, 0, 0));
     Plane->transform.SetScale(glm::vec3(10));
     GraphicsRender::GetInstance().AddModelAndShader(Plane, application->defaultShader);
 
-
     Model* Plane2 = new Model();
     Plane2->LoadModel("Models/DefaultQuad/DefaultQuad.fbx");
-
     Plane->transform.SetPosition(glm::vec3(0, 10, 0));
     Plane2->transform.SetRotation(glm::vec3(90, 0, 0));
     Plane2->transform.SetScale(glm::vec3(10));
     GraphicsRender::GetInstance().AddModelAndShader(Plane2, application->defaultShader);
 
-   // FireFly* fireFly = new FireFly();
-  //  Fire* fire = new Fire(0.2, { 0, 0 ,0 });
+   FireFly* fireFly = new FireFly(0.2, { 0, 0 ,0 });
+   Fire* fire = new Fire(0.2, { 0, 0 ,0 });
 }
 
 void SceneFour::Update()
