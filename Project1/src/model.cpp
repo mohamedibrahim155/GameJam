@@ -224,9 +224,9 @@ void Model::LoadModel(std::string const& path, bool isLoadTexture, bool isDebugM
 
     ProcessNode(scene->mRootNode, scene);
 
-    std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
+    //std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
 
-    std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
+    //std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
     SetModelName();
 
     if (isDebugModel) return;
@@ -442,7 +442,7 @@ std::shared_ptr<Mesh> Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
          aiString texString;
          mat->GetTexture(type, i, &texString);
 
-         std::cout << " texutre path : " << texString.C_Str() << "Texture Type : " << TextureType(type) << std::endl;
+        // std::cout << " texutre path : " << texString.C_Str() << "Texture Type : " << TextureType(type) << std::endl;
          std::string filename = std::string(texString.C_Str());
          filename = directory + '/' + filename;
          std::ifstream file(filename);

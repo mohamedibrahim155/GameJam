@@ -1299,7 +1299,6 @@ void SceneFive::Start()
     PumpkinPhy->meshes[0]->meshMaterial->material()->diffuseTexture = diffuseTexture;
     PumpkinPhy->meshes[1]->meshMaterial->material()->SetBaseColor(glm::vec4(10, 10, 0, 1));
     PumpkinPhy->occulsionState = eOcculsionState::DYNAMIC;
-
     GraphicsRender::GetInstance().AddModelAndShader(PumpkinPhy, application->defaultShader);
     PumpkinPhy->name = "Pumpkin";
     PumpkinPhy->transform.SetPosition(glm::vec3(-52.29, 9.20, 73.25));

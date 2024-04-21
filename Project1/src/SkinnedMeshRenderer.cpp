@@ -217,7 +217,7 @@ void SkinnedMeshRenderer::LoadModel(std::string const& path, bool isLoadTexture,
 
     //globalInverseTransformedMatrix = glm::inverse(rootBoneNode->transformation);
 
-	std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
+	//std::cout << " Loaded  Model file  : " << directory << " Mesh count : " << scene->mNumMeshes << std::endl;
 
 	SetModelName();
 

@@ -44,8 +44,8 @@ private:
 	glm::vec3 playerPosition;
 
 	float mouseSensitivity = 0.1f;
-	float joystickSensitivity = 1;
-	float moveSpeed = 5;
+	float joystickSensitivity = 3;
+	float moveSpeed = 50;
 	float rotationSpeed = 10;
 
 	float mouseX;

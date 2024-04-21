@@ -93,7 +93,7 @@ void CameraController::Update(float deltaTime)
 	yaw += mouseX ;
 	//yaw = glm::clamp(yaw, -360.0f, 360.0f);
 	pitch -= mouseY;
-	//pitch = glm::clamp(pitch, -minVerticalAngle, minVerticalAngle);
+	pitch = glm::clamp(pitch, -8.0f, 60.0f);
 
 	 playerPosition = playerController->transform.position;
 	playerPosition.y += cameraOffset.y;
@@ -146,7 +146,8 @@ void CameraController::Update(float deltaTime)
 	glm::quat lookAtRotation = glm::quatLookAt(lookAtDirection, glm::vec3(0, 1, 0));
 
 	
-	GetCamera()->transform.SetQuatRotation(glm::slerp(GetCamera()->transform.quaternionRotation, lookAtRotation, (float)Time::GetInstance().deltaTime * rotationSpeed));
+	//GetCamera()->transform.SetQuatRotation(glm::slerp(GetCamera()->transform.quaternionRotation, lookAtRotation, (float)Time::GetInstance().deltaTime * rotationSpeed));
+	GetCamera()->transform.SetQuatRotation(lookAtRotation);
 }
 
 void CameraController::OnDestroy()
