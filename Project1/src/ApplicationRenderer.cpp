@@ -250,7 +250,7 @@ void ApplicationRenderer::Start()
     BaseScene* sceneSeven = new SceneSeven("occlusion");
     BaseScene* sceneEight = new SceneEight("SoftBody");
 
-    SceneManager::GetInstance().OnChangeScene("GrassMeshInstance");
+    SceneManager::GetInstance().OnChangeScene("MainGame");
 
     FPS* fps = new FPS();
     fogSystem = new FogSystem();
