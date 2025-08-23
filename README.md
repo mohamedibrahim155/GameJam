@@ -1,64 +1,74 @@
 # REVOKER GAME ENGINE
-Built with OpenGL and C++
 
+A custom game engine built with **C++** and **OpenGL**.
 
-Developed By:
-Mohamed Ibrahim (Graphics and Engine Programmer)
-Uphendra ( Graphics Programmer )
+---
 
-Technical Demo: https://uphendra.itch.io/grave-robber
+## 👨‍💻 Developed By
+- **Mohamed Ibrahim** – Graphics and Engine Programmer  
+- **Uphendra** – Graphics Programmer  
 
+🎮 **Technical Demo:** [Grave Robber](https://uphendra.itch.io/grave-robber)
 
-Systems Included in Engine:
+---
 
-Graphics :   
-          # Post processing  
-          # Render Textures
-          # Phong Shading
-          # Level of Detail (LOD)
-          # Mesh Instancing
-          # Skeletal Animation
-          # Particle System
-          # Cubemap
-          
-Physics:   
-          # using PhysX 
-          # Colliders with different shapes
-          # Terrain collision and BVH
-          # Custom cloth physics
-          # custom Triggers and collider events
+## 🚀 Systems Included in Engine
 
-Custom Editor (Inspired by Unity):   
-          # Game view
-          # Scene view
-          # Heirachy 
-          # Inspector 
-          # Play, Stop toggle buttons
-          
+### 🎨 Graphics
+- Post Processing  
+- Render Textures  
+- Phong Shading  
+- Level of Detail (LOD)  
+- Mesh Instancing  
+- Skeletal Animation  
+- Particle System  
+- Cubemap  
 
-Audio:   
-          # using FMOD 
-          # DSP added
-          # Background music added
+---
 
+### ⚙️ Physics (Powered by **NVIDIA PhysX**)
+- Colliders with different shapes  
+- Terrain collision and BVH  
+- Custom cloth physics  
+- Custom triggers and collider events  
 
-Gameplay:   
-          # Player movement using Joystick, Keyboard, and mouse
-          # AI path patrolling and player insight detection
-          # Triggering post-processing volume box
-          # Player smooth animation blending
+---
 
+### 🛠️ Custom Editor (Inspired by Unity)
+- Game View  
+- Scene View  
+- Hierarchy  
+- Inspector  
+- Play / Stop toggle buttons  
 
-Other Systems:   
-          # Input event handles across  Joystick, Keyboard, and mouse
-          # Object pooling
-          # Entity inheritance architecture
+---
 
-          # 
-        
-          
+### 🔊 Audio (Powered by **FMOD**)
+- DSP (Digital Signal Processing) support  
+- Background music integration  
 
-          
+---
 
-          
-        
+### 🎮 Gameplay
+- Player movement via Joystick, Keyboard, and Mouse  
+- AI path patrolling & player insight detection  
+- Trigger-based post-processing volume box  
+- Smooth animation blending for player  
+
+---
+
+### 📦 Other Systems
+- Input event handling across Joystick, Keyboard, and Mouse  
+- Object Pooling  
+- Entity inheritance architecture  
+
+---
+
+## 📷 Screenshots / Demo
+*(Add screenshots or gifs here to showcase the engine features)*
+
+---
+
+## 📜 License
+This project is developed for educational and demonstration purposes.  
+Feel free to explore, learn, and get inspired!
