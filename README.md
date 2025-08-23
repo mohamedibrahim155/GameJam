@@ -65,7 +65,8 @@ A custom game engine built with **C++** and **OpenGL**.
 ---
 
 ## 📷 Screenshots / Demo
-*(Add screenshots or gifs here to showcase the engine features)*
+<img width="1924" height="1079" alt="Screenshot 2024-07-23 135207" src="https://github.com/user-attachments/assets/d6b9ca31-b422-42f7-9374-f6ea284aa049" />
+<img width="1017" height="1076" alt="Screenshot 2024-07-23 134704" src="https://github.com/user-attachments/assets/5cbd1ed5-0c5c-4f79-9c1f-b1fa65ca07ae" />
 
 ---
 
