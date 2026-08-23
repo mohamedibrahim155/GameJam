@@ -126,9 +126,18 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
     specification.attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::DEPTH };
     
 
+    FrameBufferSpecification shadowSpecification;
+	shadowSpecification.width = shadowMapWidth;
+	shadowSpecification.height = shadowMapHeight;
+	shadowSpecification.attachments = { FramebufferTextureFormat::DEPTH };
+
+
+
     sceneViewframeBuffer = new FrameBuffer(specification);
 
     gameframeBuffer = new FrameBuffer(specification);
+
+	shadowMapFrameBuffer = new FrameBuffer(shadowSpecification);
 
     EditorLayout::GetInstance().applicationRenderer = this;
   
@@ -145,12 +154,12 @@ void ApplicationRenderer::WindowInitialize(int width, int height,  std::string w
 
 
     sceneViewcamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
-    sceneViewcamera->transform.position = glm::vec3(-79.46, 11.76, 107.19);
-    sceneViewcamera->transform.SetRotation(glm::vec3(-41.70, -31.50,0));
+    sceneViewcamera->transform.position = glm::vec3(16.80, 30.56, 35.05);
+    sceneViewcamera->transform.SetRotation(glm::vec3(-37.10f, 26.60,0));
 
     gameScenecamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
-    gameScenecamera->transform.position = glm::vec3(-85.88, 9.03, 115.62);
-    gameScenecamera->transform.SetRotation(glm::vec3(-6.10, -20.50,0));
+    gameScenecamera->transform.position = glm::vec3(0, 11.76, 0);
+    gameScenecamera->transform.SetRotation(glm::vec3(0, 0, 0));
 
     renderTextureCamera->InitializeCamera(CameraType::PERSPECTIVE, 45.0f, 0.1f, 1000.0f);
     renderTextureCamera->transform.position = glm::vec3(0, 0, -1.0f);
@@ -195,6 +204,9 @@ void ApplicationRenderer::InitializeShaders()
 
     particleShader = new Shader("Shaders/ParticleShader.vert", "Shaders/ParticleShader.frag");
     particleShader->blendMode = ALPHA_BLEND;
+
+    shadowDepthShader = new Shader("Shaders/Shadow/ShadowDepth.vert", "Shaders/Shadow/ShadowDepth.frag", OPAQUE);
+    shadowDepthSkinnedShader = new Shader("Shaders/Shadow/ShadowDepthSkinned.vert", "Shaders/Shadow/ShadowDepth.frag", OPAQUE);
 
     GraphicsRender::GetInstance().defaultShader = defaultShader;
     GraphicsRender::GetInstance().solidColorShader = solidColorShader;
@@ -255,6 +267,7 @@ void ApplicationRenderer::Start()
 
     FPS* fps = new FPS();
     fogSystem = new FogSystem();
+    fogSystem->fogActive = false;
 
 }
 
@@ -273,7 +286,8 @@ void ApplicationRenderer::Render()
         Time::GetInstance().SetCurrentTime(glfwGetTime());
 
         EngineGameLoop();
-
+		UpdateLightSpaceMatrix();
+        RenderShadowPass();
         EngineGraphicsRender();
 
         glfwSwapBuffers(window);
@@ -301,6 +315,10 @@ void ApplicationRenderer::EngineGraphicsRender()
     if (isImguiPanelsEnable)
     {
         PanelManager::GetInstance().Update((float)windowWidth, (float)WindowHeight);
+
+        ImGui::Begin("Shadow Map Debug");
+        ImGui::Image((void*)shadowMapFrameBuffer->GetDepthAttachementID(), ImVec2(400, 400), ImVec2(0, 1), ImVec2(1, 0));
+        ImGui::End();
     }
 
     if (!isMaximizePressed)
@@ -360,6 +378,21 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 
 
     defaultShader->Bind();
+    defaultShader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
+    defaultShader->setFloat("biasValue", 0.005f);
+
+    Light* shadowLight = LightManager::GetInstance().GetDirectionalLight();
+    if (shadowLight != nullptr)
+    {
+        defaultShader->setVec3("lightDir", -shadowLight->transform.GetForward());
+    }
+
+    glActiveTexture(GL_TEXTURE0 + 3);   // pick a texture unit not already used by diffuse/specular/opacity
+    glBindTexture(GL_TEXTURE_2D, shadowMapFrameBuffer->GetDepthAttachementID());
+
+
+    defaultShader->setInt("shadowMap", 3);
+
     defaultShader->setMat4("projection", projection);
     defaultShader->setMat4("view", view);
     defaultShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
@@ -376,6 +409,17 @@ void ApplicationRenderer::RenderForCamera(Camera* camera, FrameBuffer* framebuff
 
 
     boneAnimationShader->Bind();
+
+    boneAnimationShader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
+    boneAnimationShader->setFloat("biasValue", 0.005f);
+    if (shadowLight != nullptr)
+    {
+        boneAnimationShader->setVec3("lightDir", -shadowLight->transform.GetForward());
+    }
+    glActiveTexture(GL_TEXTURE0 + 3);   // pick a texture unit not already used by diffuse/specular/opacity
+    glBindTexture(GL_TEXTURE_2D, shadowMapFrameBuffer->GetDepthAttachementID());
+    boneAnimationShader->setInt("shadowMap", 3);
+
     boneAnimationShader->setMat4("projection", projection);
     boneAnimationShader->setMat4("view", view);
     boneAnimationShader->setVec3("viewPos", camera->transform.position.x, camera->transform.position.y, camera->transform.position.z);
@@ -484,6 +528,52 @@ void ApplicationRenderer::ChangeCursorState(eCursorState state)
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         break;
     }
+}
+
+void ApplicationRenderer::RenderShadowPass()
+{
+    if (LightManager::GetInstance().GetDirectionalLight() == nullptr) return;
+
+    shadowMapFrameBuffer->Bind();
+	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
+
+    shadowDepthShader->Bind();
+    shadowDepthShader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+    shadowDepthSkinnedShader->Bind();
+    shadowDepthSkinnedShader->setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+    for (Model* model : GraphicsRender::GetInstance().GetModelList())
+    {
+        Shader* depthShader = (model->modelShader == boneAnimationShader) ? shadowDepthSkinnedShader : shadowDepthShader;
+        model->Draw(depthShader);
+	}
+
+	shadowMapFrameBuffer->Unbind();
+}
+
+void ApplicationRenderer::UpdateLightSpaceMatrix()
+{
+    Light* shadowLight = LightManager::GetInstance().GetDirectionalLight();
+    if (shadowLight == nullptr) return;   // nothing to build a shadow map from this frame
+
+	glm::vec3 lightDir = shadowLight->transform.GetForward();
+	glm::vec3 shadowSceneCentre = shadowLight->transform.position;
+	glm::vec3 lightpos = shadowSceneCentre - lightDir * shadowDistance;
+
+	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+
+    if (glm::abs(glm::dot(glm::normalize(lightDir),up)) >0.99f)
+    {
+        up = glm::vec3(0.0f, 0.0f, 1.0f);   // avoid degenerate lookAt when light points straight up/down
+    }
+
+	glm::mat4 lightView = glm::lookAt(lightpos, shadowSceneCentre, up);
+
+	glm::mat4 lightProjection = glm::ortho(-shadowOrthoSize, shadowOrthoSize, -shadowOrthoSize, shadowOrthoSize, shadowNearPlane, shadowFarPlane);
+
+	lightSpaceMatrix = lightProjection * lightView;
+
 }
 
 void ApplicationRenderer::PostRender()

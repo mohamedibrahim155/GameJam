@@ -66,13 +66,18 @@ public:
 	void EngineGameLoop();
 	void RenderForCamera(Camera* camera, FrameBuffer* framebuffer, bool isSceneView = false);
 	void ChangeCursorState(eCursorState state);
+	void RenderShadowPass();
+	void UpdateLightSpaceMatrix();
 	
 	FrameBufferSpecification specification;
 	FrameBuffer* sceneViewframeBuffer;
 	FrameBuffer* gameframeBuffer;
+	FrameBuffer* shadowMapFrameBuffer;
+
 	Camera* sceneViewcamera;
 	Camera* gameScenecamera;
 	Camera* renderTextureCamera;
+
 
 	Shader* defaultShader;
 	Shader* solidColorShader;
@@ -85,10 +90,20 @@ public:
 
 	Shader* stencilShader;
 	Shader* skyboxShader;
+	Shader* shadowDepthShader;
+	Shader* shadowDepthSkinnedShader;
+
+	glm::vec3 shadowSceneCentre = glm::vec3(0);
+	float shadowOrthoSize = 50.0f;
+	float shadowNearPlane = 0.1f;
+	float shadowFarPlane = 150;
+	float shadowDistance = 50;
 
 	glm::mat4 projection;
 	glm::mat4 view;
 	glm::mat4 skyBoxView;
+	glm::mat4 lightSpaceMatrix;
+
 
 	eCursorState currentCursorState = eCursorState::VISIBLE;
 
@@ -103,6 +118,9 @@ public:
 
 	int windowWidth;
 	int  WindowHeight;
+
+	int shadowMapWidth = 2048;
+	int shadowMapHeight = 2048;
 private:
 
 	GLFWwindow* window;
