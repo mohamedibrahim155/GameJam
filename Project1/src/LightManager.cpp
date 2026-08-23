@@ -3,6 +3,15 @@
 
 
 
+LightManager::LightManager()
+{
+    directionalLight = nullptr;
+}
+
+LightManager::~LightManager()
+{
+}
+
 LightManager& LightManager::GetInstance()
 {
     static LightManager instance;
@@ -34,11 +43,20 @@ void LightManager::SetUniforms(GLuint shaderID)
 
 void LightManager::AddLight(Light* light)
 {
+    if(light->lightType == DIRECTION_LIGHT)
+    {
+        directionalLight = light;
+    }
     lightList.push_back(light);
 }
 
 void LightManager::RemoveLight(Light* light)
 {
+    if (light->lightType == DIRECTION_LIGHT)
+    {
+        directionalLight = nullptr;
+    }
+
     lightList.erase(std::remove(lightList.begin(), lightList.end(), light), lightList.end());
 }
 
@@ -171,6 +189,11 @@ void LightManager::RenderLights()
 
         }
     }
+}
+
+Light* LightManager::GetDirectionalLight()
+{
+    return directionalLight;
 }
 
 const std::vector<Light*>& LightManager::GetLightList()

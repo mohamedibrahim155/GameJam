@@ -5,7 +5,8 @@
 class LightManager 
 {
 public:
-
+    LightManager();
+	~LightManager();
     static LightManager& GetInstance();
    
 
@@ -21,10 +22,13 @@ public:
     void  RenderLights();
     static const unsigned int MAX_LIGHT = 11;
     
+     Light* GetDirectionalLight();
+
     const std::vector<Light*>& GetLightList();
 private:
     std::vector<Light*> lightList;
     std::vector<Shader*> listOfShaders;
+	Light* directionalLight = nullptr;
 };
 
 

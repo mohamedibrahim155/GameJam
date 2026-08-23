@@ -108,9 +108,9 @@ void main()
 
     vec3 R = reflect(-viewDir, norm);
 
-    //float shadow =  ShadowCalculation(FragPosLightSpace,norm);
+    float shadow =  ShadowCalculation(FragPosLightSpace,norm);
 
-    vec4 result = CalculateLight(norm,viewDir,0);
+    vec4 result = CalculateLight(norm,viewDir,shadow);
   
      vec4 cutOff = texture(diffuse_Texture, TextureCoordinates);
  

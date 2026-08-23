@@ -17,22 +17,35 @@ void SceneOne::Start()
     directionLight->SetAttenuation(1, 1, 0.01f);
     directionLight->SetInnerAndOuterCutoffAngle(11, 12);
 
-    directionLight->transform.SetRotation(glm::vec3(0, 0, 5));
+    directionLight->transform.SetRotation(glm::vec3(-90.0f, 0, 0));
     directionLight->transform.SetPosition(glm::vec3(0, 0, 5));
 
     PlayerController* player = new PlayerController(application);
     player->transform.SetPosition(glm::vec3(0, 0, 0));
 
+    PhysXObject* cube = new PhysXObject();
+    cube->LoadModel("Models/DefaultCube/DefaultCube.fbx");
+    cube->transform.SetPosition(glm::vec3(0, -0.87f, 0));
+    cube->transform.SetScale(glm::vec3(1, 1, 1));
+    cube->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::BOX);
+    GraphicsRender::GetInstance().AddModelAndShader(cube, application->defaultShader);
+
+    //PhysXObject* plane = new PhysXObject();
+    //plane->LoadModel("Models/Terrain/Terrain.fbx");
+    //plane->transform.SetPosition(glm::vec3(0, -4.f, 0));
+    //plane->transform.SetScale(glm::vec3(2, 1, 2));
+    //plane->transform.SetRotation(glm::vec3(-90, 0, 0));
+    //plane->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
+    //GraphicsRender::GetInstance().AddModelAndShader(plane, application->defaultShader);
+  
+
     PhysXObject* plane = new PhysXObject();
-    plane->LoadModel("Models/Terrain/Terrain.fbx");
+    plane->LoadModel("Models/Plane/Plane.ply");
     plane->transform.SetPosition(glm::vec3(0, -4.f, 0));
-    plane->transform.SetScale(glm::vec3(2, 1, 2));
-    plane->transform.SetRotation(glm::vec3(-90, 0, 0));
+    plane->transform.SetScale(glm::vec3(100, 100, 100));
+    plane->transform.SetRotation(glm::vec3(180.00, 0, 0));
     plane->Initialize(RigidBody::RigidBodyType::STATIC, BaseCollider::ColliderShape::MESH);
     GraphicsRender::GetInstance().AddModelAndShader(plane, application->defaultShader);
-
-
-  
 
 
   //  CubeVolume* cube = new CubeVolume();

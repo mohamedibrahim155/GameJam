@@ -12,6 +12,7 @@ const int MAX_BONES = 200;
  out vec3 Normal;
  out vec2 TextureCoordinates;
  out vec4 meshColour;
+ out vec4 FragPosLightSpace;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -19,6 +20,7 @@ uniform mat4 projection;
 
 uniform bool isBones;
 uniform mat4 BoneMatrices[MAX_BONES];
+uniform mat4 lightSpaceMatrix;
 
 
 void main()
@@ -41,7 +43,7 @@ void main()
 	
 	meshColour = aColor;
 	FragPosition = vec3(model * totalPosition);
-
+	FragPosLightSpace = lightSpaceMatrix * vec4(FragPosition, 1.0);
 	gl_Position = projection * view * model * totalPosition;
 }
 
