@@ -22,7 +22,8 @@ A custom game engine built with **C++** and **OpenGL**.
 - Mesh Instancing  
 - Skeletal Animation  
 - Particle System  
-- Cubemap  
+- Cubemap
+- Shadow Mapping
 
 ---
 
